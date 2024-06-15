@@ -1,0 +1,69 @@
+.TaskMainDiv {
+  color: white;
+}
+p{
+  margin: 0;
+  padding: 0;
+}
+
+
+.taskBalance{
+    text-align: center;
+    padding: 2% 5%;
+}
+
+.yourbalance {
+    opacity: .4;
+}
+
+.taskCoin{
+    padding: 0;
+    margin: 0;
+    font-size: 3vh;
+}
+
+
+.FreeTaskMainDiv {
+    color: white;
+  }
+  
+  .Task {
+    padding: 2%;
+    margin: auto;
+    width: 95vw;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    background: #11111e;
+    border-radius: 16px;
+    align-items: center;
+  }
+  .TaskLeft {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  }
+  .TaskHeading {
+    display: flex;
+    flex-flow: column;
+  }
+  .TaskHeading p {
+    padding: 0;
+    margin: 0;
+  }
+  
+  .TaskRightColArrow img {
+    width: 40%;
+  }
+  
+  .TaskName {
+    font-size: 1.9vh;
+  }
+  .TaskAvail {
+    font-size: 1.5vh;
+  }
+  .TaskCoin {
+    font-size: 2.5vh;
+    opacity: 1 !important;
+  }
+  

@@ -1,0 +1,97 @@
+.inviteHeading {
+  padding: 5%;
+  text-align: center;
+  color: white;
+  height: 20vh;
+}
+
+.inviteListheader {
+  color: white;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  font-size: 5vw;
+  padding: 6% 6% 3% 6%;
+}
+
+.inviteListMainDiv {
+  background: linear-gradient(180deg, #151b21 0%, #060606 100%);
+  box-shadow: 0px -6px 4px #e86f0c;
+  border-radius: 50px 50px 0px 0px;
+  height: 75vh;
+}
+
+.userListInvite {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin: 0 3%;
+  align-items: center;
+  align-content: center;
+}
+
+.leftInvitecol {
+  color: white;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.inviteColInfo {
+  color: white;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.inviteButtonMainDiv {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  bottom: 110px;
+}
+
+.inviteButton,
+.inviteCopyButton {
+  background: #ffffff;
+  border-radius: 10px;
+  margin: 0 2.5vw;
+}
+
+.invitebtn {
+  width: 70vw;
+  display: flex !important;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.inviteCopyButton {
+  width: 20vw;
+  margin: auto;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 3%;
+}
+
+.inviteRank {
+  font-size: 12px;
+}
+
+.inviteHead {
+  font-size: 2.5vh;
+  font-weight: 500;
+}
+
+.inviteDesc{
+  font-size: 1.8vh;
+}
+
+.noOfFriends{
+  font-size: 2vh;
+}
+.Reloader img{
+  height: 2vh;
+}
