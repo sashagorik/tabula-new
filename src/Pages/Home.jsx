@@ -1,228 +1,174 @@
-import { useEffect, useState } from "react";
-import coin from "../assets/coinn3.png";
-import { Tilt } from "react-tilt";
-import { getUserData } from "../services/apis";
-import ProgressBar from "react-bootstrap/ProgressBar";
-import porgressIcon from "../assets/progressIcon.svg";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import CoinInfo from "../components/CoinInfo/CoinInfo";
-import OrangeImg from "../assets/orange.png"
-const Home = ({ socket }) => {
-  const [userId, setUserId] = useState("");
-  const [userdata, setUserData] = useState([]);
-  const [totalCoins, setTotalCoins] = useState(0);
-  const [tapsInfo, setTapsInfo] = useState({
-    total_taps: 50,
-    used_taps: 50,
+import ProgressBar from "react-bootstrap/ProgressBar";
+import progressIcon from "../assets/progressIcon.svg";
+import coin from "../assets/coin3.svg";
+
+import { baseUrl } from "../services/helper";
+
+axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
+
+const generateRandomUserId = () => {
+  return Math.floor(Math.random() * 1000000).toString();
+};
+
+const generateRandomName = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  for (let i = 0; i < 6; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+};
+
+const Home = () => {
+  const [userInfo, setUserInfo] = useState(() => {
+    const storedUserId = localStorage.getItem('user_id');
+    const storedName = localStorage.getItem('name');
+    const storedUsedTaps = parseInt(localStorage.getItem('used_taps'), 10) || 100;
+    const storedTotalCoins = parseInt(localStorage.getItem('total_coins'), 10) || 0;
+
+    return {
+      user_id: storedUserId || generateRandomUserId(),
+      name: storedName || generateRandomName(),
+      total_coins: storedTotalCoins,
+      used_taps: storedUsedTaps,
+      total_taps: 100,
+    };
   });
 
-  useEffect(() => {
-    // fetching the User Id from URL given by Telegram App
-    const searchParams = new URLSearchParams(window.location.hash.substring(1));
-    const tgWebAppData = searchParams.get("tgWebAppData");
-
-    // console.log("searchParams", searchParams)
-
-    // localStorage.setItem("tgWebAppUrl", "/#tgWebAppData="+tgWebAppData)
-
-    if (tgWebAppData) {
-      // Extract the 'user' parameter from tgWebAppData
-      const userParam = new URLSearchParams(tgWebAppData).get("user");
-
-      if (userParam) {
-        // Decode the user parameter
-        const decodedUserParam = decodeURIComponent(userParam);
-
-        // Parse the JSON to extract the user ID
-        const userObject = JSON.parse(decodedUserParam);
-        const userId = userObject.id;
-
-        // Set the user ID in the state
-        setUserId(userId);
-      }
-    }
-
-    // sending request if user_id is set and getting the user data
-    if (userId) {
-      getData();
-    }
-  }, [userId]);
-
-  // to fetch user data
-  const getData = async () => {
-    // const config = { "access_token": "oiemrhgjmxofiknsgaSFvnrdceastvatg" }
-    const resp = await getUserData(userId);
-    console.log(resp);
-    localStorage.setItem("user_name", resp.data.name);
-    localStorage.setItem("user_rank", resp.data.currentLevel);
-    localStorage.setItem("user_coins", resp.data.totalCoin);
-    // alert( resp.data.name)
-    setTotalCoins(resp.data.totalCoin);
-    setUserData(resp.data.name);
-  };
-
-  // setting clicks
-  const [clicks, setClicks] = useState([]);
   const [coinStyle, setCoinStyle] = useState({});
+  const [clicks, setClicks] = useState([]);
 
-  const handleInteraction = (x, y, width, height) => {
-    const centerX = width / 2;
-    const centerY = height / 2;
-
-    const tiltX = ((centerY - y) / centerY) * 20;
-    const tiltY = ((x - centerX) / centerX) * 20;
-
-    setCoinStyle({
-      transform: `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1)`,
-      transition: "transform 0.1s ease-in-out",
-    });
-
-    // Reset the coin style after a delay
-    setTimeout(() => {
-      setCoinStyle({
-        transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
-        transition: "transform 0.1s ease-in-out",
-      });
-    }, 100);
+  const saveUserData = async (userData) => {
+    try {
+      const response = await axios.post(`${baseUrl}/api/v1/userDetails`, userData);
+      console.log('User data saved:', response.data);
+      localStorage.setItem('user_id', userData.user_id);
+      localStorage.setItem('name', userData.name);
+      return response.data.data;
+    } catch (error) {
+      console.error('Error saving user data:', error);
+    }
   };
 
-  // getting tap again
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (tapsInfo.used_taps < tapsInfo.total_taps) {
-        setTapsInfo((prevTapsInfo) => ({
-          ...prevTapsInfo,
-          used_taps: Math.min(
-            prevTapsInfo.used_taps + 1,
-            prevTapsInfo.total_taps
-          ),
-        }));
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/v1/userDetails?user_id=${userId}`);
+      if (response.data.success) {
+        return response.data.data;
       }
-    }, 2000); // 1000ms = 1 second
-
-    return () => clearInterval(intervalId);
-  }, [tapsInfo]);
-
-  const handleTap = () => {
-    if (tapsInfo.used_taps > 0) {
-      setTapsInfo((prevTapsInfo) => ({
-        ...prevTapsInfo,
-        used_taps: prevTapsInfo.used_taps - 1,
-      }));
+    } catch (error) {
+      console.error('Error fetching user data:', error);
     }
+    return null;
   };
 
-  // handling when clicking
-  const handleClick = async (e) => {
-    // updating coins in db using Socket.io
-    socket.emit("message", userId);
-
-    // adding coins+
-    // let coin = parseInt(totalCoins) + 1;
-    // setTotalCoins(coin);
-    // localStorage.setItem("user_coins", totalCoins + 1);
-    const newTotalCoins = totalCoins + 1;
-    setTotalCoins(newTotalCoins);
-    localStorage.setItem("user_coins", newTotalCoins);
-
-    // adding taps
-    handleTap();
-
-    // getting +2 position whener use clicked to make +2 position
-    const coinRect = e.target.getBoundingClientRect();
-    handleInteraction(
-      e.clientX - coinRect.left,
-      e.clientY - coinRect.top,
-      coinRect.width,
-      coinRect.height
-    );
-  };
-
-  // facing issue while tapping with 2 fingure that is solution
-  const handleTouchStart = (e) => {
-    // vibration for android and ios both
-    const navigatorVibrate =
-      navigator.vibrate ||
-      navigator.webkitVibrate ||
-      navigator.mozVibrate ||
-      navigator.msVibrate;
-    if (navigatorVibrate) {
-      navigatorVibrate.call(navigator, [50]);
-    } else {
-      window.Telegram?.WebApp?.HapticFeedback.impactOccurred("medium");
-    }
-
-    // on touch showing +2
-    const coinRect = e.target.getBoundingClientRect();
-    Array.from(e.touches).forEach((touch) => {
-      const touchX = touch.clientX - coinRect.left;
-      const touchY = touch.clientY - coinRect.top;
-      handleInteraction(touchX, touchY, coinRect.width, coinRect.height);
+  const handleClick = () => {
+    if (userInfo.used_taps > 0) {
+      const coinsToAdd = 2; // Placeholder for your logic
       setClicks((prevClicks) => [
         ...prevClicks,
-        { left: touch.clientX, top: touch.clientY },
+        {
+          left: Math.random() * window.innerWidth,
+          top: Math.random() * window.innerHeight,
+        },
       ]);
-    });
-  };
 
-  // for tilt animations
-  const defaultOptions = {
-    reverse: true,
-    speed: 10,
-    axis: null,
-    reset: true,
-    easing: "cubic-bezier(.03,.98,.52,.99)",
-    scale: 1,
-  };
-
-  //   useEffect(() => {
-  //     let coin = localStorage.getItem("user_coins");
-  //     coin = parseInt(coin);
-  //     console.log(typeof parseInt(coin));
-  //     setTotalCoins(localStorage.getItem("user_coins"));
-  //   }, [window.location.href]);
-  useEffect(() => {
-    const storedCoins = localStorage.getItem("user_coins");
-    const parsedCoins = parseInt(storedCoins, 10);
-    if (!isNaN(parsedCoins)) {
-      setTotalCoins(parsedCoins);
+      setUserInfo((prevUserInfo) => ({
+        ...prevUserInfo,
+        total_coins: prevUserInfo.total_coins + coinsToAdd,
+        used_taps: prevUserInfo.used_taps - 1,
+      }));
+      saveUserData(userInfo); // Save user info after updating coins
     }
+  };
+
+  useEffect(() => {
+    const initializeUser = async () => {
+      const storedUserId = localStorage.getItem('user_id');
+      if (storedUserId) {
+        const userData = await fetchUserData(storedUserId);
+        if (userData) {
+          setUserInfo({
+            user_id: storedUserId,
+            name: userData.name,
+            total_coins: userData.total_coins,
+            total_taps: userData.total_taps,
+            used_taps: userData.used_taps || 100,
+          });
+        } else {
+          const newUserInfo = {
+            user_id: storedUserId,
+            name: userInfo.name,
+            total_coins: userInfo.total_coins,
+            total_taps: userInfo.total_taps,
+          };
+          const createdUserData = await saveUserData(newUserInfo);
+          setUserInfo(createdUserData);
+        }
+      } else {
+        const newUserInfo = {
+          user_id: userInfo.user_id,
+          name: userInfo.name,
+          total_coins: userInfo.total_coins,
+          total_taps: userInfo.total_taps,
+        };
+        const createdUserData = await saveUserData(newUserInfo);
+        setUserInfo(createdUserData);
+      }
+    };
+
+    initializeUser();
   }, []);
 
-  // console.log("User id ", userId)
-  // console.log("User data ", userdata)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setUserInfo((prevUserInfo) => {
+        if (prevUserInfo.used_taps < prevUserInfo.total_taps) {
+          const updatedUsedTaps = prevUserInfo.used_taps + 1;
+          localStorage.setItem('used_taps', updatedUsedTaps);
+          return {
+            ...prevUserInfo,
+            used_taps: updatedUsedTaps,
+          };
+        }
+        return prevUserInfo;
+      });
+    }, 1000);
 
-  // console.log(tapsInfo)
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const saveInterval = setInterval(() => {
+      saveUserData(userInfo);
+    }, 1000);
+
+    return () => clearInterval(saveInterval);
+  }, [userInfo]);
 
   return (
     <>
       <div className="coinDiv">
-        {/* ton and gol coin info */}
         <CoinInfo />
-
-        {/* total no of coins */}
-        <div className="totalCoins">${totalCoins}</div>
-
-        {/* coin with animation */}
-
-          {/* backgorund Orange Img */}
-          <div className="orangeImg">
-           
-         </div>
-
-          <Tilt options={defaultOptions}>
-            <img
-              src={coin}
-              className="coinTest"
-              onClick={tapsInfo.used_taps > 0 ? handleClick : ""}
-              onTouchStart={tapsInfo.used_taps > 0 ? handleTouchStart : ""}
-              style={coinStyle}
-              tabIndex="0"
-              role="button"
-              aria-pressed="false"
-            />
-          </Tilt>
-
-        {/* printing +2 multiple time according to tap */}
+        <div className="totalCoins">${userInfo.total_coins}</div>
+        <div className="orangeImg">
+          {/* Placeholder for energy icon */}
+          {/* <img src={OrangeImg} className="orgImg" /> */}
+        </div>
+        <div className="charAnim"
+          onClick={userInfo.used_taps > 0 ? handleClick : ""}
+          style={coinStyle}>
+          <img
+            src={coin}
+            className="coinTest"
+            tabIndex="0"
+            role="button"
+            aria-pressed="false"
+          />
+        </div>
         {clicks.map((click, index) => (
           <div
             key={index}
@@ -230,25 +176,28 @@ const Home = ({ socket }) => {
             style={{
               left: `${click.left}px`,
               top: `${click.top - 120}px`,
-              animation: `fadeOut 2s forwards`,
+              animation: `fadeOut .9s forwards`,
             }}
           >
-            +1
+            +{2} {/* Placeholder for tap coins */}
           </div>
         ))}
-
-        {/* progress Bar */}
         <div className="progressBar">
           <div className="progressText">
-            <div className="Progressicon mx-2">
-              <img src={porgressIcon} width={15} />
+            <div className="progressRank">
+              {userInfo.rank} {/* Placeholder for user rank */}
             </div>
-            <div className="text-white">
-              <span className="points"> {tapsInfo.used_taps} </span> /{" "}
-              {tapsInfo.total_taps}
+            <div className="Progressicon mx-2">
+              <img src={progressIcon} width={15} />
+              <div className="text-white">
+                <span className="points"> {userInfo.used_taps} </span> /{" "}
+                {userInfo.total_taps}
+              </div>
             </div>
           </div>
-          <ProgressBar now={(tapsInfo.used_taps / tapsInfo.total_taps) * 100} />
+          <ProgressBar
+            now={(userInfo.used_taps / userInfo.total_taps) * 100}
+          />
         </div>
       </div>
     </>
@@ -256,3 +205,4 @@ const Home = ({ socket }) => {
 };
 
 export default Home;
+

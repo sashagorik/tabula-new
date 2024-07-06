@@ -1,18 +1,83 @@
+.earnOptionDiv {
+    background: linear-gradient(180deg, #151B21 0%, #060606 100%);
+    box-shadow: 0px -3px 4px #E86F0C;
+    border-radius: 18px;
+    padding: 2%;
+    width: 90vw;
+    height: 7vh;
+    display: flex;
+    flex-flow: row nowrap; /* изменено на nowrap */
+    justify-content: space-between; /* изменено на space-between */
+    align-items: center;
+    margin-top: 5%;
+}
+
+.activeEarnOption {
+    background: url("../../assets/Earn/activeOption.svg");
+    background-size: cover; /* добавлено */
+    background-position: center; /* добавлено */
+}
+
+.inActiveEarnOption {
+    background: url("../../assets/Earn/inactiveOption.svg");
+    background-size: cover; /* добавлено */
+    background-position: center; /* добавлено */
+    opacity: 0.4;
+}
+
+.earnoptionDivMenu {
+    width: 28%; /* уменьшена ширина для размещения трех элементов */
+    height: 5vh;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer; /* добавлено для визуализации кликабельности */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .treasureIcon{
     width: 70%;
 }
 
 .earnMainDiv{
-    margin-top: 15%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: white;
     text-align: center;
+    padding-bottom: 40%;
+    height: 100%;
 }
 
 .earnHeadings{
     margin: 0 5%;
 }
+
+

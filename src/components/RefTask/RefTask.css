@@ -1,0 +1,30 @@
+.inviteUpperDiv,
+.leftColInvite {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inviteDiv {
+    background: #272A2F;
+    border-radius: 10px;
+    padding: 2%;
+}
+
+.clamied {
+    background: linear-gradient(4.1deg, #096617 5.33%, #36D71C 94.67%);
+    color: white !important;
+    border-radius: 10px;
+}
+
+.noClamied {
+    color: white !important;
+    opacity: 0.5;
+    border-radius: 10px;
+    background-color: #54575c !important;
+}
+
+.inviteCoins {
+    display: flex;
+}

@@ -84,11 +84,11 @@ const Footer = () => {
 
         <div className="footerDiv">
 
-          <NavLink to="/invite" activeClassName="active">
+          <NavLink to="/invite" activeclassname="active">
             <button className="footerButton">
 
               <div className="footerButtonImg">
-                <img src={Invite} width={45} />
+                <img src={Invite}  />
               </div>
 
               <div className="footerButtonHeading">
@@ -102,11 +102,11 @@ const Footer = () => {
 
 
 
-          <NavLink to="/task" activeClassName="active">
+          <NavLink to="/task" activeclassname="active">
             <button className="footerButton">
 
               <div className="footerButtonImg">
-                <img src={Task} width={45} />
+                <img src={Task}  />
               </div>
 
               <div className="footerButtonHeading">
@@ -119,12 +119,12 @@ const Footer = () => {
 
 
 
-          <NavLink to="/" activeClassName="active">
+          <NavLink to="/" activeclassname="active">
 
             <button className="footerButton">
 
               <div className="footerButtonImg">
-                <img src={Tap} width={45} />
+                <img src={Tap}  />
               </div>
 
               <div className="footerButtonHeading">
@@ -138,11 +138,11 @@ const Footer = () => {
 
 
 
-          <NavLink to="/boost" activeClassName="active">
+          <NavLink to="/boost" activeclassname="active">
             <button className="footerButton">
 
               <div className="footerButtonImg">
-                <img src={Booster} width={45} />
+                <img src={Booster}  />
               </div>
 
               <div className="footerButtonHeading">
@@ -155,11 +155,11 @@ const Footer = () => {
 
 
 
-          <NavLink to="/earn" activeClassName="active">
+          <NavLink to="/earn" activeclassname="active">
             <button className="footerButton">
 
               <div className="footerButtonImg">
-                <img src={Earn} width={45} />
+                <img src={Earn}  />
               </div>
 
               <div className="footerButtonHeading">

@@ -9,28 +9,38 @@ const Layout = () => {
 
     const [hasAccess, setHasAccess] = useState(true);
 
-    useEffect(() => {
+
+// useEffect(() => {
+//        const userAgent = navigator.userAgent;
+//        const isMobileDevice = /iPhone|iPod|Android|BlackBerry/.test(userAgent);
+
+        // if (!isMobileDevice) {
+            // console.log("isMobile", isMobileDevice);
+        //     setHasAccess(false);
+        // }
 
 
+        // this condition checking user is in iframe 
+ //       if (!(window.location !== window.parent.location) && !isMobileDevice) {
+ //           setHasAccess(false);
+  //      }
 
-        const userAgent = navigator.userAgent;
-        const isMobileDevice = /iPhone|iPod|Android|BlackBerry/.test(userAgent);
-       // if (!isMobileDevice) {
-       //     console.log("isMobile", isMobileDevice);
-       //     setHasAccess(false);
-      //  }
-   }, []);
 
-   // if (!hasAccess) {
- //       return <h1 className="no-Access">No Access</h1>;
- //   }
+ //   }, []);
+
+  //  if (!hasAccess) {
+  //      return <h1 className="no-Access">No Access</h1>;
+  //  }
 
 
 
     return (
         <>
             <div className="main_div">
-                <Header />
+                {
+                    location.href.includes("rank") ? "" : <Header />
+                }
+
                 <Outlet />
                 <Footer />
             </div>

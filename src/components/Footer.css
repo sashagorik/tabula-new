@@ -1,4 +1,4 @@
-.bottomNavBar {
+/* .bottomNavBar {
   position: fixed;
   bottom: 10px;
   width: 95%;
@@ -36,19 +36,29 @@
 
 .bottomNavP {
   margin: 10px 0;
-}
+} */
 
 /* for next one footer */
+
+.footerMainDiv {
+  width: 100vw;
+  /* background: black; */
+  position: fixed;
+  bottom: 0px;
+  height: 10vh;
+}
+
 .footerDiv {
-  background: url(/src/assets/footerBg.svg);
+  /* background: url(/src/assets/footerBg.svg);
   background-repeat: no-repeat;
   background-size: cover;
-  width: 90vw;
+  background-position: center; */
+  background: #272A2F;
+  width: 96vw;
   height: 10vh;
-  position: absolute;
-  bottom: 15px;
-  background-position: center;
-  margin: 0 5vw;
+  position: fixed;
+  bottom: 2px;
+  margin: 0 2vw;
   border-radius: 25px;
   padding: 2.5%;
   display: flex;
@@ -71,20 +81,26 @@
 .footerButton {
   height: 8vh;
   width: 100%;
-  background: url("../assets/footerButton.svg");
+  /* background: url("../assets/footerButton.svg"); */
+  background: #1C1F24;
   border-radius: 15px;
   display: flex;
   flex-flow: column;
   justify-content: space-evenly;
   align-items: center;
-  border: 1px solid #fff;
+  /* border: 1px solid #fff; */
+  border: none;
 }
 
 .footerButtonHeading {
   font-size: 75%;
   color: #fff;
-  font-weight:800;
+  font-weight: 800;
 }
 .footerButtonImg {
-  margin-top: -0%;
+  margin-top: -60%;
+}
+
+.footerButtonImg img{
+  width: 100%;
 }

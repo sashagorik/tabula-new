@@ -1,0 +1,143 @@
+.inviteMainDiv{
+  padding-bottom: 40%;
+}
+
+.inviteHeading {
+  padding: 2% 5%;
+  text-align: center;
+  color: white;
+  height: 12vh;
+}
+
+.inviteImg img{
+  width: 50%;
+  display: flex;
+  margin: 3% auto;
+}
+
+.inviteListheader {
+  color: white;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  font-size: 5vw;
+  padding: 6% 6% 3% 6%;
+}
+
+.inviteListMainDiv {
+  background: linear-gradient(180deg, #151b21 0%, #060606 100%);
+  /* box-shadow: 0px -6px 4px #e86f0c; */
+  /* border-radius: 50px 50px 0px 0px; */
+  border-radius: 10px;
+  height: 100%;
+  padding-bottom: 25%;
+}
+
+.userListInvite {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin: 0 3%;
+  align-items: center;
+  align-content: center;
+}
+
+.leftInvitecol {
+  color: white;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  width: 45vw;
+}
+
+.rightInviteCol{
+  width: 45vw;
+}
+
+.inviteColInfo {
+  color: white;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+
+.inviteButton,
+.inviteCopyButton {
+   /* background: #ffffff; */
+    border-radius: 20px;
+    /* margin: 0 2.5vw; */
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin: 5% 0;
+}
+
+.invitebtn img {
+  width: 90vw;
+}
+
+
+.inviteRank {
+  font-size: 12px;
+}
+
+.inviteHead {
+  font-size: 3.5vh;
+  font-weight: 700;
+}
+
+.inviteDesc{
+  font-size: 1.8vh;
+}
+
+.noOfFriends{
+  font-size: 2vh;
+}
+.Reloader img{
+  height: 2vh;
+}
+
+
+/* Apply rotate animation to the 'rotate' class */
+@keyframes rotate360 {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+.rotate {
+  animation: rotate360 2s linear; /* 3 seconds linear animation */
+}
+
+
+iframe .tgme_widget_share_wrap{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.telegram-container iframe{
+  width: 100vw;
+  height: 4.5vh;
+}
+
+.tgme_widget_share__large a.tgme_widget_share_btn{
+  height: 100vh !important;
+  width: 80vw !important;
+}
+
+.tgme_widget_share_btn::part(share-button){
+  width: 80vw !important;
+  height: 100vh !important;
+}
+
+.userInviteAvatar{
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3%;
+  border-radius: 25%;
+}

@@ -1,49 +1,69 @@
-import TonCoins from "../../assets/tonCoins.svg"
-import "./CoinInfo.css"
-const CoinInfo = () => {
-  return (
-    <>
+import { useContext, useEffect } from "react";
+import TonCoins from "../../assets/tonCoins.svg";
+import "./CoinInfo.css";
+import { UserInfo } from "../../ContextApi/UserData";
+import greyCoin from "../../assets/greyCoin.png";
+import axios from "axios";
+import { baseUrl } from "../../services/helper";
 
+const CoinInfo = () => {
+    const { userInfo, setUserInfo } = useContext(UserInfo);
+
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/api/v1/userDetails`, {
+                params: { user_id: userInfo.user_id },
+                headers: {
+                    "ngrok-skip-browser-warning": "69420",
+                    // Другие заголовки, если необходимо
+                }
+            });
+            if (response.data.success) {
+                setUserInfo((prevUserInfo) => ({
+                    ...prevUserInfo,
+                    total_coins: response.data.data.total_coins,
+                    ton_coins: response.data.data.ton_coins,
+                }));
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchUserData();
+        }, 10000); // Обновляем данные каждые 10 секунд
+
+        return () => clearInterval(interval); // Очищаем интервал при размонтировании компонента
+    }, [userInfo.user_id, setUserInfo]);
+
+    return (
         <div className="coinInfoMainDiv">
-            
-            {/* ton coins info */}
             <div className="tonCoins">
                 <div className="tonHeading">
                     Ton Coins
                 </div>
                 <div className="noOfCoins">
-
-                        <div className="tonImg">
-                            <img src={TonCoins} width={20} />
-                        </div>
-                        <div className="tonAmount">$1000</div>
-
+                    <div className="tonImg">
+                        <img src={greyCoin} width={20} alt="Grey Coin" />
+                    </div>
+                    <div className="tonAmount">${userInfo.ton_coins}</div>
                 </div>
             </div>
-
-
-            {/* gold Coins Info */}
             <div className="goldCoins">
                 <div className="goldHeading">
                     Gold Coins
                 </div>
                 <div className="noOfGoldCoins">
-
-                        <div className="goldImg">
-                            <img src={TonCoins} width={20} />
-                        </div>
-                        <div className="goldAmount">$1000</div>
-
+                    <div className="goldImg">
+                        <img src={TonCoins} width={20} alt="Ton Coins" />
+                    </div>
+                    <div className="goldAmount">${userInfo.total_coins}</div>
                 </div>
             </div>
-
-
-
-
         </div>
+    );
+};
 
-    </>
-  )
-}
-
-export default CoinInfo
+export default CoinInfo;
