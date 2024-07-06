@@ -23,6 +23,9 @@ const Earn = () => {
       </div>
 
       {/* option */}
+
+
+      
       <div className="earnOptionDiv">
         <div
           className={`earnoptionDivMenu ${isTon === 1 ? 'activeEarnOption' : 'inActiveEarnOption'}`}
