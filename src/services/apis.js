@@ -3,7 +3,7 @@ import axios from 'axios';
 import { baseUrl } from "../services/helper";
 
 // Устанавливаем общий заголовок для всех запросов
-axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
+//axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
 
 export const getBooster = async (user_id) => {
   const response = await fetch(`${baseUrl}/boosterDetails?user_id=${user_id}`);

@@ -7,7 +7,7 @@ import coin from "../assets/coin3.svg";
 
 import { baseUrl } from "../services/helper";
 
-axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
+//axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
 
 const generateRandomUserId = () => {
   return Math.floor(Math.random() * 10000000).toString();

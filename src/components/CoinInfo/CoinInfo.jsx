@@ -15,7 +15,7 @@ const CoinInfo = () => {
             const response = await axios.get(`${baseUrl}/api/v1/userDetails`, {
                 params: { user_id: userInfo.user_id },
                 headers: {
-                    "ngrok-skip-browser-warning": "69420",
+                    //"ngrok-skip-browser-warning": "69420",
                     // Другие заголовки, если необходимо
                 }
             });

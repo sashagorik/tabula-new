@@ -10,7 +10,7 @@ import axios from "axios";
 import { baseUrl } from "../../services/helper";
 
 // Устанавливаем общий заголовок для всех запросов
-axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
+//axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
 
 const BoosterPop = ({ boost, onClose, setBoost }) => {
     const { userInfo, setUserInfo } = useContext(UserInfo);
