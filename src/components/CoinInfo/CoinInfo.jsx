@@ -1,3 +1,4 @@
+import React from 'react'
 import { useContext, useEffect } from "react";
 import TonCoins from "../../assets/tonCoins.svg";
 import "./CoinInfo.css";

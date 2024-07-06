@@ -1,3 +1,4 @@
+import React from 'react'
 import "./Loadder.css"
 import Spinner from 'react-bootstrap/Spinner';
 

@@ -1,3 +1,4 @@
+import React from 'react'
 import "./Footer.css"
 // import BgIcon from "../assets/iconBg.svg"
 // import BackIcon from "../assets/backImg.svg"

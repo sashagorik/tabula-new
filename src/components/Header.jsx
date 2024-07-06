@@ -1,3 +1,4 @@
+import React from 'react'
 import profile from "../assets/userProfile.svg"
 import BianceLogo from "../assets/bianceLogo.svg"
 import OfficerLogo from "../assets/officeIcon.svg"
