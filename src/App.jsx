@@ -54,27 +54,27 @@ function App() {
   const [isSocket, setSocket] = useState(null)
   const [user_id, setUser_id] = useState("")
   const [antHire, setAntHire] = useState(false)
-   useEffect(() => {
+    // useEffect(() => {
 
-     const searchParams = new URLSearchParams(window.location.hash.substring(1));
-     const tgWebAppData = searchParams.get("tgWebAppData");
-     if (tgWebAppData) {
-       const userParam = new URLSearchParams(tgWebAppData).get("user");
-       if (userParam) {
-         // Decode the user parameter
-         const decodedUserParam = decodeURIComponent(userParam);
-         // Parse the JSON to extract the user ID
-         const userObject = JSON.parse(decodedUserParam);
-         const userId = userObject.id;
-         setUser_id(userId)
-       }
-     } else {
-       // when user came from another page so we need to maintaina and save the id
-       if (localStorage.getItem("user_id")) {
-         setUser_id(localStorage.getItem("user_id"))
-       }
-     }
-    }, []);
+  //   const searchParams = new URLSearchParams(window.location.hash.substring(1));
+  //   const tgWebAppData = searchParams.get("tgWebAppData");
+  //   if (tgWebAppData) {
+  //     const userParam = new URLSearchParams(tgWebAppData).get("user");
+  //     if (userParam) {
+  //       // Decode the user parameter
+  //       const decodedUserParam = decodeURIComponent(userParam);
+  //       // Parse the JSON to extract the user ID
+  //       const userObject = JSON.parse(decodedUserParam);
+  //       const userId = userObject.id;
+  //       setUser_id(userId)
+  //     }
+  //   } else {
+  //     // when user came from another page so we need to maintaina and save the id
+  //     if (localStorage.getItem("user_id")) {
+  //       setUser_id(localStorage.getItem("user_id"))
+  //     }
+  //   }
+  //   console.log("join", user_id)
 
 
 
