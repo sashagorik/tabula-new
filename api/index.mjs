@@ -45,7 +45,7 @@ app.use(cors()); // Разрешаем CORS для всех запросов
 app.use(bodyParser.json()); // Middleware для парсинга JSON
 
 // Подключение к базе данных MongoDB
-const uri = "mongodb+srv://sashagorik1982:bk8a2KDylgrENyI5@cluster0.6ire3pk.mongodb.net/?appName=Cluster0";
+const uri = "mongodb+srv://vercel-admin-user:AhEmrqRrzo2o0aPp@cluster0.6ire3pk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 mongoose.connect(uri);
 
 mongoose.connection.on('connected', () => {
