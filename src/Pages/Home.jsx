@@ -1,55 +1,214 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { UserInfo } from '../ContextApi/UserData';
-import { baseUrl } from '../services/helper';
-import axios from 'axios';
-import './Home.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import CoinInfo from "../components/CoinInfo/CoinInfo";
+import ProgressBar from "react-bootstrap/ProgressBar";
+import progressIcon from "../assets/progressIcon.svg";
+import coin from "../assets/coin3.svg";
 
-const Home = ({ socket }) => {
-  const { userInfo, setUserInfo } = useContext(UserInfo);
-  const [coins, setCoins] = useState(userInfo.total_coins || 0);
-  const [taps, setTaps] = useState(userInfo.total_taps || 0);
-  
-  // Fetch user data from the database
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/api/user/${userInfo.user_id}`);
-        const data = response.data;
-        setUserInfo(data);
-        setCoins(data.total_coins);
-        setTaps(data.total_taps);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
+import { baseUrl } from "../services/helper";
+
+// axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
+
+const generateRandomUserId = () => {
+  return `notg_${Math.floor(Math.random() * 10000000).toString()}`;
+};
+
+const generateRandomName = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  for (let i = 0; i < 6; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+};
+
+const Home = () => {
+  const [userInfo, setUserInfo] = useState(() => {
+    let storedUserId = localStorage.getItem('user_id');
+    let storedName = localStorage.getItem('name');
+    const storedUsedTaps = parseInt(localStorage.getItem('used_taps'), 10) || 100;
+    const storedTotalCoins = parseInt(localStorage.getItem('total_coins'), 10) || 0;
+
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+      const telegramData = window.Telegram.WebApp.initDataUnsafe.user;
+      storedUserId = telegramData.id.toString();
+      storedName = telegramData.username || telegramData.first_name;
+      localStorage.setItem('user_id', storedUserId);
+      localStorage.setItem('name', storedName);
+    }
+
+    return {
+      user_id: storedUserId || generateRandomUserId(),
+      name: storedName || generateRandomName(),
+      total_coins: storedTotalCoins,
+      used_taps: storedUsedTaps,
+      total_taps: 100,
     };
+  });
 
-    fetchData();
-  }, [userInfo.user_id, setUserInfo]);
+  const [coinStyle, setCoinStyle] = useState({});
+  const [clicks, setClicks] = useState([]);
 
-  // Function to update coin count
-  const handleCollectCoin = async () => {
+  const saveUserData = async (userData) => {
     try {
-      const response = await axios.post(`${baseUrl}/api/user/collect`, { user_id: userInfo.user_id });
-      const { total_coins } = response.data;
-      setCoins(total_coins);
-      setUserInfo((prevUserInfo) => ({
-        ...prevUserInfo,
-        total_coins,
-      }));
+      const response = await axios.post(`${baseUrl}/api/v1/userDetails`, userData);
+      console.log('User data saved:', response.data);
+      localStorage.setItem('user_id', userData.user_id);
+      localStorage.setItem('name', userData.name);
+      return response.data.data;
     } catch (error) {
-      console.error('Error collecting coins:', error);
+      console.error('Error saving user data:', error);
     }
   };
 
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/v1/userDetails?user_id=${userId}`);
+      if (response.data.success) {
+        return response.data.data;
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+    return null;
+  };
+
+  const handleClick = () => {
+    if (userInfo.used_taps > 0) {
+      const coinsToAdd = 2; // Placeholder for your logic
+      setClicks((prevClicks) => [
+        ...prevClicks,
+        {
+          left: Math.random() * window.innerWidth,
+          top: Math.random() * window.innerHeight,
+        },
+      ]);
+
+      setUserInfo((prevUserInfo) => ({
+        ...prevUserInfo,
+        total_coins: prevUserInfo.total_coins + coinsToAdd,
+        used_taps: prevUserInfo.used_taps - 1,
+      }));
+      saveUserData(userInfo); // Save user info after updating coins
+    }
+  };
+
+  useEffect(() => {
+    const initializeUser = async () => {
+      const storedUserId = localStorage.getItem('user_id');
+      if (storedUserId) {
+        const userData = await fetchUserData(storedUserId);
+        if (userData) {
+          setUserInfo({
+            user_id: storedUserId,
+            name: userData.name,
+            total_coins: userData.total_coins,
+            total_taps: userData.total_taps,
+            used_taps: userData.used_taps || 100,
+          });
+        } else {
+          const newUserInfo = {
+            user_id: storedUserId,
+            name: userInfo.name,
+            total_coins: userInfo.total_coins,
+            total_taps: userInfo.total_taps,
+          };
+          const createdUserData = await saveUserData(newUserInfo);
+          setUserInfo(createdUserData);
+        }
+      } else {
+        const newUserInfo = {
+          user_id: userInfo.user_id,
+          name: userInfo.name,
+          total_coins: userInfo.total_coins,
+          total_taps: userInfo.total_taps,
+        };
+        const createdUserData = await saveUserData(newUserInfo);
+        setUserInfo(createdUserData);
+      }
+    };
+
+    initializeUser();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setUserInfo((prevUserInfo) => {
+        if (prevUserInfo.used_taps < prevUserInfo.total_taps) {
+          const updatedUsedTaps = prevUserInfo.used_taps + 1;
+          localStorage.setItem('used_taps', updatedUsedTaps);
+          return {
+            ...prevUserInfo,
+            used_taps: updatedUsedTaps,
+          };
+        }
+        return prevUserInfo;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const saveInterval = setInterval(() => {
+      saveUserData(userInfo);
+    }, 1000);
+
+    return () => clearInterval(saveInterval);
+  }, [userInfo]);
+
   return (
-    <div className="home">
-      <h1>Welcome, {userInfo.name}</h1>
-      <div className="stats">
-        <p>Total Coins: {coins}</p>
-        <p>Total Taps: {taps}</p>
+    <>
+      <div className="coinDiv">
+        <CoinInfo />
+        <div className="totalCoins">${userInfo.total_coins}</div>
+        <div className="orangeImg">
+          {/* Placeholder for energy icon */}
+          {/* <img src={OrangeImg} className="orgImg" /> */}
+        </div>
+        <div className="charAnim"
+          onClick={userInfo.used_taps > 0 ? handleClick : ""}
+          style={coinStyle}>
+          <img
+            src={coin}
+            className="coinTest"
+            tabIndex="0"
+            role="button"
+            aria-pressed="false"
+          />
+        </div>
+        {clicks.map((click, index) => (
+          <div
+            key={index}
+            className="rs"
+            style={{
+              left: `${click.left}px`,
+              top: `${click.top - 120}px`,
+              animation: `fadeOut .9s forwards`,
+            }}
+          >
+            +{2} {/* Placeholder for tap coins */}
+          </div>
+        ))}
+        <div className="progressBar">
+          <div className="progressText">
+            <div className="progressRank">
+              {userInfo.rank} {/* Placeholder for user rank */}
+            </div>
+            <div className="Progressicon mx-2">
+              <img src={progressIcon} width={15} />
+              <div className="text-white">
+                <span className="points"> {userInfo.used_taps} </span> /{" "}
+                {userInfo.total_taps}
+              </div>
+            </div>
+          </div>
+          <ProgressBar
+            now={(userInfo.used_taps / userInfo.total_taps) * 100}
+          />
+        </div>
       </div>
-      <button onClick={handleCollectCoin}>Collect Coin</button>
-    </div>
+    </>
   );
 };
 
