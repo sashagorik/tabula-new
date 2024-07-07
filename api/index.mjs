@@ -83,7 +83,7 @@ app.get('/api/v1/userDetails', async (req, res) => {
     res.json({ success: true, data: userData });
   } catch (err) {
     console.error('Error fetching user data:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Test-error - Internal server error' });
   }
 });
 
@@ -124,7 +124,7 @@ app.post('/api/v1/userDetails', async (req, res) => {
     res.json({ success: true, data: user });
   } catch (err) {
     console.error('Error saving user data:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Test-2 - Internal server error' });
   }
 });
 
@@ -147,7 +147,7 @@ app.post('/api/v1/updateCoins', async (req, res) => {
     res.json({ success: true, data: user });
   } catch (err) {
     console.error('Error updating coins:', err); // Выводим ошибку в консоль
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Test-3 Internal server error' });
   }
 });
 
@@ -166,7 +166,7 @@ app.get('/api/v1/boosterDetails', async (req, res) => {
     res.json({ success: true, data: booster });
   } catch (err) {
     console.error('Error fetching booster data:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Test-4 Internal server error' });
   }
 });
 
@@ -187,7 +187,7 @@ app.post('/api/v1/updateBooster', async (req, res) => {
     res.json({ success: true, data: booster });
   } catch (err) {
     console.error('Error updating booster data:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Test-5 Internal server error' });
   }
 });
 
@@ -238,7 +238,7 @@ app.post('/api/v1/upgradeBooster', async (req, res) => {
     res.json({ success: true, data: { user, booster } });
   } catch (err) {
     console.error('Error upgrading booster:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Test - 6 Internal server error' });
   }
 });
 
@@ -262,7 +262,7 @@ app.get('/api/v1/boosterLevel', async (req, res) => {
     res.json({ success: true, level: boosterLevel });
   } catch (err) {
     console.error('Error fetching booster level:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Test- 7 Internal server error' });
   }
 });
 
@@ -275,7 +275,7 @@ app.post('/api/v1/updateTotalTaps', async (req, res) => {
     res.json({ success: true, user: updatedUser });
   } catch (error) {
     console.error('Error updating total taps:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Test - 8 Internal server error' });
   }
 });
 
