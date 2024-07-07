@@ -1,3 +1,4 @@
+import React from 'react';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CoinInfo from "../components/CoinInfo/CoinInfo";
@@ -7,10 +8,10 @@ import coin from "../assets/coin3.svg";
 
 import { baseUrl } from "../services/helper";
 
-// axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
+//axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
 
 const generateRandomUserId = () => {
-  return `notg_${Math.floor(Math.random() * 10000000).toString()}`;
+  return Math.floor(Math.random() * 10000000).toString();
 };
 
 const generateRandomName = () => {
@@ -24,18 +25,10 @@ const generateRandomName = () => {
 
 const Home = () => {
   const [userInfo, setUserInfo] = useState(() => {
-    let storedUserId = localStorage.getItem('user_id');
-    let storedName = localStorage.getItem('name');
+    const storedUserId = localStorage.getItem('user_id');
+    const storedName = localStorage.getItem('name');
     const storedUsedTaps = parseInt(localStorage.getItem('used_taps'), 10) || 100;
     const storedTotalCoins = parseInt(localStorage.getItem('total_coins'), 10) || 0;
-
-    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-      const telegramData = window.Telegram.WebApp.initDataUnsafe.user;
-      storedUserId = telegramData.id.toString();
-      storedName = telegramData.username || telegramData.first_name;
-      localStorage.setItem('user_id', storedUserId);
-      localStorage.setItem('name', storedName);
-    }
 
     return {
       user_id: storedUserId || generateRandomUserId(),
@@ -51,7 +44,7 @@ const Home = () => {
 
   const saveUserData = async (userData) => {
     try {
-      const response = await axios.post(`${baseUrl}/api/v1/userDetails`, userData);
+      const response = await axios.post(${baseUrl}/api/v1/userDetails, userData);
       console.log('User data saved:', response.data);
       localStorage.setItem('user_id', userData.user_id);
       localStorage.setItem('name', userData.name);
@@ -63,7 +56,7 @@ const Home = () => {
 
   const fetchUserData = async (userId) => {
     try {
-      const response = await axios.get(`${baseUrl}/api/v1/userDetails?user_id=${userId}`);
+      const response = await axios.get(${baseUrl}/api/v1/userDetails?user_id=${userId});
       if (response.data.success) {
         return response.data.data;
       }
@@ -182,9 +175,9 @@ const Home = () => {
             key={index}
             className="rs"
             style={{
-              left: `${click.left}px`,
-              top: `${click.top - 120}px`,
-              animation: `fadeOut .9s forwards`,
+              left: ${click.left}px,
+              top: ${click.top - 120}px,
+              animation: fadeOut .9s forwards,
             }}
           >
             +{2} {/* Placeholder for tap coins */}
