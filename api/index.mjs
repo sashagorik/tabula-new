@@ -1,8 +1,8 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import bodyParser from 'body-parser';
-import User from './models/User.js'; // Импортируем модель пользователя
-import Booster from './models/Booster.js'; // Импортируем модель бустера
+//import User from './models/User.js'; // Импортируем модель пользователя
+//import Booster from './models/Booster.js'; // Импортируем модель бустера
 import cors from 'cors';
 import helmet from 'helmet'; // Для управления заголовками безопасности, включая CSP
 
