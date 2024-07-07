@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 
-const uri = "mongodb+srv://sashagorik1982:bk8a2KDylgrENyI5@cluster0.6ire3pk.mongodb.net/your-database-name?retryWrites=true&w=majority";
+const uri = "mongodb+srv://sashagorik1982:bk8a2KDylgrENyI5@cluster0.6ire3pk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 let db;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
