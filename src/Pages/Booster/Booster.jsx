@@ -1,3 +1,4 @@
+import React from 'react';
 import "./Booster.css"
 import RightArrow from "../../assets/Booster/rightArrow.svg"
 import { useContext, useState } from "react"

@@ -1,3 +1,4 @@
+import React from 'react';
 import { dailyTask, taskList } from "../../Data/Task"
 import "./Task.css"
 import taskTick from "../../assets/Task/taskDone.svg";

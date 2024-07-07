@@ -1,3 +1,4 @@
+import React from 'react';
 import "./Invite.css";
 import Reloader from "../../assets/reloader.svg";
 import HrInvite from "../../assets/hrInvite.svg";
