@@ -1,8 +1,6 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import bodyParser from 'body-parser';
-//import User from './models/User.js'; // Импортируем модель пользователя
-//import Booster from './models/Booster.js'; // Импортируем модель бустера
 import cors from 'cors';
 import helmet from 'helmet'; // Для управления заголовками безопасности, включая CSP
 
@@ -39,12 +37,14 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Подключение к базе данных MongoDB
-const uri = "mongodb+srv://sashagorik1982:bk8a2KDylgrENyI5@cluster0.6ire3pk.mongodb.net/?appName=Cluster0";
+const uri = "mongodb+srv://sashagorik1982:bk8a2KDylgrENyI5@cluster0.6ire3pk.mongodb.net/your-database-name?retryWrites=true&w=majority";
+let db;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function connectToMongoDB() {
   try {
     await client.connect();
+    db = client.db();
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
@@ -61,7 +61,6 @@ app.get('/api/v1/userDetails', async (req, res) => {
   }
 
   try {
-    const db = client.db(); // Используем URI подключения
     const collection = db.collection('users');
     const user = await collection.findOne({ user_id });
 
@@ -88,7 +87,6 @@ app.post('/api/v1/userDetails', async (req, res) => {
   const userData = req.body;
 
   try {
-    const db = client.db(); // Используем URI подключения
     const collection = db.collection('users');
     let user = await collection.findOne({ user_id: userData.user_id });
 
@@ -123,7 +121,6 @@ app.post('/api/v1/updateCoins', async (req, res) => {
   const { user_id, coins } = req.body;
 
   try {
-    const db = client.db(); // Используем URI подключения
     const collection = db.collection('users');
     let user = await collection.findOne({ user_id });
 
@@ -150,7 +147,6 @@ app.get('/api/v1/boosterDetails', async (req, res) => {
   }
 
   try {
-    const db = client.db(); // Используем URI подключения
     const collection = db.collection('boosters');
     const booster = await collection.findOne({ user_id });
 
@@ -170,7 +166,6 @@ app.post('/api/v1/updateBooster', async (req, res) => {
   const { user_id, boosterData } = req.body;
 
   try {
-    const db = client.db(); // Используем URI подключения
     const collection = db.collection('boosters');
     let booster = await collection.findOne({ user_id });
 
@@ -194,7 +189,6 @@ app.post('/api/v1/upgradeBooster', async (req, res) => {
   const { user_id, boosterType } = req.body;
 
   try {
-    const db = client.db(); // Используем URI подключения
     const usersCollection = db.collection('users');
     const boostersCollection = db.collection('boosters');
 
@@ -247,7 +241,6 @@ app.post('/api/v1/dailyReward', async (req, res) => {
   const { user_id } = req.body;
 
   try {
-    const db = client.db(); // Используем URI подключения
     const collection = db.collection('users');
     let user = await collection.findOne({ user_id });
 
@@ -255,19 +248,19 @@ app.post('/api/v1/dailyReward', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Логика для ежедневного вознаграждения
+    // Логика для ежедневного вознаграждения, например, увеличение монет на 100
+    const reward = 100;
+    user.total_coins += reward;
 
-    res.json({ success: true, message: 'Daily reward claimed' });
+    await collection.updateOne({ user_id }, { $set: { total_coins: user.total_coins } });
+
+    res.json({ success: true, data: user });
   } catch (err) {
-    console.error('Error claiming daily reward:', err);
+    console.error('Error processing daily reward:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Обработка других эндпоинтов, включая удаление данных пользователя и обработку ошибок, может быть добавлена по необходимости.
-
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
-
-export default app;
