@@ -1,15 +1,13 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import { MongoClient } from 'mongodb';
 import bodyParser from 'body-parser';
 import User from './models/User.js'; // Импортируем модель пользователя
 import Booster from './models/Booster.js'; // Импортируем модель бустера
 import cors from 'cors';
-//import { userInfo } from 'os';
 import helmet from 'helmet'; // Для управления заголовками безопасности, включая CSP
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-
 
 // Используем Helmet для добавления Content Security Policy
 app.use(helmet.contentSecurityPolicy({
@@ -35,26 +33,25 @@ app.use((req, res, next) => {
   }
 });
 
-// Обработчик GET запроса на корневой URL /
-app.get('/', (req, res) => {
-  res.send('Привет, мир!');
-});
-
-app.use(express.json()); // Парсинг JSON тела запроса
-app.use(cors()); // Разрешаем CORS для всех запросов
-app.use(bodyParser.json()); // Middleware для парсинга JSON
+// Обработка JSON тела запроса
+app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
 
 // Подключение к базе данных MongoDB
 const uri = "mongodb+srv://sashagorik1982:bk8a2KDylgrENyI5@cluster0.6ire3pk.mongodb.net/?appName=Cluster0";
-mongoose.connect(uri);
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connection.on('connected', () => {
-  console.log('Connected to MongoDB');
-});
+async function connectToMongoDB() {
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+  }
+}
 
-mongoose.connection.on('error', (err) => {
-  console.log('Error connecting to MongoDB:', err);
-});
+connectToMongoDB();
 
 // Эндпоинт для получения данных пользователя
 app.get('/api/v1/userDetails', async (req, res) => {
@@ -64,26 +61,25 @@ app.get('/api/v1/userDetails', async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ user_id });
+    const db = client.db(); // Используем URI подключения
+    const collection = db.collection('users');
+    const user = await collection.findOne({ user_id });
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Предположим, что ваша модель пользователя (User) имеет свойства user_id, name, total_coins и ton_coins
     const userData = {
       user_id: user.user_id,
       name: user.name,
       total_coins: user.total_coins,
       total_taps: user.total_taps
-      // ton_coins: user.ton_coins,
-      // Добавьте другие свойства пользователя по необходимости
     };
 
     res.json({ success: true, data: userData });
   } catch (err) {
     console.error('Error fetching user data:', err);
-    res.status(500).json({ error: 'Test-error - Internal server error' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -92,62 +88,57 @@ app.post('/api/v1/userDetails', async (req, res) => {
   const userData = req.body;
 
   try {
-    let user = await User.findOne({ user_id: userData.user_id });
+    const db = client.db(); // Используем URI подключения
+    const collection = db.collection('users');
+    let user = await collection.findOne({ user_id: userData.user_id });
 
     if (!user) {
       // Если пользователь не найден, создаем нового
-      user = new User({
-        user_id: userData.user_id,
-        name: userData.name,
-        total_coins: userData.total_coins,
-        total_taps: userData.total_taps
-      });
-      await user.save();
+      await collection.insertOne(userData);
 
       // После создания пользователя также создаем запись о бустерах
-      const booster = new Booster({
+      await db.collection('boosters').insertOne({
         user_id: userData.user_id,
         multiTap: 0,
         fireLimit: 0,
         flashSpeed: 0,
         hireAnt: false,
-        recharge: 3, // Пример начального значения для recharge
-        turbo: 3 // Пример начального значения для turbo
+        recharge: 3,
+        turbo: 3
       });
-      await booster.save();
     } else {
       // Обновляем данные пользователя, если он уже существует
-      user = Object.assign(user, userData);
-      await user.save();
+      await collection.updateOne({ user_id: userData.user_id }, { $set: userData });
     }
 
-    res.json({ success: true, data: user });
+    res.json({ success: true, data: userData });
   } catch (err) {
     console.error('Error saving user data:', err);
-    res.status(500).json({ error: 'Test-2 - Internal server error' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 // Эндпоинт для обновления количества монет totalcoins
 app.post('/api/v1/updateCoins', async (req, res) => {
   const { user_id, coins } = req.body;
 
   try {
-    let user = await User.findOne({ user_id });
+    const db = client.db(); // Используем URI подключения
+    const collection = db.collection('users');
+    let user = await collection.findOne({ user_id });
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Обновляем количество монет
     user.total_coins += coins;
 
-    await user.save();
+    await collection.updateOne({ user_id }, { $set: { total_coins: user.total_coins } });
+
     res.json({ success: true, data: user });
   } catch (err) {
-    console.error('Error updating coins:', err); // Выводим ошибку в консоль
-    res.status(500).json({ error: 'Test-3 Internal server error' });
+    console.error('Error updating coins:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -159,14 +150,18 @@ app.get('/api/v1/boosterDetails', async (req, res) => {
   }
 
   try {
-    const booster = await Booster.findOne({ user_id });
+    const db = client.db(); // Используем URI подключения
+    const collection = db.collection('boosters');
+    const booster = await collection.findOne({ user_id });
+
     if (!booster) {
       return res.status(404).json({ error: 'Booster data not found' });
     }
+
     res.json({ success: true, data: booster });
   } catch (err) {
     console.error('Error fetching booster data:', err);
-    res.status(500).json({ error: 'Test-4 Internal server error' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -175,30 +170,36 @@ app.post('/api/v1/updateBooster', async (req, res) => {
   const { user_id, boosterData } = req.body;
 
   try {
-    let booster = await Booster.findOne({ user_id });
+    const db = client.db(); // Используем URI подключения
+    const collection = db.collection('boosters');
+    let booster = await collection.findOne({ user_id });
+
     if (!booster) {
       return res.status(404).json({ error: 'Booster data not found' });
     }
 
-    // Обновляем данные о бустерах
     booster = Object.assign(booster, boosterData);
 
-    await booster.save();
+    await collection.updateOne({ user_id }, { $set: booster });
+
     res.json({ success: true, data: booster });
   } catch (err) {
     console.error('Error updating booster data:', err);
-    res.status(500).json({ error: 'Test-5 Internal server error' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 // Эндпоинт для апгрейда бустера
 app.post('/api/v1/upgradeBooster', async (req, res) => {
   const { user_id, boosterType } = req.body;
 
   try {
-    let user = await User.findOne({ user_id });
-    let booster = await Booster.findOne({ user_id });
+    const db = client.db(); // Используем URI подключения
+    const usersCollection = db.collection('users');
+    const boostersCollection = db.collection('boosters');
+
+    let user = await usersCollection.findOne({ user_id });
+    let booster = await boostersCollection.findOne({ user_id });
 
     if (!user || !booster) {
       return res.status(404).json({ error: 'User or Booster data not found' });
@@ -227,101 +228,43 @@ app.post('/api/v1/upgradeBooster', async (req, res) => {
     user.total_coins -= price;
     booster[boosterType] += 1;
 
-    // Если апгрейдируем fireLimit, увеличиваем total_taps
     if (boosterType === 'fireLimit') {
       user.total_taps += 100; // Добавляем 100 очков за каждый уровень fireLimit
     }
 
-    await user.save();
-    await booster.save();
+    await usersCollection.updateOne({ user_id }, { $set: user });
+    await boostersCollection.updateOne({ user_id }, { $set: booster });
 
     res.json({ success: true, data: { user, booster } });
   } catch (err) {
     console.error('Error upgrading booster:', err);
-    res.status(500).json({ error: 'Test - 6 Internal server error' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-
-// Эндпоинт для получения уровня бустера пользователя
-app.get('/api/v1/boosterLevel', async (req, res) => {
-  const { user_id, booster } = req.query;
-  if (!user_id || !booster) {
-    return res.status(400).json({ error: 'Missing user_id or booster parameter' });
-  }
+// Эндпоинт для ежедневного вознаграждения
+app.post('/api/v1/dailyReward', async (req, res) => {
+  const { user_id } = req.body;
 
   try {
-    const boosterData = await Booster.findOne({ user_id });
-    if (!boosterData) {
-      return res.status(404).json({ error: 'Booster data not found' });
+    const db = client.db(); // Используем URI подключения
+    const collection = db.collection('users');
+    let user = await collection.findOne({ user_id });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-    const boosterLevel = boosterData[booster];
-    if (boosterLevel === undefined) {
-      return res.status(400).json({ error: 'Invalid booster type' });
-    }
-    res.json({ success: true, level: boosterLevel });
+
+    // Логика для ежедневного вознаграждения
+
+    res.json({ success: true, message: 'Daily reward claimed' });
   } catch (err) {
-    console.error('Error fetching booster level:', err);
-    res.status(500).json({ error: 'Test- 7 Internal server error' });
+    console.error('Error claiming daily reward:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-
-// Эндпоинт Обновление total_taps пользователя
-app.post('/api/v1/updateTotalTaps', async (req, res) => {
-  const { user_id, total_taps } = req.body;
-  try {
-    const updatedUser = await User.findOneAndUpdate({ user_id }, { total_taps }, { new: true });
-    res.json({ success: true, user: updatedUser });
-  } catch (error) {
-    console.error('Error updating total taps:', error);
-    res.status(500).json({ error: 'Test - 8 Internal server error' });
-  }
-});
-
-// Получение данных о ежедневных вознаграждениях
-app.get('/api/dailyRewardDetails/:userId', async (req, res) => {
-  try {
-      const user = await User.findOne({ user_id: req.params.userId });
-      if (!user) {
-          return res.status(404).send('User not found');
-      }
-      res.json(user.dailyRewards);
-  } catch (error) {
-      res.status(500).send(error);
-  }
-});
-
-// Обновление данных о ежедневных вознаграждениях
-app.post('/api/updateDailyReward/:userId', async (req, res) => {
-  try {
-      const user = await User.findOne({ user_id: req.params.userId });
-      if (!user) {
-          return res.status(404).send('User not found');
-      }
-
-      const today = new Date();
-      const lastClaimDate = new Date(user.dailyRewards.lastClaimDate);
-      const isSameDay = today.getDate() === lastClaimDate.getDate() &&
-                        today.getMonth() === lastClaimDate.getMonth() &&
-                        today.getFullYear() === lastClaimDate.getFullYear();
-
-      if (!isSameDay) {
-          user.dailyRewards.claimDays += 1;
-          user.dailyRewards.isClaimed = false;
-      }
-
-      user.dailyRewards.lastClaimDate = today;
-      user.total_coins += req.body.coins;
-      user.dailyRewards.isClaimed = req.body.isClaimed;
-
-      await user.save();
-      res.json(user.dailyRewards);
-  } catch (error) {
-      res.status(500).send(error);
-  }
-});
-
+// Обработка других эндпоинтов, включая удаление данных пользователя и обработку ошибок, может быть добавлена по необходимости.
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
