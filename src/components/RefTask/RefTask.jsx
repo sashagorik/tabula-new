@@ -1,3 +1,4 @@
+import React from 'react';
 import "./RefTask.css"
 import inviteicon from "../../assets/Task/inviteIcon.svg"
 import coin from "../../assets/tonCoins.svg"

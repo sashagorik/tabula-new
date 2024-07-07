@@ -1,3 +1,4 @@
+import React from 'react';
 import "./Airdrop.css"
 import Treasure from "../../assets/treasure.png"
 

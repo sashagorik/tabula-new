@@ -1,3 +1,4 @@
+import React from 'react';
 import "./BoosterPop.css";
 import closeIcon from "../../assets/Task/closeIcon.svg";
 import coin from "../../assets/Task/coinTask.svg";

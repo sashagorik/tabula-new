@@ -1,3 +1,4 @@
+import React from 'react';
 import FreeRecharge from "../assets/Booster/freeRecharge.svg";
 import Turbo from "../assets/Booster/turbo.svg";
 import MultiTap from "../assets/Booster/multiTap.svg";

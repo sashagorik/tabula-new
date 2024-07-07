@@ -1,3 +1,4 @@
+import React from 'react';
 import announce from "../assets/Colony/announce.png"
 import comment from "../assets/Colony/comment.png"
 import dailyReward from "../assets/Colony/dailReward.png"

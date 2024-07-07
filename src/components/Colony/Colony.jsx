@@ -1,3 +1,4 @@
+import React from 'react';
 import ColonySocialData from "../../Data/Colony"
 import coin from "../../assets/tonCoins.svg"
 import "./Colony.css"

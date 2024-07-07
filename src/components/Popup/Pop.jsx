@@ -1,3 +1,4 @@
+import React from 'react';
 import coin from "../../assets/Task/coinTask.svg"
 import closeIcon from "../../assets/Task/closeIcon.svg"
 import "./Popup.css"

@@ -1,3 +1,4 @@
+import React from 'react';
 import backLogo from "../../assets/Rank/rankHeadBg.png"
 import "./RankHeader.css"
 import Reloader from "../../assets/Rank/reload.png"

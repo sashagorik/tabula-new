@@ -1,3 +1,4 @@
+import React from 'react';
 import "./Drop.css"
 import goldDiv from "../../assets/Earn/GoldVerify.svg"
 const Drop = () => {

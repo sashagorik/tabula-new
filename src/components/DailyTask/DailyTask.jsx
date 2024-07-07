@@ -1,3 +1,4 @@
+import React from 'react';
 import "./DailyTask.css";
 import closeIcon from "../../assets/Task/closeIcon.svg";
 import coin from "../../assets/tonCoins.svg";

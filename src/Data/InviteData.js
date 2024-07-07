@@ -1,3 +1,4 @@
+import React from 'react';
 import { useContext, useEffect, useState } from "react"
 import { getClaimUserData, getReferralUserData } from "../services/apis"
 import { UserInfo } from "../ContextApi/UserData"
