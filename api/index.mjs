@@ -2,7 +2,7 @@ import express from 'express';
 import { MongoClient } from 'mongodb';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import helmet from 'helmet'; // Для управления заголовками безопасности, включая CSP
+import helmet from 'helmet';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -11,8 +11,7 @@ const app = express();
 app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "'unsafe-eval'"], // Разрешаем использование unsafe-eval, если необходимо
-    // Другие директивы, включая styleSrc, imgSrc, fontSrc, и т.д.
+    scriptSrc: ["'self'", "'unsafe-eval'"],
   }
 }));
 
@@ -23,7 +22,6 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-  // Пропускать опции предзапросы
   if (req.method === 'OPTIONS') {
     res.sendStatus(200);
   } else {
@@ -36,7 +34,6 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 
-// Подключение к базе данных MongoDB
 const uri = "mongodb+srv://sashagorik1982:bk8a2KDylgrENyI5@cluster0.6ire3pk.mongodb.net/your-database-name?retryWrites=true&w=majority";
 let db;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -53,7 +50,17 @@ async function connectToMongoDB() {
 
 connectToMongoDB();
 
-// Эндпоинт для получения данных пользователя
+// Middleware для проверки подключения к базе данных
+function checkDbConnection(req, res, next) {
+  if (!db) {
+    return res.status(500).json({ error: 'Database connection not established' });
+  }
+  next();
+}
+
+// Используем промежуточное ПО перед всеми запросами, требующими подключения к базе данных
+app.use(checkDbConnection);
+
 app.get('/api/v1/userDetails', async (req, res) => {
   const { user_id } = req.query;
   if (!user_id) {
@@ -82,7 +89,6 @@ app.get('/api/v1/userDetails', async (req, res) => {
   }
 });
 
-// Эндпоинт для сохранения данных пользователя
 app.post('/api/v1/userDetails', async (req, res) => {
   const userData = req.body;
 
@@ -91,10 +97,7 @@ app.post('/api/v1/userDetails', async (req, res) => {
     let user = await collection.findOne({ user_id: userData.user_id });
 
     if (!user) {
-      // Если пользователь не найден, создаем нового
       await collection.insertOne(userData);
-
-      // После создания пользователя также создаем запись о бустерах
       await db.collection('boosters').insertOne({
         user_id: userData.user_id,
         multiTap: 0,
@@ -105,7 +108,6 @@ app.post('/api/v1/userDetails', async (req, res) => {
         turbo: 3
       });
     } else {
-      // Обновляем данные пользователя, если он уже существует
       await collection.updateOne({ user_id: userData.user_id }, { $set: userData });
     }
 
@@ -116,7 +118,6 @@ app.post('/api/v1/userDetails', async (req, res) => {
   }
 });
 
-// Эндпоинт для обновления количества монет totalcoins
 app.post('/api/v1/updateCoins', async (req, res) => {
   const { user_id, coins } = req.body;
 
@@ -139,7 +140,6 @@ app.post('/api/v1/updateCoins', async (req, res) => {
   }
 });
 
-// Эндпоинт для получения данных о бустерах
 app.get('/api/v1/boosterDetails', async (req, res) => {
   const { user_id } = req.query;
   if (!user_id) {
@@ -161,7 +161,6 @@ app.get('/api/v1/boosterDetails', async (req, res) => {
   }
 });
 
-// Эндпоинт для обновления данных о бустерах
 app.post('/api/v1/updateBooster', async (req, res) => {
   const { user_id, boosterData } = req.body;
 
@@ -184,7 +183,6 @@ app.post('/api/v1/updateBooster', async (req, res) => {
   }
 });
 
-// Эндпоинт для апгрейда бустера
 app.post('/api/v1/upgradeBooster', async (req, res) => {
   const { user_id, boosterType } = req.body;
 
@@ -223,7 +221,7 @@ app.post('/api/v1/upgradeBooster', async (req, res) => {
     booster[boosterType] += 1;
 
     if (boosterType === 'fireLimit') {
-      user.total_taps += 100; // Добавляем 100 очков за каждый уровень fireLimit
+      user.total_taps += 100;
     }
 
     await usersCollection.updateOne({ user_id }, { $set: user });
@@ -236,7 +234,6 @@ app.post('/api/v1/upgradeBooster', async (req, res) => {
   }
 });
 
-// Эндпоинт для ежедневного вознаграждения
 app.post('/api/v1/dailyReward', async (req, res) => {
   const { user_id } = req.body;
 
@@ -248,7 +245,6 @@ app.post('/api/v1/dailyReward', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Логика для ежедневного вознаграждения, например, увеличение монет на 100
     const reward = 100;
     user.total_coins += reward;
 
