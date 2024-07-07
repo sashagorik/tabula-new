@@ -1,3 +1,2 @@
-//export const baseUrl = "https://awake-narwhal-severely.ngrok-free.app"
-export const baseUrl = "http://localhost:3001"
-export const frontUrl = "http://localhost:5173"
+export const baseUrl = "https://tabula-new-1y88.vercel.app";
+export const frontUrl = "https://tabula-new-1y88-git-main-alessandros-projects-f7ed6286.vercel.app";
