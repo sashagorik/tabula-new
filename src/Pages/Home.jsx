@@ -1,4 +1,3 @@
-import React from 'react';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CoinInfo from "../components/CoinInfo/CoinInfo";
@@ -44,7 +43,7 @@ const Home = () => {
 
   const saveUserData = async (userData) => {
     try {
-      const response = await axios.post(${baseUrl}/api/v1/userDetails, userData);
+      const response = await axios.post(`${baseUrl}/api/v1/userDetails`, userData);
       console.log('User data saved:', response.data);
       localStorage.setItem('user_id', userData.user_id);
       localStorage.setItem('name', userData.name);
@@ -56,7 +55,7 @@ const Home = () => {
 
   const fetchUserData = async (userId) => {
     try {
-      const response = await axios.get(${baseUrl}/api/v1/userDetails?user_id=${userId});
+      const response = await axios.get(`${baseUrl}/api/v1/userDetails?user_id=${userId}`);
       if (response.data.success) {
         return response.data.data;
       }
@@ -82,7 +81,6 @@ const Home = () => {
         total_coins: prevUserInfo.total_coins + coinsToAdd,
         used_taps: prevUserInfo.used_taps - 1,
       }));
-      saveUserData(userInfo); // Save user info after updating coins
     }
   };
 
@@ -129,7 +127,7 @@ const Home = () => {
       setUserInfo((prevUserInfo) => {
         if (prevUserInfo.used_taps < prevUserInfo.total_taps) {
           const updatedUsedTaps = prevUserInfo.used_taps + 1;
-          localStorage.setItem('used_taps', updatedUsedTaps);
+          localStorage.setItem('used_taps', updatedUsedTaps.toString());
           return {
             ...prevUserInfo,
             used_taps: updatedUsedTaps,
@@ -154,13 +152,13 @@ const Home = () => {
     <>
       <div className="coinDiv">
         <CoinInfo />
-        <div className="totalCoins">${userInfo.total_coins}</div>
+        <div className="totalCoins">{userInfo.total_coins}</div>
         <div className="orangeImg">
           {/* Placeholder for energy icon */}
           {/* <img src={OrangeImg} className="orgImg" /> */}
         </div>
         <div className="charAnim"
-          onClick={userInfo.used_taps > 0 ? handleClick : ""}
+          onClick={userInfo.used_taps > 0 ? handleClick : undefined}
           style={coinStyle}>
           <img
             src={coin}
@@ -168,6 +166,7 @@ const Home = () => {
             tabIndex="0"
             role="button"
             aria-pressed="false"
+            alt="Coin"
           />
         </div>
         {clicks.map((click, index) => (
@@ -175,12 +174,12 @@ const Home = () => {
             key={index}
             className="rs"
             style={{
-              left: ${click.left}px,
-              top: ${click.top - 120}px,
-              animation: fadeOut .9s forwards,
+              left: `${click.left}px`,
+              top: `${click.top - 120}px`,
+              animation: `fadeOut 0.9s forwards`,
             }}
           >
-            +{2} {/* Placeholder for tap coins */}
+            +{coinsToAdd} {/* Placeholder for tap coins */}
           </div>
         ))}
         <div className="progressBar">
@@ -189,9 +188,9 @@ const Home = () => {
               {userInfo.rank} {/* Placeholder for user rank */}
             </div>
             <div className="Progressicon mx-2">
-              <img src={progressIcon} width={15} />
+              <img src={progressIcon} width={15} alt="Progress Icon" />
               <div className="text-white">
-                <span className="points"> {userInfo.used_taps} </span> /{" "}
+                <span className="points">{userInfo.used_taps}</span> /{" "}
                 {userInfo.total_taps}
               </div>
             </div>
