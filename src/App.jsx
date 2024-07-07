@@ -12,6 +12,7 @@ import BoosterData from './ContextApi/BoosterData';
 import Loader from './components/Loader/Loader';
 import SocialContext from './ContextApi/SocialContext';
 import Rank from './Pages/Rank/Rank';
+import Home from './Pages/Home';
 
 
 
