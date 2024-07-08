@@ -166,7 +166,7 @@ app.post('/api/v1/updateCoins', async (req, res) => {
 });
 
 // Эндпоинт для получения данных о бустерах
-app.get('/api/v1/boosterDetails', async (req, res) => {
+app.post('/api/v1/boosterDetails', async (req, res) => {
   const { user_id } = req.query;
   if (!user_id) {
     return res.status(400).json({ error: 'Missing user_id parameter' });
@@ -188,6 +188,10 @@ app.get('/api/v1/boosterDetails', async (req, res) => {
 app.post('/api/v1/updateBooster', async (req, res) => {
   const { user_id, boosterData } = req.body;
 
+  if (!user_id || !boosterData) {
+    return res.status(400).json({ error: 'Missing user_id or boosterData parameter' });
+  }
+
   try {
     let booster = await Booster.findOne({ user_id });
     if (!booster) {
@@ -195,7 +199,7 @@ app.post('/api/v1/updateBooster', async (req, res) => {
     }
 
     // Обновляем данные о бустерах
-    booster = Object.assign(booster, boosterData);
+    Object.assign(booster, boosterData);
 
     await booster.save();
     res.json({ success: true, data: booster });
@@ -204,6 +208,7 @@ app.post('/api/v1/updateBooster', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 
 // Эндпоинт для апгрейда бустера

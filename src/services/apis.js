@@ -8,17 +8,12 @@ export const getUserData = async(data) =>{
   return await commonFunction("POST", `${baseUrl}/api/v1/userDetails`, { user_id: data });
 }
 
-export const getBooster = async (user_id) => {
-  try {
-    const response = await axios.get(`${baseUrl}/api/v1/boosterDetails`, {
-      params: { user_id }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching booster data:", error);
-    throw error; // Лучше выбрасывать ошибку для обработки в компонентах
-  }
-};
+
+// get paid booster details
+export const getBooster = async(data) =>{
+  return await commonFunction("POST",`${baseUrl}/api/v1/getBooster`,{ user_id: data })
+}
+
 
 export const getFreeBoosterApi = async (user_id) => {
   // Реализуем вызов API для получения данных бесплатных бустеров, если это отдельный эндпоинт
