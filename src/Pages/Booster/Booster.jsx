@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from "react";
 import "./Booster.css"
 import RightArrow from "../../assets/Booster/rightArrow.svg"
-import { useContext, useState } from "react"
 import { UserInfo } from "../../ContextApi/UserData"
 //import { freeBooster } from "../../Data/Booster"
 import BoosterPop from "../../components/BoosterPopup/BoosterPop"
