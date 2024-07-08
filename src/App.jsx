@@ -193,7 +193,7 @@ function App() {
             <BoosterData>
               <Routes>
                 <Route path='' element={<Layout />} >
-                  <Route path="/" element={<Home socket={isSocket} />} />
+                  <Route path="/" element={<Home userId={user_id} socket={isSocket} />} />
                    <Route path="/task" element={<Task />} />
                   <Route path="/boost" element={<Booster />} />
                   <Route path="/invite" element={<Invite />} />

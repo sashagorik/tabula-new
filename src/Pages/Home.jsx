@@ -7,36 +7,63 @@ import coin from "../assets/coin3.svg";
 
 import { baseUrl } from "../services/helper";
 
-//axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
 
-const generateRandomUserId = () => {
-  return Math.floor(Math.random() * 10000000).toString();
-};
+//const generateRandomUserId = () => {
+ // return Math.floor(Math.random() * 10000000).toString();
+//};
 
-const generateRandomName = () => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  let result = '';
-  for (let i = 0; i < 6; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-};
+//const generateRandomName = () => {
+ // const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+//  let result = '';
+ // for (let i = 0; i < 6; i++) {
+ //   result += characters.charAt(Math.floor(Math.random() * characters.length));
+ // }
+ // return result;
+//};
 
-const Home = () => {
-  const [userInfo, setUserInfo] = useState(() => {
-    const storedUserId = localStorage.getItem('user_id');
-    const storedName = localStorage.getItem('name');
-    const storedUsedTaps = parseInt(localStorage.getItem('used_taps'), 10) || 100;
-    const storedTotalCoins = parseInt(localStorage.getItem('total_coins'), 10) || 0;
-
-    return {
-      user_id: storedUserId || generateRandomUserId(),
-      name: storedName || generateRandomName(),
-      total_coins: storedTotalCoins,
-      used_taps: storedUsedTaps,
-      total_taps: 100,
-    };
+const Home = ({ userId }) => {
+  const [userInfo, setUserInfo] = useState({
+    user_id: '',
+    name: '',
+    total_coins: 0,
+    used_taps: 100,
+    total_taps: 100,
   });
+
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/api/v1/userDetails?user_id=${userId}`);
+        if (response.data.success) {
+          const userData = response.data.data;
+          if (!userData) {
+            // Если пользователь не найден, создаем нового
+            const newUser = {
+              user_id: userId,
+             
+            };
+            const createResponse = await axios.post(`${baseUrl}/api/v1/userDetails`, newUser);
+            if (createResponse.data.success) {
+              setUserInfo(createResponse.data.data);
+            } else {
+              console.error('Failed to create new user:', createResponse.data.error);
+            }
+          } else {
+            setUserInfo(userData);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+  
+    fetchUserData();
+  }, [userId]);
+  
+
+
 
   const [coinStyle, setCoinStyle] = useState({});
   const [clicks, setClicks] = useState([]);
@@ -53,21 +80,11 @@ const Home = () => {
     }
   };
 
-  const fetchUserData = async (userId) => {
-    try {
-      const response = await axios.get(`${baseUrl}/api/v1/userDetails?user_id=${userId}`);
-      if (response.data.success) {
-        return response.data.data;
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-    return null;
-  };
+  
 
   const handleClick = () => {
     if (userInfo.used_taps > 0) {
-      const coinsToAdd = 2; // Placeholder for your logic
+      const coinsToAdd = userInfo.no_of_taps; // Placeholder for your logic
       setClicks((prevClicks) => [
         ...prevClicks,
         {
@@ -179,7 +196,7 @@ const Home = () => {
               animation: `fadeOut 0.9s forwards`,
             }}
           >
-            +{coinsToAdd} {/* Placeholder for tap coins */}
+            + `${userInfo.no_of_taps}` {/* Placeholder for tap coins */}
           </div>
         ))}
         <div className="progressBar">

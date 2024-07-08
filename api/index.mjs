@@ -74,8 +74,15 @@ app.get('/api/v1/userDetails', async (req, res) => {
     const userData = {
       user_id: user.user_id,
       name: user.name,
+      rank: user.rank,
+      no_of_taps: user.no_of_taps,
       total_coins: user.total_coins,
-      total_taps: user.total_taps
+      tap_coins: user.tap_coins,
+      total_taps: user.total_taps,
+      flash_speed: user.flash_speed,
+      recharge: user.recharge,
+      turbo: user.turbo,
+      allCoins: user.allCoins
       // ton_coins: user.ton_coins,
       // Добавьте другие свойства пользователя по необходимости
     };
@@ -97,19 +104,26 @@ app.post('/api/v1/userDetails', async (req, res) => {
     if (!user) {
       // Если пользователь не найден, создаем нового
       user = new User({
-        user_id: userData.user_id,
-        name: userData.name,
-        total_coins: userData.total_coins,
-        total_taps: userData.total_taps
+      user_id: user.user_id,
+      name: user.username,
+      rank: 1,
+      no_of_taps: 1,
+      total_coins: 0,
+      tap_coins: 0,
+      total_taps: 100,
+      flash_speed: 1,
+      recharge: 1,
+      turbo: 1,
+      allCoins: 0
       });
       await user.save();
 
       // После создания пользователя также создаем запись о бустерах
       const booster = new Booster({
         user_id: userData.user_id,
-        multiTap: 0,
-        fireLimit: 0,
-        flashSpeed: 0,
+        multiTap: 1,
+        fireLimit: 1,
+        flashSpeed: 1,
         hireAnt: false,
         recharge: 3, // Пример начального значения для recharge
         turbo: 3 // Пример начального значения для turbo
