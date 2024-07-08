@@ -9,16 +9,16 @@ import CoinInfo from "../components/CoinInfo/CoinInfo";
 import OrangeImg from "../assets/orange.svg"
 import { UserInfo } from "../ContextApi/UserData";
 // import char from "../assets/Char/newbies.svg"
-import newbiewsAnim from "../assets/Char/newbiesAnim.png"
-import cadetAnim from "../assets/Char/cadetAnim.png"
-import captainAnim from "../assets/Char/captainAnim.png"
-import colonelAnim from "../assets/Char/colonelAnim.png"
-import generalAnim from "../assets/Char/generalAnim.png"
-import lieutenantAnim from "../assets/Char/lieutenantAnim.png"
-import majorAnim from "../assets/Char/majorAnim.png"
-import officerAnim from "../assets/Char/officerAnim.png"
+//import newbiewsAnim from "../assets/Char/newbiesAnim.png"
+//import cadetAnim from "../assets/Char/cadetAnim.png"
+//import captainAnim from "../assets/Char/captainAnim.png"
+//import colonelAnim from "../assets/Char/colonelAnim.png"
+//import generalAnim from "../assets/Char/generalAnim.png"
+//import lieutenantAnim from "../assets/Char/lieutenantAnim.png"
+//import majorAnim from "../assets/Char/majorAnim.png"
+////import officerAnim from "../assets/Char/officerAnim.png"
 import queenAnim from "../assets/Char/queenAnim.png"
-import brigadierAnim from "../assets/Char/brigadierAnim.png"
+//import brigadierAnim from "../assets/Char/brigadierAnim.png"
 import progressIcon from "../assets/progressIcon.svg";
 import { baseUrl } from "../services/helper";
 
@@ -95,54 +95,54 @@ const Home = ({ socket }) => {
 
     // // for turbo functioanlity
 
-     setTimeout(() => {
-       console.log(getFreeBoost)
-       if (getFreeBoost.data.turbo) {
+     //setTimeout(() => {
+     // console.log(getFreeBoost)
+      // if (getFreeBoost.data.turbo) {
          // console.log("yess")
-         if ((3 - (getFreeBoost.data.turbo)) !== 0) {
-           let totalTap = ((3 - getFreeBoost.data.turbo) * 5 * booster.data.multiTap)
-           setUserInfo({ ...userInfo, tap_coins: totalTap })
+      //   if ((3 - (getFreeBoost.data.turbo)) !== 0) {
+      //    let totalTap = ((3 - getFreeBoost.data.turbo) * 5 * booster.data.multiTap)
+       //    setUserInfo({ ...userInfo, tap_coins: totalTap })
            // console.log(totalTap);
          }
-       }
-     }, 1000)
+     //  }
+   //  }, 1000)
 
 
-  };
+ // };
 
 
   // turbo functioanlities
-  const getTurboData = async () => {
-
+  //const getTurboData = async () => {
+//
 
     // console.log(userInfo.isTurbo)
 
-    try {
-      if (userInfo.isTurbo) {
-        const booster = await getBooster(userInfo.user_id);
-        const getFreeBoost = await getFreeBoosterApi(userInfo.user_id);
+  //  try {
+   //   if (userInfo.isTurbo) {
+    //    const booster = await getBooster(userInfo.user_id);
+    //    const getFreeBoost = await getFreeBoosterApi(userInfo.user_id);
 
-        if (getFreeBoost.data && (3 - getFreeBoost.data.turbo) !== 0) {
-          let totalTap = (3 - getFreeBoost.data.turbo) * 5 * booster.data.multiTap;
-          setUserInfo(prevUserInfo => ({ ...prevUserInfo, tap_coins: totalTap }));
+    //    if (getFreeBoost.data && (3 - getFreeBoost.data.turbo) !== 0) {
+     //     let totalTap = (3 - getFreeBoost.data.turbo) * 5 * booster.data.multiTap;
+     //     setUserInfo(prevUserInfo => ({ ...prevUserInfo, tap_coins: totalTap }));
           // console.log(totalTap);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching booster data:", error);
-    }
+     //   }
+    //  }
+   // } catch (error) {
+   //  console.error("Error fetching booster data:", error);
+  //  }
 
 
 
 
-  };
+  //};
 
   // for turbo funtioanlities
-  useEffect(() => {
-    setTimeout(() => {
-      getTurboData();
-    }, 500)
-  }, [userInfo.user_id, userInfo.isTurbo]);
+  //useEffect(() => {
+   // setTimeout(() => {
+   //   getTurboData();
+  //  }, 500)
+ // }, [userInfo.user_id, userInfo.isTurbo]);
 
 
   // console.log(userInfo)
@@ -201,8 +201,8 @@ const Home = ({ socket }) => {
   // handling when clicking
   const handleClick = async (e) => {
     //updating coins in db using Socket.io
-    console.log("IIIIDDDDD",userInfo.user_id)
-    socket.emit("message", `${userInfo.user_id}, ${userInfo.tap_coins}`);
+   // console.log("IIIIDDDDD",userInfo.user_id)
+    //socket.emit("message", `${userInfo.user_id}, ${userInfo.tap_coins}`);
 
 
      const newTotalCoins = userInfo.total_coins + userInfo.tap_coins;
@@ -325,49 +325,49 @@ const Home = ({ socket }) => {
     // const filename = parts.slice(0, -1).join('.'); // Join all parts except the last one (extension)
     // const extension = parts[parts.length - 1]; // Get the extension
 
-    if (isAnimating) {
+    //if (isAnimating) {
 
       // alert(userInfo.rank)
 
-      if (userInfo.rank === "Newbies") {
-        return newbiewsAnim
+      //if (userInfo.rank === "Newbies") {
+      //  return newbiewsAnim
       }
-      else if (userInfo.rank === "Officer") {
-        return officerAnim
-      }
-      else if (userInfo.rank === "Cadet") {
-        return cadetAnim
-      }
-      else if (userInfo.rank === "Lieutenant") {
-        return lieutenantAnim
-      }
-      else if (userInfo.rank === "Captain") {
-        return captainAnim
-      }
-      else if (userInfo.rank === "Major") {
-        return majorAnim
-      }
-      else if (userInfo.rank === "Colonel") {
-        return colonelAnim
-      }
-      else if (userInfo.rank === "Brigadier") {
-        return brigadierAnim
-      }
-      else if (userInfo.rank === "General") {
-        return generalAnim
-      }
-      else if (userInfo.rank === "Queen") {
-        return queenAnim
-      }
+     // else if (userInfo.rank === "Officer") {
+     //   return officerAnim
+     // }
+     // else if (userInfo.rank === "Cadet") {
+     //   return cadetAnim
+     // }
+     // else if (userInfo.rank === "Lieutenant") {
+      //  return lieutenantAnim
+     // }
+     // else if (userInfo.rank === "Captain") {
+      //  return captainAnim
+     // }
+     // else if (userInfo.rank === "Major") {
+     //   return majorAnim
+     // }
+     // else if (userInfo.rank === "Colonel") {
+     //   return colonelAnim
+     // }
+     // else if (userInfo.rank === "Brigadier") {
+    //   return brigadierAnim
+   //  }
+   //   else if (userInfo.rank === "General") {
+    //    return generalAnim
+    //  }
+    //  else if (userInfo.rank === "Queen") {
+     //   return queenAnim
+    //  }
 
 
 
-    } else {
+   // } else {
       // Return the normal image path
       // alert(userInfo.avatar)
-      return userInfo.avatar;
-    }
-  };
+  //    return userInfo.avatar;
+  // }
+ // };
 
 
 
