@@ -9,9 +9,15 @@ export const getUserData = async(data) =>{
 }
 
 export const getBooster = async (user_id) => {
-  const response = await fetch(`${baseUrl}/boosterDetails?user_id=${user_id}`);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await axios.get(`${baseUrl}/api/v1/boosterDetails`, {
+      params: { user_id }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching booster data:", error);
+    throw error; // Лучше выбрасывать ошибку для обработки в компонентах
+  }
 };
 
 export const getFreeBoosterApi = async (user_id) => {
