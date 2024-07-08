@@ -119,9 +119,11 @@ function App() {
       }
     } else {
       // Generate temporary user ID if not found
-      let nextUserId = localStorage.getItem("next_temp_user_id") || 1;
-      userId = `temp_${nextUserId}`;
-      localStorage.setItem("next_temp_user_id", ++nextUserId);
+      const getRandomUserId = () => {
+        return Math.floor(Math.random() * 9999) + 1;
+      };
+      let userId = `${getRandomUserId()}`;
+      localStorage.setItem(userId);
     }
   
     if (userId) {

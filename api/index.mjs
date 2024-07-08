@@ -104,8 +104,8 @@ app.post('/api/v1/userDetails', async (req, res) => {
     if (!user) {
       // Если пользователь не найден, создаем нового
       user = new User({
-      user_id: user.user_id,
-      name: user.username,
+      user_id: userData.user_id,
+      name: userData.username,
       rank: 1,
       no_of_taps: 1,
       total_coins: 0,
