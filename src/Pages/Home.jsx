@@ -7,20 +7,6 @@ import coin from "../assets/coin3.svg";
 
 import { baseUrl } from "../services/helper";
 
-
-//const generateRandomUserId = () => {
- // return Math.floor(Math.random() * 10000000).toString();
-//};
-
-//const generateRandomName = () => {
- // const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-//  let result = '';
- // for (let i = 0; i < 6; i++) {
- //   result += characters.charAt(Math.floor(Math.random() * characters.length));
- // }
- // return result;
-//};
-
 const Home = ({ userId }) => {
   const [userInfo, setUserInfo] = useState({
     user_id: '',
@@ -30,40 +16,46 @@ const Home = ({ userId }) => {
     total_taps: 100,
   });
 
-
-
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserData = async (userId) => {
       try {
         const response = await axios.get(`${baseUrl}/api/v1/userDetails?user_id=${userId}`);
         if (response.data.success) {
           const userData = response.data.data;
           if (!userData) {
-            // Если пользователь не найден, создаем нового
-            const newUser = {
-              user_id: userId,
-             
-            };
+            const newUser = { user_id: userId };
             const createResponse = await axios.post(`${baseUrl}/api/v1/userDetails`, newUser);
             if (createResponse.data.success) {
-              setUserInfo(createResponse.data.data);
+              return createResponse.data.data;
             } else {
               console.error('Failed to create new user:', createResponse.data.error);
+              return null;
             }
           } else {
-            setUserInfo(userData);
+            return userData;
           }
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
+        return null;
       }
     };
-  
-    fetchUserData();
+
+    const initializeUser = async () => {
+      const storedUserId = localStorage.getItem('user_id');
+      const currentUserId = storedUserId || userId;
+
+      const userData = await fetchUserData(currentUserId);
+      if (userData) {
+        setUserInfo(userData);
+        if (!storedUserId) {
+          localStorage.setItem('user_id', currentUserId);
+        }
+      }
+    };
+
+    initializeUser();
   }, [userId]);
-  
-
-
 
   const [coinStyle, setCoinStyle] = useState({});
   const [clicks, setClicks] = useState([]);
@@ -80,11 +72,9 @@ const Home = ({ userId }) => {
     }
   };
 
-  
-
   const handleClick = () => {
     if (userInfo.used_taps > 0) {
-      const coinsToAdd = userInfo.no_of_taps; // Placeholder for your logic
+      const coinsToAdd = userInfo.no_of_taps || 1; // Используем значение по умолчанию, если no_of_taps не определен
       setClicks((prevClicks) => [
         ...prevClicks,
         {
@@ -100,44 +90,6 @@ const Home = ({ userId }) => {
       }));
     }
   };
-
-  useEffect(() => {
-    const initializeUser = async () => {
-      const storedUserId = localStorage.getItem('user_id');
-      if (storedUserId) {
-        const userData = await fetchUserData(storedUserId);
-        if (userData) {
-          setUserInfo({
-            user_id: storedUserId,
-            name: userData.name,
-            total_coins: userData.total_coins,
-            total_taps: userData.total_taps,
-            used_taps: userData.used_taps || 100,
-          });
-        } else {
-          const newUserInfo = {
-            user_id: storedUserId,
-            name: userInfo.name,
-            total_coins: userInfo.total_coins,
-            total_taps: userInfo.total_taps,
-          };
-          const createdUserData = await saveUserData(newUserInfo);
-          setUserInfo(createdUserData);
-        }
-      } else {
-        const newUserInfo = {
-          user_id: userInfo.user_id,
-          name: userInfo.name,
-          total_coins: userInfo.total_coins,
-          total_taps: userInfo.total_taps,
-        };
-        const createdUserData = await saveUserData(newUserInfo);
-        setUserInfo(createdUserData);
-      }
-    };
-
-    initializeUser();
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -196,7 +148,7 @@ const Home = ({ userId }) => {
               animation: `fadeOut 0.9s forwards`,
             }}
           >
-            + `${userInfo.no_of_taps}` {/* Placeholder for tap coins */}
+            +{userInfo.no_of_taps || 1} {/* Используем значение по умолчанию, если no_of_taps не определен */}
           </div>
         ))}
         <div className="progressBar">
