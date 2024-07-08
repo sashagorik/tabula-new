@@ -1,9 +1,11 @@
 import axios from 'axios';
-
+import { commonFunction } from './apiCall';
 import { baseUrl } from "../services/helper";
 
-// Устанавливаем общий заголовок для всех запросов
-//axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
+// login api - commonFunction from apiCall.js
+export const getUserData = async(data) =>{
+  return await commonFunction("POST", `${baseUrl}/api/v1/userDetails`, { user_id: data });
+}
 
 export const getBooster = async (user_id) => {
   const response = await fetch(`${baseUrl}/boosterDetails?user_id=${user_id}`);
