@@ -166,7 +166,7 @@ app.post('/api/v1/updateCoins', async (req, res) => {
 });
 
 // Эндпоинт для получения данных о бустерах
-app.post('/api/v1/boosterDetails', async (req, res) => {
+app.post('/api/v1/getBooster', async (req, res) => {
   const { user_id } = req.query;
   if (!user_id) {
     return res.status(400).json({ error: 'Missing user_id parameter' });
