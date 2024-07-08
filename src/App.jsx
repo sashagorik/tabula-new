@@ -106,6 +106,8 @@ function App() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.hash.substring(1));
     const tgWebAppData = searchParams.get("tgWebAppData");
+    let userId = null;
+  
     if (tgWebAppData) {
       const userParam = new URLSearchParams(tgWebAppData).get("user");
       if (userParam) {
@@ -113,18 +115,21 @@ function App() {
         const decodedUserParam = decodeURIComponent(userParam);
         // Parse the JSON to extract the user ID
         const userObject = JSON.parse(decodedUserParam);
-        const userId = userObject.id;
-        setUser_id(userId);
-        localStorage.setItem("user_id", userId);
+        userId = userObject.id;
       }
     } else {
-      // when user came from another page so we need to maintain and save the id
-      const savedUserId = localStorage.getItem("user_id");
-      if (savedUserId) {
-        setUser_id(savedUserId);
-      }
+      // Generate temporary user ID if not found
+      let nextUserId = localStorage.getItem("next_temp_user_id") || 1;
+      userId = `temp_${nextUserId}`;
+      localStorage.setItem("next_temp_user_id", ++nextUserId);
+    }
+  
+    if (userId) {
+      setUser_id(userId);
+      localStorage.setItem("user_id", userId);
     }
   }, []);
+  
 
 
 
