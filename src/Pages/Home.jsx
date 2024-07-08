@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import coin from "../assets/coin3.svg";
 import { Tilt } from "react-tilt";
-import { getBooster, getFreeBoosterApi, getUserData } from "../services/apis";
+import { getBooster, getFreeBoosterApi, getUserData, updateCoins } from "../services/apis";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import pogressIcon from "../assets/progressIcon.svg";
 import CoinInfo from "../components/CoinInfo/CoinInfo";
@@ -189,12 +189,27 @@ const Home = ({ socket }) => {
      return () => clearInterval(intervalId);
    }, [userInfo]);
 
-  const handleTap = () => {
+   const handleTap = async () => {
     if (userInfo.used_taps > 0) {
+      // Уменьшаем количество использованных тапов и увеличиваем общее количество монет
       setUserInfo((prevTapsInfo) => ({
         ...prevTapsInfo,
         used_taps: prevTapsInfo.used_taps - 1,
+        total_coins: prevTapsInfo.total_coins + prevTapsInfo.tap_coins,
+        allCoins: prevTapsInfo.allCoins + prevTapsInfo.tap_coins,
       }));
+  
+      try {
+        // Отправляем запрос на обновление количества монет на сервер
+        const response = await updateCoins(userInfo.user_id, userInfo.tap_coins);
+  
+        // Проверяем успешность обновления и выводим данные, если нужно
+        console.log('Coins updated successfully:', response);
+  
+      } catch (err) {
+        console.error('Error updating coins:', err);
+        // Обработка ошибки обновления монет
+      }
     }
   };
 

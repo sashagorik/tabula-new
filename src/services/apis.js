@@ -22,8 +22,20 @@ export const getFreeBoosterApi = async (user_id) => {
   return data;
 };
 
-export const updateCoins = async (userId, boosterId) => {
-  // Логика для обновления бесплатных бустеров
+export const updateCoins = async (userId, totalCoins) => {
+  try {
+    const response = await axios.post(`${baseUrl}/api/v1/updateCoins`, {
+      user_id: userId,
+      coins: totalCoins,
+    });
+
+    // Возвращаем данные, если нужно обрабатывать ответ на другой стороне
+    return response.data;
+
+  } catch (error) {
+    console.error('Error updating coins:', error);
+    throw error; // Можно добавить дополнительную обработку ошибок здесь
+  }
 };
 
 export const updateBooster = async (user_id, boosterData) => {
