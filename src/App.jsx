@@ -123,7 +123,7 @@ function App() {
         return Math.floor(Math.random() * 9999) + 1;
       };
       let userId = `${getRandomUserId()}`;
-      localStorage.setItem(userId);
+      localStorage.setItem("user_id", userId);
     }
   
     if (userId) {
