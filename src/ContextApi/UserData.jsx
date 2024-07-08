@@ -22,7 +22,7 @@ const UserData = ({ children }) => {
     return savedUserInfo
       ? JSON.parse(savedUserInfo)
       : {
-          name: '',
+          name: 'name',
           user_id: '',
           no_of_taps: 0,
           total_coins: 0,
@@ -30,8 +30,8 @@ const UserData = ({ children }) => {
           ton_coins: 0,
           gold_coins: 0,
           tap_coins: 1,
-          used_taps: 500,
-          total_taps: 500,
+          used_taps: 100,
+          total_taps: 100,
           avatar: newbies,
           flash_speed: 1,
           Test: 0,
