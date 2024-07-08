@@ -19,6 +19,7 @@ import majorAnim from "../assets/Char/majorAnim.png"
 import officerAnim from "../assets/Char/officerAnim.png"
 import queenAnim from "../assets/Char/queenAnim.png"
 import brigadierAnim from "../assets/Char/brigadierAnim.png"
+import progressIcon from "../assets/progressIcon.svg";
 import { baseUrl } from "../services/helper";
 
 
@@ -455,7 +456,7 @@ const Home = ({ socket }) => {
               {userInfo.rank}
             </div>
             <div className="Progressicon mx-2">
-              <img src={porgressIcon} width={15} />
+              <img src={progressIcon} width={15} />
               <div className="text-white">
                 <span className="points"> {userInfo.used_taps} </span> /{" "}
                 {userInfo.total_taps}
