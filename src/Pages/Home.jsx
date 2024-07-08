@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import coin from "../assets/coin3.svg";
 import { Tilt } from "react-tilt";
