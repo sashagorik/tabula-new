@@ -147,10 +147,13 @@ app.post('/api/v1/userDetails', async (req, res) => {
 app.post('/api/v1/updateCoins', async (req, res) => {
   const { user_id, coins } = req.body;
 
+  console.log('Received request to update coins:', { user_id, coins }); // Добавьте вывод в консоль
+
   try {
     let user = await User.findOne({ user_id });
 
     if (!user) {
+      console.log('User not found:', user_id); // Добавьте вывод в консоль
       return res.status(404).json({ error: 'User not found' });
     }
 
@@ -158,6 +161,7 @@ app.post('/api/v1/updateCoins', async (req, res) => {
     user.total_coins += coins;
 
     await user.save();
+    console.log('Coins updated successfully for user:', user); // Добавьте вывод в консоль
     res.json({ success: true, data: user });
   } catch (err) {
     console.error('Error updating coins:', err); // Выводим ошибку в консоль
@@ -287,8 +291,8 @@ app.post('/api/v1/upgradeBooster', async (req, res) => {
 
 
 // Эндпоинт для получения уровня бустера пользователя
-app.get('/api/v1/boosterLevel', async (req, res) => {
-  const { user_id, booster } = req.query;
+app.post('/api/v1/boosterLevel', async (req, res) => {
+  const { user_id, booster } = req.body;
   if (!user_id || !booster) {
     return res.status(400).json({ error: 'Missing user_id or booster parameter' });
   }

@@ -1,22 +1,20 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import FreeRecharge from "../assets/Booster/freeRecharge.svg";
 import Turbo from "../assets/Booster/turbo.svg";
 import MultiTap from "../assets/Booster/multiTap.svg";
 import FireLimit from "../assets/Booster/fireLimit.svg";
 import FlashSpeed from "../assets/Booster/flashSpeed.svg";
 import HireAnt from "../assets/Booster/hireAnt.svg";
-import { useContext, useEffect, useState } from "react";
-import { getBooster, getFreeBoosterApi, updateBooster } from "../services/apis";
+import { getBooster, getFreeBoosterApi } from "../services/apis";
 import { UserInfo } from "../ContextApi/UserData";
 
 const BoosterData = () => {
-
   const { userInfo } = useContext(UserInfo);
 
   const [level, setLevel] = useState({
-    multiLevel: 0,
-    fireLimit: 0,
-    flashSpeed: 0,
+    multiLevel: 1,
+    fireLimit: 1,
+    flashSpeed: 1,
     Hireant: false
   });
 
@@ -26,23 +24,29 @@ const BoosterData = () => {
   });
 
   const getPaidBoosterData = async () => {
-    const resp = await getBooster(userInfo.user_id);
-    setLevel({
-      ...level,
-      multiLevel: resp.data.multiTap,
-      fireLimit: resp.data.fireLimit,
-      flashSpeed: resp.data.flashSpeed,
-      Hireant: resp.data.hireAnt
-    });
+    try {
+      const resp = await getBooster(userInfo.user_id);
+      setLevel({
+        multiLevel: resp.data.multiTap,
+        fireLimit: resp.data.fireLimit,
+        flashSpeed: resp.data.flashSpeed,
+        Hireant: resp.data.hireAnt
+      });
+    } catch (error) {
+      console.error('Error fetching paid booster data:', error);
+    }
   };
 
   const getFreeBoosterData = async () => {
-    const resp = await getFreeBoosterApi(userInfo.user_id);
-    setFreeLevel({
-      ...freeLevel,
-      Recharge: resp.data.recharge,
-      Turbo: resp.data.turbo
-    });
+    try {
+      const resp = await getFreeBoosterApi(userInfo.user_id);
+      setFreeLevel({
+        Recharge: resp.data.recharge,
+        Turbo: resp.data.turbo
+      });
+    } catch (error) {
+      console.error('Error fetching free booster data:', error);
+    }
   };
 
   useEffect(() => {
@@ -55,7 +59,7 @@ const BoosterData = () => {
       id: 1,
       name: "Free Recharge",
       icon: FreeRecharge,
-      available: true,
+      available: freeLevel.Recharge > 0,
       limit: freeLevel.Recharge,
       value: "Recharge",
       charges: 0,
@@ -66,7 +70,7 @@ const BoosterData = () => {
       id: 2,
       name: "Turbo",
       icon: Turbo,
-      available: true,
+      available: freeLevel.Turbo > 0,
       limit: freeLevel.Turbo,
       value: "Turbo",
       charges: 0,
@@ -102,7 +106,7 @@ const BoosterData = () => {
       icon: FlashSpeed,
       charges: (2 ** level.flashSpeed) * 200,
       level: `${level.flashSpeed} Level`,
-      value: "Flashspeed",
+      value: "flashSpeed",
       description: "Increase the amount of energy",
       power: "+100 energy points for level 1"
     },
@@ -112,7 +116,7 @@ const BoosterData = () => {
       icon: HireAnt,
       charges: 200000,
       level: `${level.Hireant ? "Activate" : "DeActivate"} Level`,
-      value: "Hireant",
+      value: "HireAnt",
       description: "Increase the amount of energy",
       power: "+100 energy points for level 1"
     }
