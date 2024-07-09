@@ -27,6 +27,7 @@ const BoosterData = () => {
     try {
       const resp = await getBooster(userInfo.user_id);
       setLevel({
+        ...level,
         multiLevel: resp.data.multiTap,
         fireLimit: resp.data.fireLimit,
         flashSpeed: resp.data.flashSpeed,
@@ -38,15 +39,12 @@ const BoosterData = () => {
   };
 
   const getFreeBoosterData = async () => {
-    try {
-      const resp = await getFreeBoosterApi(userInfo.user_id);
-      setFreeLevel({
-        Recharge: resp.data.recharge,
-        Turbo: resp.data.turbo
-      });
-    } catch (error) {
-      console.error('Error fetching free booster data:', error);
-    }
+    const resp = await getFreeBoosterApi(userInfo.user_id);
+    setFreeLevel({
+      ...freeLevel,
+      Recharge: resp.data.recharge,
+      Turbo: resp.data.turbo
+    });
   };
 
   useEffect(() => {
@@ -59,7 +57,7 @@ const BoosterData = () => {
       id: 1,
       name: "Free Recharge",
       icon: FreeRecharge,
-      available: freeLevel.Recharge > 0,
+      available: true,
       limit: freeLevel.Recharge,
       value: "Recharge",
       charges: 0,
@@ -70,7 +68,7 @@ const BoosterData = () => {
       id: 2,
       name: "Turbo",
       icon: Turbo,
-      available: freeLevel.Turbo > 0,
+      available: true,
       limit: freeLevel.Turbo,
       value: "Turbo",
       charges: 0,
@@ -106,7 +104,7 @@ const BoosterData = () => {
       icon: FlashSpeed,
       charges: (2 ** level.flashSpeed) * 200,
       level: `${level.flashSpeed} Level`,
-      value: "flashSpeed",
+      value: "FlashSpeed",
       description: "Increase the amount of energy",
       power: "+100 energy points for level 1"
     },

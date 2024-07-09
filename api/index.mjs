@@ -147,7 +147,7 @@ app.post('/api/v1/userDetails', async (req, res) => {
 app.post('/api/v1/updateCoins', async (req, res) => {
   const { user_id, coins } = req.body;
 
-  console.log('Received request to update coins:', { user_id, coins }); // Добавьте вывод в консоль
+ 
 
   try {
     let user = await User.findOne({ user_id });
@@ -315,59 +315,59 @@ app.post('/api/v1/boosterLevel', async (req, res) => {
 
 
 // Эндпоинт Обновление total_taps пользователя
-app.post('/api/v1/updateTotalTaps', async (req, res) => {
-  const { user_id, total_taps } = req.body;
-  try {
-    const updatedUser = await User.findOneAndUpdate({ user_id }, { total_taps }, { new: true });
-    res.json({ success: true, user: updatedUser });
-  } catch (error) {
-    console.error('Error updating total taps:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+//app.post('/api/v1/updateTotalCoins', async (req, res) => {
+ // const { user_id, total_coins } = req.body;
+ // try {
+ //   const updatedUser = await User.findOneAndUpdate({ user_id }, { total_coins }, { new: true });
+ //   res.json({ success: true, user: updatedUser });
+// } catch (error) {
+ //   console.error('Error updating total taps:', error);
+ //   res.status(500).json({ error: 'Internal server error' });
+ // }
+//});
 
 // Получение данных о ежедневных вознаграждениях
-app.get('/api/dailyRewardDetails/:userId', async (req, res) => {
-  try {
-      const user = await User.findOne({ user_id: req.params.userId });
-      if (!user) {
-          return res.status(404).send('User not found');
-      }
-      res.json(user.dailyRewards);
-  } catch (error) {
-      res.status(500).send(error);
-  }
+//app.get('/api/dailyRewardDetails/:userId', async (req, res) => {
+ // try {
+  //    const user = await User.findOne({ user_id: req.params.userId });
+  //    if (!user) {
+   //       return res.status(404).send('User not found');
+   //   }
+  //    res.json(user.dailyRewards);
+  //} catch (error) {
+  //    res.status(500).send(error);
+ //// }
 });
 
 // Обновление данных о ежедневных вознаграждениях
-app.post('/api/updateDailyReward/:userId', async (req, res) => {
-  try {
-      const user = await User.findOne({ user_id: req.params.userId });
-      if (!user) {
-          return res.status(404).send('User not found');
-      }
+//app.post('/api/updateDailyReward/:userId', async (req, res) => {
+ // try {
+  //    const user = await User.findOne({ user_id: req.params.userId });
+  //    if (!user) {
+  //        return res.status(404).send('User not found');
+ //    }
 
-      const today = new Date();
-      const lastClaimDate = new Date(user.dailyRewards.lastClaimDate);
-      const isSameDay = today.getDate() === lastClaimDate.getDate() &&
-                        today.getMonth() === lastClaimDate.getMonth() &&
-                        today.getFullYear() === lastClaimDate.getFullYear();
+ //     const today = new Date();
+ //     const lastClaimDate = new Date(user.dailyRewards.lastClaimDate);
+  //    const isSameDay = today.getDate() === lastClaimDate.getDate() &&
+ //                       today.getMonth() === lastClaimDate.getMonth() &&
+  ////                      today.getFullYear() === lastClaimDate.getFullYear();
 
-      if (!isSameDay) {
-          user.dailyRewards.claimDays += 1;
-          user.dailyRewards.isClaimed = false;
-      }
-
-      user.dailyRewards.lastClaimDate = today;
-      user.total_coins += req.body.coins;
-      user.dailyRewards.isClaimed = req.body.isClaimed;
-
-      await user.save();
-      res.json(user.dailyRewards);
-  } catch (error) {
-      res.status(500).send(error);
-  }
-});
+  //    if (!isSameDay) {
+  //        user.dailyRewards.claimDays += 1;
+  //        user.dailyRewards.isClaimed = false;
+  //    }
+//
+  //    user.dailyRewards.lastClaimDate = today;
+  //    user.total_coins += req.body.coins;
+   //   user.dailyRewards.isClaimed = req.body.isClaimed;
+//
+ //     await user.save();
+  //    res.json(user.dailyRewards);
+ // } catch (error) {
+ //     res.status(500).send(error);
+//  }
+//});
 
 
 app.listen(PORT, () => {
