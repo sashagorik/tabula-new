@@ -112,7 +112,7 @@ app.post('/api/v1/userDetails', async (req, res) => {
       tap_coins: 0,
       total_taps: 100,
       flash_speed: 1,
-      recharge: 1,
+      recharge: 3,
       turbo: 1,
       allCoins: 0
       });
