@@ -57,8 +57,8 @@ mongoose.connection.on('error', (err) => {
 });
 
 // Эндпоинт для получения данных пользователя
-app.get('/api/v1/userDetails', async (req, res) => {
-  const { user_id } = req.query;
+app.post('/api/v1/getUserDetails', async (req, res) => {
+  const { user_id } = req.body;
   if (!user_id) {
     return res.status(400).json({ error: 'Missing user_id parameter' });
   }
@@ -83,7 +83,7 @@ app.get('/api/v1/userDetails', async (req, res) => {
       recharge: user.recharge,
       turbo: user.turbo,
       allCoins: user.allCoins
-      // ton_coins: user.ton_coins,
+      //ton_coins: user.ton_coins,
       // Добавьте другие свойства пользователя по необходимости
     };
 

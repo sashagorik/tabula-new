@@ -12,22 +12,19 @@ const CoinInfo = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/v1/userDetails`, {
-                params: { user_id: userInfo.user_id },
-                headers: {
-                    //"ngrok-skip-browser-warning": "69420",
-                    // Другие заголовки, если необходимо
-                }
+            const response = await axios.post(`${baseUrl}/api/v1/getUserDetails`, {
+                user_id: userInfo.user_id
             });
             if (response.data.success) {
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
                     total_coins: response.data.data.total_coins,
                     ton_coins: response.data.data.ton_coins,
+                    // Добавьте другие свойства по необходимости
                 }));
             }
         } catch (error) {
-            console.error('Error fetching user data:', error);
+            console.error('Ошибка при получении данных пользователя:', error);
         }
     };
 

@@ -10,30 +10,30 @@ import { UserInfo } from "../ContextApi/UserData";
 
 
 
-// export const freeBooster = [
-//     {
-//         id: 1,
-//         name: "Free Recharge",
-//         icon: FreeRecharge,
-//         available: true,
-//         limit: 3,
-//         value: "Recharge",
-//         charges: 0,
-//         description: "Increase the amount of energy",
-//         power: "+100 energy points for level 1"
-//     },
-//     {
-//         id: 2,
-//         name: "Turbo",
-//         icon: Turbo,
-//         available: true,
-//         limit: 3,
-//         value: "Turbo",
-//         charges: 0,
-//         description: "Increase the amount of energy",
-//         power: "+100 energy points for level 1"
-//     }
-// ]
+ export const freeBooster = [
+     {
+         id: 1,
+         name: "Free Recharge",
+         icon: FreeRecharge,
+         available: true,
+         limit: 3,
+         value: "Recharge",
+         charges: 0,
+         description: "Increase the amount of energy",
+         power: "+100 energy points for level 1"
+     },
+     {
+         id: 2,
+         name: "Turbo",
+         icon: Turbo,
+        available: true,
+        limit: 3,
+        value: "Turbo",
+        charges: 0,
+        description: "Increase the amount of energy",
+        power: "+100 energy points for level 1"
+     }
+ ]
 
 const BoosterData = () => {
 

@@ -22,46 +22,52 @@ const UserData = ({ children }) => {
     return savedUserInfo
       ? JSON.parse(savedUserInfo)
       : {
-          name: 'name',
+
           user_id: '',
+          name: 'name',
+          rank: 'Newbies',
           no_of_taps: 0,
           total_coins: 0,
-          rank: 'Newbies',
+          tap_coins: 1,
+          total_taps: 100, 
+          flash_speed: 1,
+          recharge: 3,
+          turbo: 1,
+          allCoins: 0,
+
           ton_coins: 0,
           gold_coins: 0,
-          tap_coins: 1,
           used_taps: 100,
-          total_taps: 100,
           avatar: newbies,
-          flash_speed: 1,
           Test: 0,
-          recharge: 1,
-          turbo: 1,
           isTurbo: false,
-          allCoins: 0,
           hireAntCoins: 0,
         };
   });
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const storedUserId = localStorage.getItem('user_id');
-      if (storedUserId) {
-        try {
-          const response = await axios.get(`${baseUrl}/api/v1/userDetails?user_id=${storedUserId}`);
-          if (response.data.success) {
-            setUserInfo((prevState) => ({
-              ...prevState,
-              user_id: response.data.data.user_id,
-              name: response.data.data.name,
-              total_coins: response.data.data.total_coins,
-            }));
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
+        const storedUserId = localStorage.getItem('user_id');
+        if (storedUserId) {
+            try {
+                const response = await axios.post(`${baseUrl}/api/v1/getUserDetails`, {
+                    user_id: storedUserId
+                });
+                if (response.data.success) {
+                    setUserInfo((prevState) => ({
+                        ...prevState,
+                        user_id: response.data.data.user_id,
+                        name: response.data.data.name,
+                        total_coins: response.data.data.total_coins,
+                        // Добавьте другие свойства по необходимости
+                    }));
+                }
+            } catch (error) {
+                console.error('Ошибка при получении данных пользователя:', error);
+            }
         }
-      }
     };
+
 
     const interval = setInterval(fetchUserData, 10000); // Периодически обновляем данные каждые 10 секунд
 
