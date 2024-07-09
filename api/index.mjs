@@ -211,7 +211,7 @@ app.post('/api/v1/updateBooster', async (req, res) => {
 
 
 // Endpoint to get free booster data
-router.post('/api/v1/getFreeBoosterApi', async (req, res) => {
+app.post('/api/v1/getFreeBoosterApi', async (req, res) => {
   const { user_id } = req.body;
 
   try {
