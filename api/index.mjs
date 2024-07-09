@@ -210,6 +210,30 @@ app.post('/api/v1/updateBooster', async (req, res) => {
 });
 
 
+// Endpoint to get free booster data
+router.post('/api/v1/getFreeBoosterApi', async (req, res) => {
+  const { user_id } = req.body;
+
+  try {
+    // Находим запись бустеров для текущего пользователя
+    const boosterData = await Booster.findOne({ user_id });
+
+    if (!boosterData) {
+      return res.status(404).json({ error: 'Booster data not found for the user' });
+    }
+
+    // Отправляем данные recharge и turbo в ответе
+    res.json({
+      recharge: boosterData.recharge,
+      turbo: boosterData.turbo,
+    });
+  } catch (error) {
+    console.error('Error fetching free booster data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 // Эндпоинт для апгрейда бустера
 app.post('/api/v1/upgradeBooster', async (req, res) => {
