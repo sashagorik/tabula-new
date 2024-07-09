@@ -45,10 +45,10 @@ const BoosterData = () => {
     });
   };
 
-  useEffect(() => {
-    getPaidBoosterData();
-    getFreeBoosterData();
-  }, [userInfo]);
+  //useEffect(() => {
+  //  getPaidBoosterData();
+  //  getFreeBoosterData();
+  //}, [userInfo]);
 
   const freeBoosterData = [
     {
