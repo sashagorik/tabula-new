@@ -1,3 +1,4 @@
+import React, { useContext, useEffect, useState } from 'react';
 import "./Market.css"
 import tonBg from "../../assets/Earn/TonBg.svg"
 import tonScroll from "../../assets/Earn/tonScroll.svg"
