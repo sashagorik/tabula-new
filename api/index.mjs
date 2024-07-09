@@ -337,7 +337,7 @@ app.post('/api/v1/boosterLevel', async (req, res) => {
   //} catch (error) {
   //    res.status(500).send(error);
  //// }
-});
+//});
 
 // Обновление данных о ежедневных вознаграждениях
 //app.post('/api/updateDailyReward/:userId', async (req, res) => {

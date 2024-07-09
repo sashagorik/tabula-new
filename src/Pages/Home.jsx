@@ -88,8 +88,8 @@ const Home = ({ socket }) => {
       total_taps: (booster.data.firelimit * 500),
       used_taps: (booster.data.firelimit * 500),
       flash_speed: booster.data.flashSpeed,
-      recharge: (3 - getFreeBoost.data.recharge),
-      turbo: (3 - getFreeBoost.data.turbo),
+      recharge: (getFreeBoost.data.recharge),
+      turbo: (getFreeBoost.data.turbo),
       allCoins: resp.data.coin
     })
 
