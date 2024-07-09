@@ -72,7 +72,7 @@ const Booster = () => {
                   </div>
                   <div className="boosterHeading mx-3">
                     <p className="boosterName">{booster.name}</p>
-                    <p className="boosterAvail">{/* {booster.charges} |*/} {booster.level} </p>
+                    <p className="boosterAvail">{booster.charges} | {booster.level} </p>
                   </div>
                 </div>
                 <div className="boosterRightColArrow">

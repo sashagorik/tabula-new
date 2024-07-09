@@ -1,0 +1,38 @@
+.rankHeaderMainDiv{
+    color: white;
+    font-weight: 700;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    width: 90vw;
+    margin: 0 5vw;
+    top: 3%;
+}
+
+.headLeftCol{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.headLeftCol p{
+    margin-left: 5px;
+}
+
+
+.headRightCol{
+
+    background: #2C2D3D;
+    mix-blend-mode: color-dodge;
+    padding: 3% 4%;
+    border-radius: 15px;
+}
+
+.rankHeaderBack{
+    /* background: #2C2D3D;
+    mix-blend-mode: color-dodge;
+    padding: 10px; */
+    border-radius: 15px;
+}

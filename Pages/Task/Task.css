@@ -1,0 +1,138 @@
+.taskOptionDiv {
+  background: linear-gradient(180deg, #151B21 0%, #060606 100%);
+  box-shadow: 0px -3px 4px #E86F0C;
+  border-radius: 18px;
+  padding: 2%;
+  width: 90vw;
+  height: 7vh;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 5% auto;
+}
+
+.activeTaskOption {
+  background: url("../../assets/Earn/activeOption.svg");
+}
+
+
+.inActiveTaskOption {
+  background: url("../../assets/Earn/inactiveOption.svg");
+  opacity: .4;
+}
+
+.taskoptionDivMenu {
+  background-size: cover;
+  background-position: center;
+  width: 25vw;
+  height: 5vh;
+  border-radius: 10px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.TaskMainDiv {
+  color: white;
+  padding-bottom: 20%;
+  height: 100%;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+
+.taskBalance {
+  text-align: center;
+  padding: 2% 5%;
+}
+
+.yourbalance {
+  opacity: .4;
+}
+
+.taskCoin {
+  padding: 0;
+  margin: 0;
+  font-size: 6vh;
+  font-weight: 700;
+}
+
+
+.FreeTaskMainDiv {
+  color: white;
+}
+
+.Task {
+  padding: 2%;
+  margin: auto;
+  width: 95vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  background: #11111e;
+  border-radius: 16px;
+  align-items: center;
+}
+
+.TaskLeft {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.TaskHeading {
+  display: flex;
+  flex-flow: column;
+}
+
+.TaskHeading p {
+  padding: 0;
+  margin: 0;
+}
+
+.TaskRightColArrow img {
+  width: 40%;
+}
+
+.TaskName {
+  font-size: 2.2vh;
+}
+
+.TaskAvail {
+  font-size: 1.8vh;
+}
+
+.TaskCoin {
+  font-size: 2.5vh;
+  opacity: 1 !important;
+}

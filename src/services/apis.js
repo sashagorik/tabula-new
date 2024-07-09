@@ -36,9 +36,11 @@ export const getBooster = async(data) =>{
 }
 
 
-// Получение бесплатных бустеров
 export const getFreeBoosterApi = async (user_id) => {
- // return await commonFunction("POST", `${baseUrl}/api/v1/getFreeBoosterApi`, { user_id });
+  // Реализуем вызов API для получения данных бесплатных бустеров, если это отдельный эндпоинт
+  //const response = await fetch(`${baseUrl}/boosterDetails?user_id=${user_id}`);
+  //const data = await response.json();
+  //return data;
 };
 
 export const updateCoins = async (userId, totalCoins) => {

@@ -1,0 +1,91 @@
+/* .dailyTaskMainDiv {
+  position: fixed;
+  color: white;
+  width: 90vw;
+  height: auto;
+  padding: 2% 0;
+  z-index: 1;
+  text-align: center;
+  top: 22vh;
+  background: linear-gradient(180deg, #151b21 0%, #060606 100%);
+  border: 1px solid #e86f0c;
+  box-shadow: 0px -10px 10px 2px rgba(232, 111, 12, 0.5);
+  border-radius: 30px;
+} */
+
+/* .dailyTaskHeader {
+  text-align: center;
+  background: linear-gradient(271.88deg, #ff7e18 0%, #ffbc09 100%);
+  border: 1px solid #e86f0c;
+  border-radius: 30px;
+  padding: 5%;
+} */
+
+.dailyTaskcrossBtnDiv {
+  position: absolute;
+  right: 0;
+  padding: 5% 5%;
+}
+
+.dailyTaskMainDiv {
+  background: url("../../assets/Colony/dailyTaskBg.png");
+  position: fixed;
+  top: 13%;
+  width: 96vw;
+  /* height: 60vh; */
+  height: auto;
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+  margin: -1vw;
+}
+
+.dailyTaskHead {
+  margin-top: 25%;
+  text-align: center;
+  font-size: 80%;
+}
+
+.dailyListData {
+    width: 22%;
+    text-align: center;
+    border-radius: 10px;
+    padding: 2%;
+    height: auto;
+}
+
+.activeDaily{
+    background: linear-gradient(4.1deg, #096617 5.33%, #36d71c 94.67%);
+}
+
+.deactiveDaily{
+    background: linear-gradient(4.1deg, #424242 5.33%, #929292 94.67%);  
+}
+
+.dailylistimg{
+    margin-top: -30%;
+}
+
+.dailylistimg img{
+  width:80%;
+}
+
+.collectList{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    overflow: scroll;
+    height: 35vh;
+}
+
+.dailyTaskBtn .btn{
+    width: 90%;
+    background: linear-gradient(63.44deg, #53389e 16.72%, #7f56d9 83.39%);
+    box-shadow: inset 0px 0px 6px 2px rgba(169, 101, 255, 0.45),
+      inset 0px 11px 26px -3px rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    font-size: 3.5vh;
+    font-weight: 700 !important;
+    color: white !important;
+    margin: 2% 5%;
+}

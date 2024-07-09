@@ -147,13 +147,10 @@ app.post('/api/v1/userDetails', async (req, res) => {
 app.post('/api/v1/updateCoins', async (req, res) => {
   const { user_id, coins } = req.body;
 
- 
-
   try {
     let user = await User.findOne({ user_id });
 
     if (!user) {
-      console.log('User not found:', user_id); // Добавьте вывод в консоль
       return res.status(404).json({ error: 'User not found' });
     }
 
@@ -161,7 +158,6 @@ app.post('/api/v1/updateCoins', async (req, res) => {
     user.total_coins += coins;
 
     await user.save();
-    console.log('Coins updated successfully for user:', user); // Добавьте вывод в консоль
     res.json({ success: true, data: user });
   } catch (err) {
     console.error('Error updating coins:', err); // Выводим ошибку в консоль
@@ -291,8 +287,8 @@ app.post('/api/v1/upgradeBooster', async (req, res) => {
 
 
 // Эндпоинт для получения уровня бустера пользователя
-app.post('/api/v1/boosterLevel', async (req, res) => {
-  const { user_id, booster } = req.body;
+app.get('/api/v1/boosterLevel', async (req, res) => {
+  const { user_id, booster } = req.query;
   if (!user_id || !booster) {
     return res.status(400).json({ error: 'Missing user_id or booster parameter' });
   }
@@ -315,59 +311,59 @@ app.post('/api/v1/boosterLevel', async (req, res) => {
 
 
 // Эндпоинт Обновление total_taps пользователя
-//app.post('/api/v1/updateTotalCoins', async (req, res) => {
- // const { user_id, total_coins } = req.body;
- // try {
- //   const updatedUser = await User.findOneAndUpdate({ user_id }, { total_coins }, { new: true });
- //   res.json({ success: true, user: updatedUser });
-// } catch (error) {
- //   console.error('Error updating total taps:', error);
- //   res.status(500).json({ error: 'Internal server error' });
- // }
-//});
+app.post('/api/v1/updateTotalTaps', async (req, res) => {
+  const { user_id, total_taps } = req.body;
+  try {
+    const updatedUser = await User.findOneAndUpdate({ user_id }, { total_taps }, { new: true });
+    res.json({ success: true, user: updatedUser });
+  } catch (error) {
+    console.error('Error updating total taps:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 // Получение данных о ежедневных вознаграждениях
-//app.get('/api/dailyRewardDetails/:userId', async (req, res) => {
- // try {
-  //    const user = await User.findOne({ user_id: req.params.userId });
-  //    if (!user) {
-   //       return res.status(404).send('User not found');
-   //   }
-  //    res.json(user.dailyRewards);
-  //} catch (error) {
-  //    res.status(500).send(error);
- //// }
-//});
+app.get('/api/dailyRewardDetails/:userId', async (req, res) => {
+  try {
+      const user = await User.findOne({ user_id: req.params.userId });
+      if (!user) {
+          return res.status(404).send('User not found');
+      }
+      res.json(user.dailyRewards);
+  } catch (error) {
+      res.status(500).send(error);
+  }
+});
 
 // Обновление данных о ежедневных вознаграждениях
-//app.post('/api/updateDailyReward/:userId', async (req, res) => {
- // try {
-  //    const user = await User.findOne({ user_id: req.params.userId });
-  //    if (!user) {
-  //        return res.status(404).send('User not found');
- //    }
+app.post('/api/updateDailyReward/:userId', async (req, res) => {
+  try {
+      const user = await User.findOne({ user_id: req.params.userId });
+      if (!user) {
+          return res.status(404).send('User not found');
+      }
 
- //     const today = new Date();
- //     const lastClaimDate = new Date(user.dailyRewards.lastClaimDate);
-  //    const isSameDay = today.getDate() === lastClaimDate.getDate() &&
- //                       today.getMonth() === lastClaimDate.getMonth() &&
-  ////                      today.getFullYear() === lastClaimDate.getFullYear();
+      const today = new Date();
+      const lastClaimDate = new Date(user.dailyRewards.lastClaimDate);
+      const isSameDay = today.getDate() === lastClaimDate.getDate() &&
+                        today.getMonth() === lastClaimDate.getMonth() &&
+                        today.getFullYear() === lastClaimDate.getFullYear();
 
-  //    if (!isSameDay) {
-  //        user.dailyRewards.claimDays += 1;
-  //        user.dailyRewards.isClaimed = false;
-  //    }
-//
-  //    user.dailyRewards.lastClaimDate = today;
-  //    user.total_coins += req.body.coins;
-   //   user.dailyRewards.isClaimed = req.body.isClaimed;
-//
- //     await user.save();
-  //    res.json(user.dailyRewards);
- // } catch (error) {
- //     res.status(500).send(error);
-//  }
-//});
+      if (!isSameDay) {
+          user.dailyRewards.claimDays += 1;
+          user.dailyRewards.isClaimed = false;
+      }
+
+      user.dailyRewards.lastClaimDate = today;
+      user.total_coins += req.body.coins;
+      user.dailyRewards.isClaimed = req.body.isClaimed;
+
+      await user.save();
+      res.json(user.dailyRewards);
+  } catch (error) {
+      res.status(500).send(error);
+  }
+});
 
 
 app.listen(PORT, () => {
