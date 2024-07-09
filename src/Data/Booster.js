@@ -21,8 +21,8 @@ const BoosterData = () => {
   });
 
   const [freeLevel, setFreeLevel] = useState({
-    Recharge: 3,
-    Turbo: 3,
+    Recharge: "",
+    Turbo: "",
   });
 
   const getPaidBoosterData = async () => {

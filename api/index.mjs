@@ -112,7 +112,7 @@ app.post('/api/v1/userDetails', async (req, res) => {
       tap_coins: 0,
       total_taps: 100,
       flash_speed: 1,
-      recharge: 3,
+      recharge: 1,
       turbo: 1,
       allCoins: 0
       });
@@ -211,7 +211,7 @@ app.post('/api/v1/updateBooster', async (req, res) => {
 
 
 // Endpoint to get free booster data
-app.post('/api/v1/getFreeBoosterApi', async (req, res) => {
+router.post('/api/v1/getFreeBoosterApi', async (req, res) => {
   const { user_id } = req.body;
 
   try {
