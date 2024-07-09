@@ -25,16 +25,16 @@ const BoosterData = () => {
     Turbo: "",
   });
 
-  //const getPaidBoosterData = async () => {
-   // const resp = await getBooster(userInfo.user_id);
-   // setLevel({
-  //    ...level,
- //     multiLevel: resp.data.multiTap,
- //     fireLimit: resp.data.fireLimit,
-  //    flashSpeed: resp.data.flashSpeed,
-  //    Hireant: resp.data.hireAnt
-  //  });
- // };
+  const getPaidBoosterData = async () => {
+    const resp = await getBooster(userInfo.user_id);
+    setLevel({
+      ...level,
+      multiLevel: resp.data.multiTap,
+      fireLimit: resp.data.fireLimit,
+      flashSpeed: resp.data.flashSpeed,
+      Hireant: resp.data.hireAnt
+    });
+  };
 
   const getFreeBoosterData = async () => {
     const resp = await getFreeBoosterApi(userInfo.user_id);
@@ -45,10 +45,10 @@ const BoosterData = () => {
     });
   };
 
-  //useEffect(() => {
-  //  getPaidBoosterData();
-  //  getFreeBoosterData();
-  //}, [userInfo]);
+  useEffect(() => {
+    getPaidBoosterData();
+    getFreeBoosterData();
+  }, [userInfo]);
 
   const freeBoosterData = [
     {

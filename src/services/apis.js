@@ -9,6 +9,27 @@ export const getUserData = async(data) =>{
 }
 
 
+
+
+
+////покупка бустеров
+
+
+export const upgradeBooster = async (user_id, value, charges) => {
+  try {
+      const response = await axios.post(`${baseUrl}/api/v1/upgradeBooster`, {
+          user_id,
+          value,
+          charges
+      });
+      return response;
+  } catch (error) {
+      console.error('Error upgrading booster:', error);
+      return { status: 500, message: 'Internal Server Error' };
+  }
+};
+
+
 // get paid booster details
 export const getBooster = async(data) =>{
   return await commonFunction("POST",`${baseUrl}/api/v1/getBooster`,{ user_id: data })
@@ -50,12 +71,7 @@ export const updateBooster = async (user_id, boosterData) => {
   return data;
 };
 
-export const upgradeBooster = async (userId, boosterType) => {
-  return await axios.post(`${baseUrl}/api/v1/upgradeBooster`, {
-    user_id: userId,
-    boosterType
-  });
-};
+
 
 export const upgradeFreeBoosterApi = async (userId, boosterId) => {
   // Логика для обновления бесплатных бустеров
