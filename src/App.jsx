@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
-import './App.css';
-import { Routes, Route } from "react-router-dom";
-import Layout from './Layout/Layout';
+import './App.css'
+import Home from './Pages/Home'
+import { Routes, Route } from "react-router-dom"
+import Layout from './Layout/Layout'
 import Earn from './Pages/Earn/Earn';
 import Invite from './Pages/Invite/Invite';
 import Booster from './Pages/Booster/Booster';
 import Task from './Pages/Task/Task';
+
 import { baseUrl } from './services/helper';
+import { io } from 'socket.io-client'
+import { useContext, useEffect, useState } from 'react';
 import { UserInfo } from './ContextApi/UserData';
 import BoosterData from './ContextApi/BoosterData';
 import Loader from './components/Loader/Loader';
 import SocialContext from './ContextApi/SocialContext';
 import Rank from './Pages/Rank/Rank';
-import Home from './Pages/Home';
 
 
 
@@ -191,30 +194,30 @@ function App() {
   return (
     <>
 
-      {
-        loader ?
-          <Loader />
-          :
+    {
+      loader ?
+        <Loader />
+        :
 
-          <SocialContext>
-            <BoosterData>
-              <Routes>
-                <Route path='' element={<Layout />} >
-                  <Route path="/" element={<Home socket={isSocket} />} />
-                   <Route path="/task" element={<Task />} />
-                  <Route path="/booster" element={<Booster />} />
-                  <Route path="/invite" element={<Invite />} />
-                  <Route path="/earn" element={<Earn />} />
-      <Route path="/rank" element={<Rank />} />
-                </Route>
-              </Routes>
-            </BoosterData>
-          </SocialContext>
+        <SocialContext>
+          <BoosterData>
+            <Routes>
+              <Route path='' element={<Layout />} >
+                <Route path="/" element={<Home socket={isSocket} />} />
+                <Route path="/task" element={<Task />} />
+                <Route path="/boost" element={<Booster />} />
+                <Route path="/invite" element={<Invite />} />
+                <Route path="/earn" element={<Earn />} />
+                <Route path="/rank" element={<Rank />} />
+              </Route>
+            </Routes>
+          </BoosterData>
+        </SocialContext>
 
-      }
+    }
 
-    </>
-  )
+  </>
+)
 }
 
 export default App
