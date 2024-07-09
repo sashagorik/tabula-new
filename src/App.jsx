@@ -7,10 +7,8 @@ import Earn from './Pages/Earn/Earn';
 import Invite from './Pages/Invite/Invite';
 import Booster from './Pages/Booster/Booster';
 import Task from './Pages/Task/Task';
-
 import { baseUrl } from './services/helper';
 import { io } from 'socket.io-client'
-import { useContext, useEffect, useState } from 'react';
 import { UserInfo } from './ContextApi/UserData';
 import BoosterData from './ContextApi/BoosterData';
 import Loader from './components/Loader/Loader';
