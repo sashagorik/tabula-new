@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
-const BoosterSchema = new mongoose.Schema({
-  user_id: { type: String, required: true },
-  multiTap: { type: Number, default: 0 },
-  fireLimit: { type: Number, default: 0 },
-  flashSpeed: { type: Number, default: 0 },
+const boosterSchema = new mongoose.Schema({
+  user_id: { type: String, required: true, unique: true },
+  multiTap: { type: Number, default: 1 },
+  fireLimit: { type: Number, default: 1 },
+  flashSpeed: { type: Number, default: 1 },
   hireAnt: { type: Boolean, default: false },
-  recharge: { type: Number, default: 3 }, // example initial value
-  turbo: { type: Number, default: 3 } // example initial value
+  recharge: { type: Number, default: 3 },
+  turbo: { type: Number, default: 3 }
 });
 
 const Booster = mongoose.model('Booster', BoosterSchema);
