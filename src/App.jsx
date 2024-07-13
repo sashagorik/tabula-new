@@ -85,7 +85,7 @@ function App() {
 
         // Если пользователя нет, добавляем его
         if (!response.data.exists) {
-          await axios.post(`${baseUrl}/api/v1/addUser`, { user_id: userId });
+          await axios.post(`${baseUrl}/api/v1/createUser`, { user_id: userId });
         }
 
         // Получаем данные пользователя
