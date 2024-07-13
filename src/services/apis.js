@@ -8,7 +8,7 @@ import { baseUrl } from "../services/helper";
 export const checkUser = async (userId) => {
   console.log('Checking user existence:', userId);
   try {
-    const response = await commonFunction("POST", `${baseUrl}/api/v1/checkUser`, { user_id: userId });
+    const response = await commonFunction("GET", `${baseUrl}/api/v1/checkUser`, { params: { user_id: userId } });
     return response.data.exists;
   } catch (error) {
     console.error('Error checking user existence:', error);
@@ -34,14 +34,13 @@ export const createUser = async (userId) => {
 export const getUserDetails = async (userId) => {
   console.log('Getting user details:', userId);
   try {
-    const response = await commonFunction("POST", `${baseUrl}/api/v1/getUserDetails`, { user_id: userId });
+    const response = await commonFunction("GET", `${baseUrl}/api/v1/getUserDetails`, { params: { user_id: userId } });
     return response.data;
   } catch (error) {
     console.error('Error getting user details:', error);
     throw error;
   }
 };
-
 
 ////////////////////////////////////////////
 

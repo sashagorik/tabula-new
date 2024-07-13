@@ -55,9 +55,9 @@ mongoose.connection.on('error', (err) => {
 });
 
 // Эндпоинт для проверки наличия пользователя
-app.post('/api/v1/checkUser', async (req, res) => {
+app.get('/api/v1/checkUser', async (req, res) => {
   try {
-    const { user_id } = req.body;
+    const { user_id } = req.query;
     const existingUser = await User.findOne({ user_id });
     if (existingUser) {
       return res.status(200).json({ exists: true });
