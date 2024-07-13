@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import coin from "../assets/coin3.svg";
 import { Tilt } from "react-tilt";
-import { checkUser, createUser, getUserDetails, getBooster, getFreeBoosterApi, updateCoins } from "../services/apis";
+import { checkUser, createUser, getUserDetails, getBooster, getFreeBoosterApi, updateTotalCoins } from "../services/apis";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import pogressIcon from "../assets/progressIcon.svg";
 import CoinInfo from "../components/CoinInfo/CoinInfo";
@@ -223,7 +223,16 @@ const Home = ({ socket }) => {
      const newTotalCoins = userInfo.total_coins + userInfo.tap_coins;
      setUserInfo({...userInfo,total_coins:newTotalCoins})
 
+     
 
+     try {
+      // Отправляем обновленные данные в базу данных
+      await axios.post(`${baseUrl}/api/v1/updateTotalCoins`, { user_id: userInfo.user_id, total_coins: newTotalCoins });
+      console.log('Монеты успешно обновлены в базе данных.');
+    } catch (error) {
+      console.error('Ошибка при обновлении монет в базе данных:', error);
+      // Обработка ошибок
+    }
 
     // localStorage.setItem("user_coins", newTotalCoins);
 

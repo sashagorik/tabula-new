@@ -42,6 +42,22 @@ export const getUserDetails = async (userId) => {
   }
 };
 
+
+
+
+
+// Функция для обновления накликанных монет пользователя
+export const updateTotalCoins = async (userId, tapCoins) => {
+  try {
+    const response = await axios.post(`${baseUrl}/api/v1/updateTotalCoins`, { user_id: userId, tapCoins });
+    return response.data; // Возвращает обновленные данные пользователя
+  } catch (error) {
+    console.error('Error updating total coins:', error);
+    throw error;
+  }
+};
+
+
 ////////////////////////////////////////////
 
 export const getBooster = async (user_id) => {

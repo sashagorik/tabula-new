@@ -109,6 +109,31 @@ app.post('/api/v1/getUserDetails', async (req, res) => {
   }
 });
 
+
+
+// Эндпоинт для обновления накликанных монет пользователя
+app.post('/api/v1/updateTotalCoins', async (req, res) => {
+  try {
+    const { user_id, totalCoins } = req.body;
+
+    // Найти пользователя по user_id и обновить total_coins
+    const updatedUser = await User.findOneAndUpdate(
+      { user_id },
+      { total_coins: totalCoins },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
