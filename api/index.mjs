@@ -82,9 +82,10 @@ app.post('/api/v1/createUser', async (req, res) => {
       name: '', // Пустое имя
       rank: '', // Пустой ранг
       total_coins: 0, // Нулевое количество монет
-      tap_coins: 0, // Нулевое количество кликов
+      tap_coins: 1, // Нулевое количество кликов
       total_taps: 100, // Значение по умолчанию для total_taps
-      allCoins: 0 // Нулевое количество всех монет
+      allCoins: 0, // Нулевое количество всех монет
+      firelimit: 1
     });
 
     const savedUser = await newUser.save();

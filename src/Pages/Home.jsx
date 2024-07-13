@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import coin from "../assets/coin3.svg";
 import { Tilt } from "react-tilt";
-import { getBooster, getFreeBoosterApi, getUserData, updateCoins } from "../services/apis";
+import { checkUser, createUser, getUserDetails, getBooster, getFreeBoosterApi, updateCoins } from "../services/apis";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import pogressIcon from "../assets/progressIcon.svg";
 import CoinInfo from "../components/CoinInfo/CoinInfo";
@@ -38,43 +38,43 @@ const Home = ({ socket }) => {
 
 
 
-  useEffect(() => {
+  //useEffect(() => {
     // fetching the User Id from URL given by Telegram App
-    const searchParams = new URLSearchParams(window.location.hash.substring(1));
-    const tgWebAppData = searchParams.get("tgWebAppData");
-    if (tgWebAppData) {
-      const userParam = new URLSearchParams(tgWebAppData).get("user");
-      if (userParam) {
+    //const searchParams = new URLSearchParams(window.location.hash.substring(1));
+    //const tgWebAppData = searchParams.get("tgWebAppData");
+    //if (tgWebAppData) {
+     // const userParam = new URLSearchParams(tgWebAppData).get("user");
+      //if (userParam) {
         // Decode the user parameter
-        const decodedUserParam = decodeURIComponent(userParam);
+       // const decodedUserParam = decodeURIComponent(userParam);
         // Parse the JSON to extract the user ID
-        const userObject = JSON.parse(decodedUserParam);
-        const userId = userObject.id;
-        // Set the user ID in the state
-        localStorage.setItem("user_id", userId)
-        setUserInfo({ ...userInfo, user_id: userId })
-      }
-    } else {
+       // const userObject = JSON.parse(decodedUserParam);
+       // const userId = userObject.id;
+       // // Set the user ID in the state
+       // localStorage.setItem("user_id", userId)
+       // setUserInfo({ ...userInfo, user_id: userId })
+    // }
+    //} else {
       // when user came from another page so we need to maintaina and save the id
-      if (localStorage.getItem("user_id")) {
-        setUserInfo({ ...userInfo, user_id: localStorage.getItem("user_id") })
-      }
-    }
+    //  if (localStorage.getItem("user_id")) {
+     //   setUserInfo({ ...userInfo, user_id: localStorage.getItem("user_id") })
+     // }
+   // }
 
     // sending request if user_id is set and getting the user data
-    if (userInfo.user_id) {
-      getData();
-    }
-  }, [userInfo.user_id]);
+    //if (userInfo.user_id) {
+    //  getData();
+   // }
+  //}, [userInfo.user_id]);
 
 
   // console.log(userInfo.user_id)
 
   // to fetch user data
   const getData = async () => {
-    const resp = await getUserData(userInfo.user_id);
-    const booster = await getBooster(userInfo.user_id)
-    const getFreeBoost = await getFreeBoosterApi(userInfo.user_id)
+    const resp = await getUserDetails(userInfo.user_id);
+    //const booster = await getBooster(userInfo.user_id)
+    //const getFreeBoost = await getFreeBoosterApi(userInfo.user_id)
     // console.log(getFreeBoost.data.turbo)
 
     // console.log(userInfo)
@@ -82,14 +82,14 @@ const Home = ({ socket }) => {
       ...userInfo,
       name: resp.data.name,
       rank: resp.data.currentLevel,
-      no_of_taps: resp.data.totalTap,
+      //no_of_taps: resp.data.totalTap,
       total_coins: resp.data.totalCoin,
-      tap_coins: booster.data.multiTap,
-      total_taps: (booster.data.firelimit * 500),
-      // used_taps: (booster.data.firelimit * 500),
-      flash_speed: booster.data.flashSpeed,
-      recharge: (3 - getFreeBoost.data.recharge),
-      turbo: (3 - getFreeBoost.data.turbo),
+      tap_coins: users.data.multiTap,
+      total_taps: (users.data.firelimit * 500),
+      used_taps: (users.data.firelimit * 500),
+      //flash_speed: booster.data.flashSpeed,
+      //recharge: (3 - getFreeBoost.data.recharge),
+     //turbo: (3 - getFreeBoost.data.turbo),
       allCoins: resp.data.coin
     })
 
