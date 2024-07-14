@@ -35,12 +35,21 @@ const userSchema = new mongoose.Schema({
     type: Number,
     
   },
-  
+   //количество использованных кликов в прогресс баре
+  //used_taps: {
+   // type: Number,
+    
+ // },
+
   //общее количествш монет у пользователя
   allCoins: {
     type: Number,
     
   },
+
+  firelimit: {
+    type: Number,
+  }
 });
 
 const User = mongoose.model('User', userSchema);

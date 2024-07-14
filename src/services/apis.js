@@ -5,6 +5,29 @@ import { baseUrl } from "../services/helper";
 
 
 
+export const getUserData = async (userId) => {
+  console.log('Getting user details:', userId);
+  try {
+    const response = await axios.post(`${baseUrl}/api/v1/getUserDetails`, { user_id: userId });
+    return response.data;
+  } catch (error) {
+    console.error('Error getting user details:', error);
+    throw error;
+  }
+};
+  
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////
+
 export const checkUser = async (userId) => {
   console.log('Checking user existence:', userId);
   try {
@@ -31,25 +54,15 @@ export const createUser = async (userId) => {
 
 
 
-export const getUserDetails = async (userId) => {
-  console.log('Getting user details:', userId);
-  try {
-    const response = await commonFunction("GET", `${baseUrl}/api/v1/getUserDetails`, { params: { user_id: userId } });
-    return response.data;
-  } catch (error) {
-    console.error('Error getting user details:', error);
-    throw error;
-  }
-};
 
 
 
 
 
 // Функция для обновления накликанных монет пользователя
-export const updateTotalCoins = async (userId, tapCoins) => {
+export const updateTotalCoins = async (userId, totalCoins) => {
   try {
-    const response = await axios.post(`${baseUrl}/api/v1/updateTotalCoins`, { user_id: userId, tapCoins });
+    const response = await axios.post(`${baseUrl}/api/v1/updateTotalCoins`, { user_id: userId, totalCoins });
     return response.data; // Возвращает обновленные данные пользователя
   } catch (error) {
     console.error('Error updating total coins:', error);
