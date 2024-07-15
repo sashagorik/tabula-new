@@ -22,7 +22,7 @@ import brigadierAnim from "../assets/Char/brigadierAnim.png"
 
 
 
-const Home = ({ socket }) => {
+const Home = () => {
   // const [totalCoins, setTotalCoins] = useState(0);
   const { userInfo, setUserInfo } = useContext(UserInfo)
 
@@ -57,6 +57,8 @@ const Home = ({ socket }) => {
       if (localStorage.getItem("user_id")) {
         setUserInfo({ ...userInfo, user_id: localStorage.getItem("user_id") })
       }
+      
+      
     }
 
     // sending request if user_id is set and getting the user data

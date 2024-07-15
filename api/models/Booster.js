@@ -10,6 +10,6 @@ const boosterSchema = new mongoose.Schema({
   turbo: { type: Number, default: 3 }
 });
 
-const Booster = mongoose.model('Booster', BoosterSchema);
+const Booster = mongoose.model('Booster', boosterSchema);
 
 export default Booster;

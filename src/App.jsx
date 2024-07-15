@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import axios from 'axios';
 import './App.css'
 import Home from './Pages/Home'
 import { Routes, Route } from "react-router-dom"
@@ -106,62 +107,108 @@ function App() {
 
 
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.hash.substring(1));
-    const tgWebAppData = searchParams.get("tgWebAppData");
-    if (tgWebAppData) {
-      const userParam = new URLSearchParams(tgWebAppData).get("user");
-      if (userParam) {
+ //useEffect(() => {
+ //   const searchParams = new URLSearchParams(window.location.hash.substring(1));
+ //   const tgWebAppData = searchParams.get("tgWebAppData");
+ //   if (tgWebAppData) {
+  //    const userParam = new URLSearchParams(tgWebAppData).get("user");
+  //    if (userParam) {
         // Decode the user parameter
-        const decodedUserParam = decodeURIComponent(userParam);
+  //      const decodedUserParam = decodeURIComponent(userParam);
         // Parse the JSON to extract the user ID
-        const userObject = JSON.parse(decodedUserParam);
-        const userId = userObject.id;
-        setUser_id(userId);
-        localStorage.setItem("user_id", userId);
-      }
-    } else {
+    //    const userObject = JSON.parse(decodedUserParam);
+   //     const userId = userObject.id;
+   //     setUser_id(userId);
+    //    localStorage.setItem("user_id", userId);
+   //   }
+  //  } else {
       // when user came from another page so we need to maintain and save the id
-      const savedUserId = localStorage.getItem("user_id");
-      if (savedUserId) {
-        setUser_id(savedUserId);
+  //    const savedUserId = localStorage.getItem("user_id");
+  //    if (savedUserId) {
+   //     setUser_id(savedUserId);
         
-      }
-      else 
+   //   }
+   //   else 
         
-        {setUser_id(7777);
-        localStorage.setItem("user_id", 7777);}
+   //     {setUser_id(7777);
+ //       localStorage.setItem("user_id", 7777);}
+ //   }
+// }, []);
+
+const checkAndAddUserToDB = async (userId) => {
+  try {
+    // Проверяем наличие пользователя в базе данных
+    const response = await axios.post(`${baseUrl}/api/v1/checkUser`, { user_id: userId });
+    if (response.data.exists) {
+      console.log('User already exists in the database');
+    } else {
+      // Если пользователя нет, добавляем его
+      await axios.post(`${baseUrl}/api/v1/addUser`, { user_id: userId });
+      console.log('User added to the database');
     }
-  }, []);
+  } catch (error) {
+    console.error('Error checking or adding user:', error);
+  }
+};
 
+useEffect(() => {
+  const searchParams = new URLSearchParams(window.location.hash.substring(1));
+  const tgWebAppData = searchParams.get("tgWebAppData");
+  let userId;
 
+  if (tgWebAppData) {
+    const userParam = new URLSearchParams(tgWebAppData).get("user");
+    if (userParam) {
+      const decodedUserParam = decodeURIComponent(userParam);
+      const userObject = JSON.parse(decodedUserParam);
+      userId = userObject.id;
+      setUser_id(userId);
+      localStorage.setItem("user_id", userId);
+    }
+  } else {
+    const savedUserId = localStorage.getItem("user_id");
+    if (savedUserId) {
+      userId = savedUserId;
+      setUser_id(userId);
+    } else {
+      userId = 7777;
+      setUser_id(userId);
+      localStorage.setItem("user_id", userId);
+    }
+  }
+
+  if (userId) {
+    checkAndAddUserToDB(userId);
+  }
+}, []);
+   
 
   // for ocket.connection and sending id 
-  useEffect(() => {
-    if (user_id) {
+  //useEffect(() => {
+   // if (user_id) {
       // const socket = io.connect("ws://192.168.29.43:5006", { transports: ["websocket"] });
-      const socket = io.connect('https://tabula-new-1y88.vercel.app/api', { transports: ['websocket'] });
-      socket.on('connect', () => {
-        console.log(`Connected with socket ID: ${socket.id}`);
-        socket.emit('join', { user_id });
-      });
-      setSocket(socket);
+     // const socket = io.connect('https://tabula-new-1y88.vercel.app/api', { transports: ['websocket'] });
+     //socket.on('connect', () => {
+     //  console.log(`Connected with socket ID: ${socket.id}`);
+      //  socket.emit('join', { user_id });
+     // });
+      //setSocket(socket);
 
-      // getting details about ant hire
-      socket.on("response", (data) => {
-        setAntHire(data.antHire)
-      })
+     // // getting details about ant hire
+     // socket.on("response", (data) => {
+     //   setAntHire(data.antHire)
+     // })
 
 
 
 
 
       // Clean up on component unmount
-      return () => {
-        socket.disconnect();
-      };
-    }
-  }, [user_id]);
+    //  return () => {
+     //   socket.disconnect();
+     // };
+   // }
+ // }, [user_id]);
 
 
 
