@@ -120,6 +120,40 @@ app.post('/api/v1/getUserDetails', async (req, res) => {
   }
 });
 
+
+// Эндпоинт для получения данных бустера
+app.get('/api/v1/boosterDetails', async (req, res) => {
+  const { user_id } = req.query;
+  try {
+    const booster = await Booster.findOne({ user_id });
+    if (booster) {
+      res.json(booster);
+    } else {
+      res.status(404).json({ message: 'Booster not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching booster details:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Эндпоинт для получения только recharge и turbo из бустера
+app.get('/api/v1/getFreeBoosterApi', async (req, res) => {
+  const { user_id } = req.query;
+  try {
+    const booster = await Booster.findOne({ user_id }, 'recharge turbo');
+    if (booster) {
+      res.json(booster);
+    } else {
+      res.status(404).json({ message: 'Booster not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching booster details:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

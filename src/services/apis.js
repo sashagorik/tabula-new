@@ -74,16 +74,27 @@ export const updateTotalCoins = async (userId, totalCoins) => {
 ////////////////////////////////////////////
 
 export const getBooster = async (user_id) => {
-  const response = await fetch(`${baseUrl}/boosterDetails?user_id=${user_id}`);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await axios.get(`${baseUrl}/api/v1/boosterDetails`, {
+      params: { user_id }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching booster details:', error);
+    throw error;
+  }
 };
 
 export const getFreeBoosterApi = async (user_id) => {
-  // Реализуем вызов API для получения данных бесплатных бустеров, если это отдельный эндпоинт
-  const response = await fetch(`${baseUrl}/boosterDetails?user_id=${user_id}`);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await axios.get(`${baseUrl}/api/v1/getFreeBoosterApi`, {
+      params: { user_id }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching free booster details:', error);
+    throw error;
+  }
 };
 
 export const updateCoins = async (userId, boosterId) => {
