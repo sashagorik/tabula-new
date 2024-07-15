@@ -28,16 +28,16 @@ export const getUserData = async (userId) => {
 
 ///////////////////////////////////////////
 
-export const checkUser = async (userId) => {
-  console.log('Checking user existence:', userId);
-  try {
-    const response = await commonFunction("GET", `${baseUrl}/api/v1/checkUser`, { params: { user_id: userId } });
-    return response.data.exists;
-  } catch (error) {
-    console.error('Error checking user existence:', error);
-    throw error;
-  }
-};
+//export const checkUser = async (userId) => {
+ // console.log('Checking user existence:', userId);
+ // try {
+//    const response = await commonFunction("GET", `${baseUrl}/api/v1/checkUser`, { params: { user_id: userId } });
+//   return response.data.exists;
+ // } catch (error) {
+//   console.error('Error checking user existence:', error);
+//    throw error;
+//  }
+//};
 
 export const createUser = async (userId) => {
   console.log('Creating user:', userId);
