@@ -2,7 +2,7 @@ import React from 'react'
 import { useContext, useEffect, useState } from "react";
  import coin from "../assets/coin3.svg";
 // import { Tilt } from "react-tilt";
-import { getBooster, getFreeBoosterApi, getUserData } from "../services/apis";
+import { getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase } from "../services/apis";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import porgressIcon from "../assets/progressIcon.svg";
 import CoinInfo from "../components/CoinInfo/CoinInfo";
@@ -23,7 +23,7 @@ import brigadierAnim from "../assets/Char/brigadierAnim.png"
 
 
 const Home = () => {
-  // const [totalCoins, setTotalCoins] = useState(0);
+  //const [totalCoins, setTotalCoins] = useState(0);
   const { userInfo, setUserInfo } = useContext(UserInfo)
 
 
@@ -70,28 +70,37 @@ const Home = () => {
 
   // console.log(userInfo.user_id)
 
-  // to fetch user data
-  const getData = async () => {
+ // Функция для получения данных пользователя
+const getData = async () => {
+  try {
     const resp = await getUserData(userInfo.user_id);
-    const booster = await getBooster(userInfo.user_id)
-    const getFreeBoost = await getFreeBoosterApi(userInfo.user_id)
-    // console.log(getFreeBoost.data.turbo)
+    const booster = await getBooster(userInfo.user_id);
+    const getFreeBoost = await getFreeBoosterApi(userInfo.user_id);
 
-    // console.log(userInfo)
-    setUserInfo({
-      ...userInfo,
-      name: resp.data.name,
-      rank: resp.data.currentLevel,
-      no_of_taps: resp.data.totalTap,
-      total_coins: resp.data.totalCoin,
-      tap_coins: booster.data.multiTap,
-      total_taps: (booster.data.firelimit * 500),
-      // used_taps: (booster.data.firelimit * 500),
-      flash_speed: booster.data.flashSpeed,
-      recharge: (3 - getFreeBoost.data.recharge),
-      turbo: (3 - getFreeBoost.data.turbo),
-      allCoins: resp.data.coin
-    })
+    console.log(resp.data);
+    console.log(booster.data);
+    console.log(getFreeBoost.data);
+
+    if (resp.data && booster.data && getFreeBoost.data) {
+      setUserInfo({
+        ...userInfo,
+        name: resp.data.name,
+        rank: resp.data.currentLevel,
+        no_of_taps: resp.data.total_taps,
+        total_coins: resp.data.total_coins,
+        tap_coins: booster.data.multiTap,
+        total_taps: booster.data.firelimit * 500,
+        flash_speed: booster.data.flashSpeed,
+        recharge: 3 - getFreeBoost.data.recharge,
+        turbo: 3 - getFreeBoost.data.turbo,
+        allCoins: resp.data.coin,
+      });
+    } else {
+      console.error('Некорректные данные от API');
+    }
+  } catch (error) {
+    console.error('Ошибка при получении данных пользователя:', error);
+  }
 
     // // for turbo functioanlity
 
@@ -253,7 +262,7 @@ const Home = () => {
     }, 500);
 
 
-    socket.emit("message", `${userInfo.user_id}, ${userInfo.tap_coins}`);
+    //socket.emit("message", `${userInfo.user_id}, ${userInfo.tap_coins}`);
 
 
     // // // Increase click count and determine if continuous
@@ -292,12 +301,12 @@ const Home = () => {
         { left: touch.clientX, top: touch.clientY },
       ]);
 
-      // const newClick = { left: touch.clientX, top: touch.clientY, timestamp: Date.now() };
-      // setClicks((prevClicks) => [...prevClicks, newClick]);
+       const newClick = { left: touch.clientX, top: touch.clientY, timestamp: Date.now() };
+       setClicks((prevClicks) => [...prevClicks, newClick]);
 
-      // setTimeout(() => {
-      //   setClicks((prevClicks) => prevClicks.filter((click) => click.timestamp > Date.now() - 3000));
-      // }, 3000);
+       setTimeout(() => {
+         setClicks((prevClicks) => prevClicks.filter((click) => click.timestamp > Date.now() - 3000));
+       }, 3000);
 
     });
 
@@ -394,6 +403,36 @@ const Home = () => {
   // console.log("User data ", userdata)
 
   // console.log(tapsInfo)
+
+  //обновляем монеты в бд
+
+  const [totalCoins, setTotalCoins] = useState(() => {
+    const storedUserInfo = localStorage.getItem('userinfo');
+    if (storedUserInfo) {
+      const userInfo = JSON.parse(storedUserInfo);
+      return userInfo.total_coins || 0;
+    }
+    return 0;
+  });
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const storedUserInfo = localStorage.getItem('userinfo');
+      if (storedUserInfo) {
+        const userInfo = JSON.parse(storedUserInfo);
+        const parsedCoins = userInfo.total_coins;
+        if (!isNaN(parsedCoins) && parsedCoins !== totalCoins) {
+          setTotalCoins(parsedCoins);
+          updateCoinsInDatabase(parsedCoins);
+        }
+      }
+    }, 10000); // Проверка и обновление каждые 10 секунд
+
+    return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
+  }, [totalCoins]);
+
+
 
 
   return (

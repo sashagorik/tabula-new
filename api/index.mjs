@@ -107,9 +107,9 @@ app.post('/api/v1/addUser', async (req, res) => {
 });
 
 // Эндпоинт для получения данных пользователя, если он существует
-app.post('/api/v1/getUserDetails', async (req, res) => {
+app.get('/api/v1/getUserDetails', async (req, res) => {
   try {
-    const { user_id } = req.body;
+    const { user_id } = req.query; // Получаем user_id из query параметров запроса
     const existingUser = await User.findOne({ user_id });
     if (existingUser) {
       return res.status(200).json(existingUser);
@@ -150,6 +150,25 @@ app.get('/api/v1/getFreeBoosterApi', async (req, res) => {
   } catch (error) {
     console.error('Error fetching booster details:', error);
     res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+//Эндпоинт для обновления монет в базе
+app.post('/api/v1/updateCoins', async (req, res) => {
+  try {
+    const { user_id, coins } = req.body;
+    const user = await User.findOne({ user_id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    user.total_coins = coins;
+    await user.save();
+
+    res.status(200).json({ message: 'Монеты успешно обновлены' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 

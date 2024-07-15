@@ -8,7 +8,7 @@ import { baseUrl } from "../services/helper";
 export const getUserData = async (userId) => {
   console.log('Getting user details:', userId);
   try {
-    const response = await axios.post(`${baseUrl}/api/v1/getUserDetails`, { user_id: userId });
+    const response = await axios.get(`${baseUrl}/api/v1/getUserDetails?user_id=${userId}`);
     return response.data;
   } catch (error) {
     console.error('Error getting user details:', error);
@@ -51,6 +51,20 @@ export const createUser = async (userId) => {
 };
 
 
+// Функция для обновления монет в базе данных
+
+
+export const updateCoinsInDatabase = async (user_id, coins) => {
+  try {
+    const response = await axios.post(`${baseUrl}/api/v1/updateCoins`, {
+      user_id,
+      coins,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Ошибка при обновлении монет в базе данных');
+  }
+};
 
 
 
