@@ -205,12 +205,12 @@ const Home = () => {
     // socket.emit("message", `${userInfo.user_id}, ${userInfo.tap_coins}`);
 
 
-    // const newTotalCoins = userInfo.total_coins + userInfo.tap_coins;
-    // setUserInfo({...userInfo,total_coins:newTotalCoins})
+    const newTotalCoins = userInfo.total_coins + userInfo.tap_coins;
+    setUserInfo({...userInfo,total_coins:newTotalCoins})
 
 
 
-    // localStorage.setItem("user_coins", newTotalCoins);
+    localStorage.setItem("user_coins", newTotalCoins);
 
     // adding taps
     handleTap();
