@@ -47,9 +47,9 @@ const userSchema = new mongoose.Schema({
     
   },
 
-  firelimit: {
-    type: Number,
-  }
+ // firelimit: {
+   // type: Number,
+ // }
 });
 
 const User = mongoose.model('User', userSchema);

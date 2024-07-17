@@ -63,7 +63,7 @@ const Home = () => {
 
     // sending request if user_id is set and getting the user data
     if (userInfo.user_id) {
-      getData();
+       getData();
     }
   }, [userInfo.user_id, userInfo.hireAntCoins]);
 
@@ -74,33 +74,34 @@ const Home = () => {
 const getData = async () => {
   try {
     const resp = await getUserData(userInfo.user_id);
-    const booster = await getBooster(userInfo.user_id);
-    const getFreeBoost = await getFreeBoosterApi(userInfo.user_id);
+    //const booster = await getBooster(userInfo.user_id);
+    //const getFreeBoost = await getFreeBoosterApi(userInfo.user_id);
 
-    console.log(resp.data);
-    console.log(booster.data);
-    console.log(getFreeBoost.data);
+    console.log("API response:", resp.data);
+    //console.log(booster.data);
+    //console.log(getFreeBoost.data);
 
-    if (resp.data && booster.data && getFreeBoost.data) {
+    if (resp.data && typeof resp.data === 'object' && Object.keys(resp.data).length > 0) {
       setUserInfo({
         ...userInfo,
-        name: resp.data.name,
-        rank: resp.data.currentLevel,
-        no_of_taps: resp.data.total_taps,
-        total_coins: resp.data.total_coins,
-        tap_coins: booster.data.multiTap,
-        total_taps: booster.data.firelimit * 500,
-        flash_speed: booster.data.flashSpeed,
-        recharge: 3 - getFreeBoost.data.recharge,
-        turbo: 3 - getFreeBoost.data.turbo,
-        allCoins: resp.data.coin,
+        name: resp.data.name || 'default name',
+        rank: resp.data.rank || 'default rank',
+       // no_of_taps: resp.data.total_taps,
+        total_coins: resp.data.total_coins || 0,
+        //tap_coins: booster.data.multiTap,
+       // total_taps: booster.data.firelimit * 500,
+       // flash_speed: booster.data.flashSpeed,
+       // recharge: 3 - getFreeBoost.data.recharge,
+       // turbo: 3 - getFreeBoost.data.turbo,
+        //allCoins: resp.data.coin,
       });
     } else {
-      console.error('Некорректные данные от API');
+      console.error('Некорректные данные от API', resp.data);
     }
   } catch (error) {
     console.error('Ошибка при получении данных пользователя:', error);
   }
+
 
     // // for turbo functioanlity
 
