@@ -23,25 +23,25 @@ const UserData = ({ children }) => {
       ? JSON.parse(savedUserInfo)
       : {
         user_id: "",
-        name: "",
+        name: "myname",
         rank: "Newbie",
         total_coins: 0,
         tap_coins: 1,
         total_taps: 500,
         allCoins : 0,
 
-        //no_of_taps: 0,
-       // ton_coins: 0,
-       // gold_coins: 0,
-        //used_taps: 500,
-        //avatar: newbies,
-       // flash_speed: 1,
-       // Test: 0,
-       // recharge: 1,
-       // turbo: 1,
-       // isTurbo:false,
+        no_of_taps: 0,
+        ton_coins: 0,
+        gold_coins: 0,
+        used_taps: 500,
+        avatar: newbies,
+        flash_speed: 1,
+        Test: 0,
+        recharge: 1,
+        turbo: 1,
+        isTurbo:false,
         
-        // hireAntCoins:0
+        hireAntCoins:0
       };
   });
 

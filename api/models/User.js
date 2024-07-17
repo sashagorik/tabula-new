@@ -36,10 +36,10 @@ const userSchema = new mongoose.Schema({
     
   },
    //количество использованных кликов в прогресс баре
-  //used_taps: {
-   // type: Number,
+  used_taps: {
+   type: Number,
     
- // },
+  },
 
   //общее количествш монет у пользователя
   allCoins: {

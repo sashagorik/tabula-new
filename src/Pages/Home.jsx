@@ -1,5 +1,4 @@
-import React from 'react'
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
  import coin from "../assets/coin3.svg";
 // import { Tilt } from "react-tilt";
 import { getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase } from "../services/apis";
@@ -23,8 +22,8 @@ import brigadierAnim from "../assets/Char/brigadierAnim.png"
 
 
 const Home = () => {
-  //const [totalCoins, setTotalCoins] = useState(0);
-  const { userInfo, setUserInfo } = useContext(UserInfo)
+  const [totalCoins, setTotalCoins] = useState(0);
+  const { userInfo, setUserInfo } = useContext(UserInfo);
 
 
 
@@ -32,7 +31,7 @@ const Home = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   // const [showAnimKeyword, setShowAnimKeyword] = useState(false);
   // // console.log(showAnimKeyword)
-  // const [clickCount, setClickCount] = useState(0);
+   const [clickCount, setClickCount] = useState(0);
 
 
 
@@ -86,9 +85,9 @@ const getData = async () => {
         ...userInfo,
         name: resp.data.name || 'default name',
         rank: resp.data.rank || 'default rank',
-       // no_of_taps: resp.data.total_taps,
+        no_of_taps: resp.data.total_taps,
         total_coins: resp.data.total_coins || 0,
-        //tap_coins: booster.data.multiTap,
+        tap_coins: booster.data.multiTap,
        // total_taps: booster.data.firelimit * 500,
        // flash_speed: booster.data.flashSpeed,
        // recharge: 3 - getFreeBoost.data.recharge,
@@ -407,31 +406,31 @@ const getData = async () => {
 
   //обновляем монеты в бд
 
-  const [totalCoins, setTotalCoins] = useState(() => {
-    const storedUserInfo = localStorage.getItem('userinfo');
-    if (storedUserInfo) {
-      const userInfo = JSON.parse(storedUserInfo);
-      return userInfo.total_coins || 0;
-    }
-    return 0;
-  });
+ // const [totalCoins, setTotalCoins] = useState(() => {
+ //   const storedUserInfo = localStorage.getItem('userinfo');
+ //   if (storedUserInfo) {
+  //    const userInfo = JSON.parse(storedUserInfo);
+ //     return userInfo.total_coins || 0;
+ //   }
+  //  return 0;
+ // });
 
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const storedUserInfo = localStorage.getItem('userinfo');
-      if (storedUserInfo) {
-        const userInfo = JSON.parse(storedUserInfo);
-        const parsedCoins = userInfo.total_coins;
-        if (!isNaN(parsedCoins) && parsedCoins !== totalCoins) {
-          setTotalCoins(parsedCoins);
-          updateCoinsInDatabase(parsedCoins);
-        }
-      }
-    }, 10000); // Проверка и обновление каждые 10 секунд
+// useEffect(() => {
+ //   const interval = setInterval(() => {
+  //    const storedUserInfo = localStorage.getItem('userinfo');
+ //     if (storedUserInfo) {
+ //       const userInfo = JSON.parse(storedUserInfo);
+ //       const parsedCoins = userInfo.total_coins;
+  //      if (!isNaN(parsedCoins) && parsedCoins !== totalCoins) {
+  //        setTotalCoins(parsedCoins);
+ //         updateCoinsInDatabase(parsedCoins);
+ //       }
+ //     }
+ //   }, 10000); // Проверка и обновление каждые 10 секунд
 
-    return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
-  }, [totalCoins]);
+ //   return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
+ // }, [totalCoins]);
 
 
 
@@ -455,8 +454,8 @@ const getData = async () => {
         {/* <Tilt options={defaultOptions}> */}
         <div
           className="charAnim"
-          onClick={userInfo.used_taps > 0 ? handleClick : ""}
-          onTouchStart={userInfo.used_taps > 0 ? handleTouchStart : ""}
+          onClick={userInfo.used_taps > 0 ? handleClick : null}
+          onTouchStart={userInfo.used_taps > 0 ? handleTouchStart : null}
           style={coinStyle}
         >
 
