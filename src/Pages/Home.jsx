@@ -24,6 +24,7 @@ import brigadierAnim from "../assets/Char/brigadierAnim.png"
 const Home = () => {
   const [totalCoins, setTotalCoins] = useState(0);
   const { userInfo, setUserInfo } = useContext(UserInfo);
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
 
 
@@ -81,6 +82,8 @@ const getData = async () => {
     //console.log(getFreeBoost.data);
 
     if (resp) {
+  
+
       setUserInfo({
         ...userInfo,
         name: resp.name || 'default name',
@@ -94,6 +97,7 @@ const getData = async () => {
        // turbo: 3 - getFreeBoost.data.turbo,
         //allCoins: resp.data.coin,
       });
+      setIsDataFetched(true); // данные загружены
     } else {
       console.error('Некорректные данные от API', resp.data);
     }

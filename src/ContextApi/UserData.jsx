@@ -28,7 +28,7 @@ const UserData = ({ children }) => {
         total_coins: 0,
         tap_coins: 1,
         total_taps: 500,
-        allCoins : 0,
+        allCoins : 1,
 
         no_of_taps: 0,
         ton_coins: 0,
