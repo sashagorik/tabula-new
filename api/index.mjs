@@ -157,6 +157,7 @@ app.post('/api/v1/updateCoins', async (req, res) => {
       return res.status(404).json({ message: 'Пользователь не найден' });
     }
 
+    user.total_coins = total_coins;
     user.allCoins = total_coins;
     await user.save();
 
