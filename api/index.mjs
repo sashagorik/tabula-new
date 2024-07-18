@@ -131,6 +131,8 @@ app.get('/api/v1/boosterDetails', async (req, res) => {
   }
 });
 
+
+
 // Эндпоинт для получения только recharge и turbo из бустера
 app.get('/api/v1/getFreeBoosterApi', async (req, res) => {
   const { user_id } = req.query;
@@ -167,6 +169,73 @@ app.post('/api/v1/updateCoins', async (req, res) => {
   }
 });
 
+//Эндпоинт для обновления монет в базе
+app.post('/api/v1/updateTapCoins', async (req, res) => {
+  try {
+    const { user_id, tap_coins } = req.body;
+    const user = await User.findOne({ user_id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    user.tap_coins = tap_coins;
+    
+    await user.save();
+
+    res.status(200).json({ message: 'tap_coins успешно обновлены' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+////////////////////////////////////////////////////////
+
+
+//Эндпоинт для обновления монет в базе
+app.post('/api/v1/updateTotalTaps', async (req, res) => {
+  try {
+    const { user_id, total_taps } = req.body;
+    const user = await User.findOne({ user_id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    user.total_taps = total_taps;
+    user.used_taps = total_taps;
+    
+    await user.save();
+
+    res.status(200).json({ message: 'Total_taps успешно обновлены' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+////////////////////////////обновление Multitap B Boosters
+app.post('/api/v1/updateBooster', async (req, res) => {
+  const { user_id, boosterData } = req.body;
+
+  try {
+    const booster = await Booster.findOneAndUpdate(
+      { user_id },
+      { $set: boosterData },
+      { new: true, upsert: true }
+    );
+
+    if (!booster) {
+      return res.status(404).json({ message: 'Booster not found' });
+    }
+
+    return res.status(200).json({ message: 'Booster updated successfully', booster });
+  } catch (error) {
+    console.error('Error updating booster:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

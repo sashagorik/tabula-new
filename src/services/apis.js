@@ -68,24 +68,20 @@ export const updateCoinsInDatabase = async (user_id, total_coins) => {
 
 
 
-
-
-
-
-
-// Функция для обновления накликанных монет пользователя
-export const updateTotalCoins = async (userId, totalCoins) => {
+export const updateTapCoinsInDatabase = async (user_id, tap_coins) => {
   try {
-    const response = await axios.post(`${baseUrl}/api/v1/updateTotalCoins`, { user_id: userId, totalCoins });
-    return response.data; // Возвращает обновленные данные пользователя
+    const response = await axios.post(`${baseUrl}/api/v1/updateTapCoins`, {
+      user_id,
+      tap_coins
+    });
+    return response.data;
   } catch (error) {
-    console.error('Error updating total coins:', error);
-    throw error;
+    throw new Error('Ошибка при обновлении монет в базе данных');
   }
 };
 
 
-////////////////////////////////////////////
+
 
 export const getBooster = async (user_id) => {
   try {
@@ -98,6 +94,64 @@ export const getBooster = async (user_id) => {
     throw error;
   }
 };
+
+
+
+export const upgradeBooster = async (userId, boosterType) => {
+  return await axios.post(`${baseUrl}/api/v1/upgradeBooster`, {
+    user_id: userId,
+    boosterType
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Функция для обновления накликанных монет пользователя
+//export const updateTotalCoins = async (userId, totalCoins) => {
+ // try {
+  //  const response = await axios.post(`${baseUrl}/api/v1/updateTotalCoins`, { user_id: userId, totalCoins });
+ //   return response.data; // Возвращает обновленные данные пользователя
+ // } catch (error) {
+  //  console.error('Error updating total coins:', error);
+  //  throw error;
+//  }
+//};
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////
+
+
 
 export const getFreeBoosterApi = async (user_id) => {
   try {
@@ -116,23 +170,19 @@ export const updateCoins = async (userId, boosterId) => {
 };
 
 export const updateBooster = async (user_id, boosterData) => {
-  const response = await fetch(`${baseUrl}/updateBooster`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ user_id, boosterData }),
-  });
-  const data = await response.json();
-  return data;
+  try {
+    const response = await axios.post(`${baseUrl}/api/v1/updateBooster`, {
+      user_id,
+      boosterData,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating booster:', error);
+    throw error;
+  }
 };
 
-export const upgradeBooster = async (userId, boosterType) => {
-  return await axios.post(`${baseUrl}/api/v1/upgradeBooster`, {
-    user_id: userId,
-    boosterType
-  });
-};
+
 
 export const upgradeFreeBoosterApi = async (userId, boosterId) => {
   // Логика для обновления бесплатных бустеров

@@ -26,19 +26,7 @@ const Booster = () => {
     setBoost(null)
   }
 
- // useEffect(() => {
-    
-//     const storedUserInfo = localStorage.getItem('userInfo');
-//     if (storedUserInfo) {
-//        const userInfo = JSON.parse(storedUserInfo);
-//        const parsedCoins = userInfo.total_coins;
- //       const user = userInfo.user_id;
- //       if (!isNaN(parsedCoins)) {
-  //        updateCoinsInDatabase(user, parsedCoins);
-  //      }
-  //    }
-  
- // }, []);
+
 
   return (
     <>
