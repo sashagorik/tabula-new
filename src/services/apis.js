@@ -58,7 +58,7 @@ export const updateCoinsInDatabase = async (user_id, total_coins) => {
   try {
     const response = await axios.post(`${baseUrl}/api/v1/updateCoins`, {
       user_id,
-      total_coins,
+      total_coins
     });
     return response.data;
   } catch (error) {

@@ -171,7 +171,7 @@ useEffect(() => {
       userId = savedUserId;
       setUser_id(userId);
     } else {
-      userId = 1779;
+      userId = 7777;
       setUser_id(userId);
       localStorage.setItem("user_id", userId);
     }

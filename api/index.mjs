@@ -150,14 +150,14 @@ app.get('/api/v1/getFreeBoosterApi', async (req, res) => {
 //Эндпоинт для обновления монет в базе
 app.post('/api/v1/updateCoins', async (req, res) => {
   try {
-    const { user_id, coins } = req.body;
+    const { user_id, total_coins } = req.body;
     const user = await User.findOne({ user_id });
 
     if (!user) {
       return res.status(404).json({ message: 'Пользователь не найден' });
     }
 
-    user.total_coins = coins;
+    user.allCoins = total_coins;
     await user.save();
 
     res.status(200).json({ message: 'Монеты успешно обновлены' });
