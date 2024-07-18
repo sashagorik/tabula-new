@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 // import { Tilt } from "react-tilt";
 import { getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase } from "../services/apis";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import porgressIcon from "../assets/progressIcon.svg";
+import progressIcon from "../assets/progressIcon.svg";
 import CoinInfo from "../components/CoinInfo/CoinInfo";
 import OrangeImg from "../assets/orange.svg"
 import { UserInfo } from "../ContextApi/UserData";
@@ -500,7 +500,7 @@ const getData = async () => {
               {userInfo.rank}
             </div>
             <div className="Progressicon mx-2">
-              <img src={porgressIcon} width={15} />
+              <img src={progressIcon} width={15} />
               <div className="text-white">
                 <span className="points"> {userInfo.used_taps} </span> /{" "}
                 {userInfo.total_taps}
