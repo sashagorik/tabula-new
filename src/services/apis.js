@@ -54,11 +54,11 @@ export const createUser = async (userId) => {
 // Функция для обновления монет в базе данных
 
 
-export const updateCoinsInDatabase = async (user_id, coins) => {
+export const updateCoinsInDatabase = async (user_id, total_coins) => {
   try {
     const response = await axios.post(`${baseUrl}/api/v1/updateCoins`, {
       user_id,
-      coins,
+      total_coins,
     });
     return response.data;
   } catch (error) {

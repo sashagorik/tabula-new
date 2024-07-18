@@ -79,12 +79,6 @@ app.post('/api/v1/addUser', async (req, res) => {
 
     const newUser = new User({
       user_id,
-      name: 'name', // Пустое имя
-      rank: 'newbie', // Пустой ранг
-      total_coins: 1, // Нулевое количество монет
-      tap_coins: 1, // Нулевое количество кликов
-      total_taps: 100, // Значение по умолчанию для total_taps
-      allCoins: 1 // Нулевое количество всех монет
     });
 
     const newBooster = new Booster({

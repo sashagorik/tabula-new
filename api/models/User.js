@@ -1,57 +1,57 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-  //id пользователя
+  // id пользователя
   user_id: {
     type: String,
     required: true,
     unique: true
   },
 
-  //имя пользователя
+  // имя пользователя
   name: {
     type: String,
-    
+    default: 'name' // значение по умолчанию
   },
 
-  //ранг пользователя
+  // ранг пользователя
   rank: {
     type: String,
-    
+    default: 'newbie' // значение по умолчанию
   },
  
-  //общее количество накликанных монет
+  // общее количество накликанных монет
   total_coins: {
     type: Number,
-  
-    //количество монет за 1 клик
+    default: 1 // значение по умолчанию
   },
+
+  // количество монет за 1 клик
   tap_coins: {
     type: Number,
-   
-    //количество доступных кликов в прогресс баре
+    default: 1 // значение по умолчанию
   },
+
+  // количество доступных кликов в прогресс баре
   total_taps: {
     type: Number,
-    
-  },
-   //количество использованных кликов в прогресс баре
-  used_taps: {
-   type: Number,
-    
+    default: 100 // значение по умолчанию
   },
 
-  //общее количествш монет у пользователя
+  // количество использованных кликов в прогресс баре
+  used_taps: {
+    type: Number,
+    default: 0 // значение по умолчанию
+  },
+
+  // общее количество монет у пользователя
   allCoins: {
     type: Number,
-    
-  },
-
- // firelimit: {
-   // type: Number,
- // }
+    default: 1 // значение по умолчанию
+  }
 });
 
 const User = mongoose.model('User', userSchema);
 
 export default User;
+

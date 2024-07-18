@@ -76,18 +76,18 @@ const getData = async () => {
     //const booster = await getBooster(userInfo.user_id);
     //const getFreeBoost = await getFreeBoosterApi(userInfo.user_id);
 
-    console.log("API response:", resp.data);
+    console.log("API response:", resp);
     //console.log(booster.data);
     //console.log(getFreeBoost.data);
 
-    if (resp.data && typeof resp.data === 'object' && Object.keys(resp.data).length > 0) {
+    if (resp) {
       setUserInfo({
         ...userInfo,
-        name: resp.data.name || 'default name',
-        rank: resp.data.rank || 'default rank',
-        no_of_taps: resp.data.total_taps,
-        total_coins: resp.data.total_coins || 0,
-        tap_coins: booster.data.multiTap,
+        name: resp.name || 'default name',
+        rank: resp.rank || 'default rank',
+        tap_coins: resp.tap_coins,
+        total_coins: resp.total_coins || 0,
+        //tap_coins: booster.data.multiTap,
        // total_taps: booster.data.firelimit * 500,
        // flash_speed: booster.data.flashSpeed,
        // recharge: 3 - getFreeBoost.data.recharge,
@@ -406,31 +406,32 @@ const getData = async () => {
 
   //обновляем монеты в бд
 
- // const [totalCoins, setTotalCoins] = useState(() => {
- //   const storedUserInfo = localStorage.getItem('userinfo');
- //   if (storedUserInfo) {
+  //const [totalCoins, setTotalCoins] = useState(() => {
+  //  const storedUserInfo = localStorage.getItem('userinfo');
+  //  if (storedUserInfo) {
   //    const userInfo = JSON.parse(storedUserInfo);
  //     return userInfo.total_coins || 0;
  //   }
-  //  return 0;
+ //   return 0;
  // });
 
 
-// useEffect(() => {
- //   const interval = setInterval(() => {
-  //    const storedUserInfo = localStorage.getItem('userinfo');
- //     if (storedUserInfo) {
- //       const userInfo = JSON.parse(storedUserInfo);
- //       const parsedCoins = userInfo.total_coins;
-  //      if (!isNaN(parsedCoins) && parsedCoins !== totalCoins) {
-  //        setTotalCoins(parsedCoins);
- //         updateCoinsInDatabase(parsedCoins);
- //       }
- //     }
- //   }, 10000); // Проверка и обновление каждые 10 секунд
+ useEffect(() => {
+  const interval = setInterval(() => {
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      const userInfo = JSON.parse(storedUserInfo);
+      const parsedCoins = userInfo.total_coins;
+      const user = localStorage.getItem('user_id');
+      if (!isNaN(parsedCoins)) {
+        updateCoinsInDatabase(user, parsedCoins);
+      }
+    }
+  }, 10000); // Проверка и обновление каждые 10 секунд
 
- //   return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
- // }, [totalCoins]);
+  return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
+}, []);
+
 
 
 
