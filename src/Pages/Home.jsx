@@ -86,7 +86,7 @@ const getData = async () => {
         name: resp.name || 'default name',
         rank: resp.rank || 'default rank',
         tap_coins: resp.tap_coins,
-        total_coins: resp.total_coins,
+        total_coins: resp.allCoins,
         //tap_coins: booster.data.multiTap,
        // total_taps: booster.data.firelimit * 500,
        // flash_speed: booster.data.flashSpeed,
