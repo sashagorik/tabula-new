@@ -44,7 +44,7 @@ function App() {
         setUserInfo((prevTapsInfo) => ({
           ...prevTapsInfo,
           used_taps: Math.min(
-            prevTapsInfo.used_taps + userInfo.flash_speed,
+            prevTapsInfo.used_taps + 1,
             prevTapsInfo.total_taps
           ),
         }));
