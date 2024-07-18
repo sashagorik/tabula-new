@@ -91,7 +91,8 @@ const getData = async () => {
         tap_coins: resp.tap_coins,
         total_coins: resp.allCoins,
         //tap_coins: booster.data.multiTap,
-       // total_taps: booster.data.firelimit * 500,
+        total_taps: resp.total_taps,
+        used_taps: resp.used_taps
        // flash_speed: booster.data.flashSpeed,
        // recharge: 3 - getFreeBoost.data.recharge,
        // turbo: 3 - getFreeBoost.data.turbo,
