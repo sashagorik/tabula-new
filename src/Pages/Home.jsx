@@ -420,21 +420,21 @@ const getData = async () => {
  // });
 
 
- useEffect(() => {
-  const interval = setInterval(() => {
-    const storedUserInfo = localStorage.getItem('userInfo');
-    if (storedUserInfo) {
-      const userInfo = JSON.parse(storedUserInfo);
-      const parsedCoins = userInfo.total_coins;
-      const user = localStorage.getItem('user_id');
-      if (!isNaN(parsedCoins)) {
-        updateCoinsInDatabase(user, parsedCoins);
-      }
-    }
-  }, 10000); // Проверка и обновление каждые 10 секунд
-
-  return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
-}, []);
+ //useEffect(() => {
+ // const interval = setInterval(() => {
+ //   const storedUserInfo = localStorage.getItem('userInfo');
+  //  if (storedUserInfo) {
+  //    const userInfo = JSON.parse(storedUserInfo);
+  //    const parsedCoins = userInfo.total_coins;
+ //     const user = localStorage.getItem('user_id');
+ //     if (!isNaN(parsedCoins)) {
+  //      updateCoinsInDatabase(user, parsedCoins);
+ //     }
+//    }
+//  }, 10000); // Проверка и обновление каждые 10 секунд
+//
+ // return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
+//}, []);
 
 
 

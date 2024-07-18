@@ -5,6 +5,7 @@ import { UserInfo } from "../../ContextApi/UserData"
 //import { freeBooster } from "../../Data/Booster"
 import BoosterPop from "../../components/BoosterPopup/BoosterPop"
 import BoosterData from "../../Data/Booster"
+import { getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase } from "../../services/apis";
 
 
 const Booster = () => {
@@ -13,7 +14,7 @@ const Booster = () => {
   const {freeBoosterData, upgradeBoostData} = BoosterData()
   
 
-  const { userInfo } = useContext(UserInfo)
+  const { userInfo, setUserInfo } = useContext(UserInfo);
 
   const [boost, setBoost] = useState(null);
 
@@ -24,6 +25,20 @@ const Booster = () => {
   const handleClosePopup = () => {
     setBoost(null)
   }
+
+ // useEffect(() => {
+    
+//     const storedUserInfo = localStorage.getItem('userInfo');
+//     if (storedUserInfo) {
+//        const userInfo = JSON.parse(storedUserInfo);
+//        const parsedCoins = userInfo.total_coins;
+ //       const user = userInfo.user_id;
+ //       if (!isNaN(parsedCoins)) {
+  //        updateCoinsInDatabase(user, parsedCoins);
+  //      }
+  //    }
+  
+ // }, []);
 
   return (
     <>

@@ -17,6 +17,7 @@ import BoosterData from './ContextApi/BoosterData';
 import Loader from './components/Loader/Loader';
 import SocialContext from './ContextApi/SocialContext';
 import Rank from './Pages/Rank/Rank';
+import { getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase } from "./services/apis";
 
 
 
@@ -233,7 +234,21 @@ useEffect(() => {
   // }, [antHire]);
 
 
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const storedUserInfo = localStorage.getItem('userInfo');
+      if (storedUserInfo) {
+        const userInfo = JSON.parse(storedUserInfo);
+        const parsedCoins = userInfo.total_coins;
+        const user = localStorage.getItem('user_id');
+        if (!isNaN(parsedCoins)) {
+          updateCoinsInDatabase(user, parsedCoins);
+        }
+      }
+    }, 10000); // Проверка и обновление каждые 10 секунд
+  
+    return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
+  }, []);
 
 
   return (
