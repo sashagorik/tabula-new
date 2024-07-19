@@ -72,7 +72,12 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
 
             }
         } 
-        else if (total_coins >= multiTapPrice) {
+        else if (charges > 0) {
+            
+            
+            if (boost.value === "multiTap"){
+                  
+                   if (total_coins >= multiTapPrice) {
 
             console.log(userInfo.user_id,boost.value, boost.charges)
 
@@ -98,6 +103,7 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
                   ...userInfo,
                   total_coins: newTotalCoins,
                   tap_coins: newTapCoins,
+                  
                 });
           
                 // Update database
@@ -106,7 +112,7 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
                 await updateMultitapBooster(userInfo.user_id, newMultiTap );
           
                 // Update state
-                setLevel((prev) => ({ ...prev, multiLevel: newMultiTap }));
+                setLevel ({ multiLevel: newMultiTap });
               } else {
                 alert("Недостаточно монет для покупки следующего уровня MultiTap.");
               }
@@ -114,7 +120,13 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
              //else {
             //alert("Not sufficient amount!!!")
        // }
+    }  
+    else if (boost.value === "fireLimit"){}
 
+    else if (boost.value === "Flashspeed"){}
+
+    else if (boost.value === "Hireant"){}
+}
 
     }
 
