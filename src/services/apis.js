@@ -18,11 +18,11 @@ export const getUserData = async (userId) => {
   
 
 
-export const updateBooster = async (user_id, boosterData) => {
+export const updateMultitapBooster = async (user_id, multitap) => {
   try {
-    const response = await axios.post(`${baseUrl}/api/v1/updateBooster`, {
+    const response = await axios.post(`${baseUrl}/api/v1/updateMultitapBooster`, {
       user_id,
-      boosterData,
+      multitap,
     });
     return response.data;
   } catch (error) {
@@ -108,12 +108,12 @@ export const getBooster = async (user_id) => {
 
 
 
-export const upgradeBooster = async (userId, boosterType) => {
-  return await axios.post(`${baseUrl}/api/v1/upgradeBooster`, {
-    user_id: userId,
-    boosterType
-  });
-};
+//export const upgradeBooster = async (userId, boosterType) => {
+//  return await axios.post(`${baseUrl}/api/v1/upgradeBooster`, {
+//    user_id: userId,
+//    boosterType
+//  });
+//};
 
 
 

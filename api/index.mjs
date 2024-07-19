@@ -216,26 +216,26 @@ app.post('/api/v1/updateTotalTaps', async (req, res) => {
 
 
 ////////////////////////////обновление Multitap B Boosters
-app.post('/api/v1/updateBooster', async (req, res) => {
-  const { user_id, boosterData } = req.body;
-
+app.post('/api/v1/updateMultitapBooster', async (req, res) => {
   try {
-    const booster = await Booster.findOneAndUpdate(
-      { user_id },
-      { $set: boosterData },
-      { new: true, upsert: true }
-    );
+    const { user_id, multitap } = req.body;
+    const booster = await Booster.findOne({ user_id });
 
-    if (!booster) {
-      return res.status(404).json({ message: 'Booster not found' });
+    if (!multitapbooster) {
+      return res.status(404).json({ message: 'Бустер не найден' });
     }
 
-    return res.status(200).json({ message: 'Booster updated successfully', booster });
-  } catch (error) {
-    console.error('Error updating booster:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    booster.multiTap = multitap;
+   
+    
+    await booster.save();
+
+    res.status(200).json({ message: 'multiTap успешно обновлены' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

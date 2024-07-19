@@ -4,7 +4,7 @@ import closeIcon from "../../assets/Task/closeIcon.svg"
 import coin from "../../assets/Task/coinTask.svg"
 //import { useContext } from "react"
 import { UserInfo } from "../../ContextApi/UserData"
-import { upgradeBooster, upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase, updateBooster  } from "../../services/apis"
+import { upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase, updateMultitapBooster  } from "../../services/apis"
 import dot from "../../assets/Booster/dot.svg"
 import { useNavigate } from "react-router-dom"
 
@@ -75,7 +75,7 @@ const BoosterPop = ({ boost, onClose, setBoost }) => {
 
             // console.log(userInfo.user_id,boost.value, boost.charges)
 
-            const resp = await upgradeBooster(userInfo.user_id, boost.value, boost.charges)
+            const resp = await updateBooster(userInfo.user_id, boost.value, boost.charges)
             // console.log(resp)
             if (resp.status === 200) {
                 // console.log("Done")
@@ -102,7 +102,7 @@ const BoosterPop = ({ boost, onClose, setBoost }) => {
                 // Update database
                 await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
                 await updateTapCoinsInDatabase(userInfo.user_id, newTotalCoins);
-                await updateBooster(userInfo.user_id, { multiTap: newMultiTap });
+                await updateMultitapBooster(userInfo.user_id, newMultiTap );
           
                 // Update state
                 setLevel((prev) => ({ ...prev, multiLevel: newMultiTap }));
