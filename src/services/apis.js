@@ -18,7 +18,18 @@ export const getUserData = async (userId) => {
   
 
 
-
+export const updateBooster = async (user_id, boosterData) => {
+  try {
+    const response = await axios.post(`${baseUrl}/api/v1/updateBooster`, {
+      user_id,
+      boosterData,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating booster:', error);
+    throw error;
+  }
+};
 
 
 
@@ -169,18 +180,7 @@ export const updateCoins = async (userId, boosterId) => {
   // Логика для обновления бесплатных бустеров
 };
 
-export const updateBooster = async (user_id, boosterData) => {
-  try {
-    const response = await axios.post(`${baseUrl}/api/v1/updateBooster`, {
-      user_id,
-      boosterData,
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error updating booster:', error);
-    throw error;
-  }
-};
+
 
 
 

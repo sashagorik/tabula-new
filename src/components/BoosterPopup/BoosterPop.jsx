@@ -4,7 +4,7 @@ import closeIcon from "../../assets/Task/closeIcon.svg"
 import coin from "../../assets/Task/coinTask.svg"
 //import { useContext } from "react"
 import { UserInfo } from "../../ContextApi/UserData"
-import { upgradeBooster, upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase  } from "../../services/apis"
+import { upgradeBooster, upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase, updateBooster  } from "../../services/apis"
 import dot from "../../assets/Booster/dot.svg"
 import { useNavigate } from "react-router-dom"
 
@@ -102,7 +102,7 @@ const BoosterPop = ({ boost, onClose, setBoost }) => {
                 // Update database
                 await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
                 await updateTapCoinsInDatabase(userInfo.user_id, newTotalCoins);
-                await upgradeBooster(userInfo.user_id, { multiTap: newMultiTap });
+                await updateBooster(userInfo.user_id, { multiTap: newMultiTap });
           
                 // Update state
                 setLevel((prev) => ({ ...prev, multiLevel: newMultiTap }));
