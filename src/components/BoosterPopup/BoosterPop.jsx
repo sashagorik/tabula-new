@@ -9,7 +9,7 @@ import dot from "../../assets/Booster/dot.svg"
 import { useNavigate } from "react-router-dom"
 
 
-const BoosterPop = ({ boost, onClose, setBoost }) => {
+const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
 
 
     const { userInfo, setUserInfo } = useContext(UserInfo)
@@ -27,7 +27,7 @@ const BoosterPop = ({ boost, onClose, setBoost }) => {
         const tap_coins = userResp.tap_coins;
         const multiTap= boosterResp.multiTap;
 
-        const multiTapPrice = (2 ** multiTap) * 200;
+        const multiTapPrice = (1 ** multiTap) * 200;
 
         //const totalCoins = userInfo.total_coins
         const charges = boost.charges
@@ -102,7 +102,7 @@ const BoosterPop = ({ boost, onClose, setBoost }) => {
           
                 // Update database
                 await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
-                await updateTapCoinsInDatabase(userInfo.user_id, newTotalCoins);
+                await updateTapCoinsInDatabase(userInfo.user_id, newTapCoins);
                 await updateMultitapBooster(userInfo.user_id, newMultiTap );
           
                 // Update state

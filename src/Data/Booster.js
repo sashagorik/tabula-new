@@ -170,12 +170,12 @@ const handleBuyMultiTap = async () => {
             id: 3,
             name: "Multi Tap",
             icon: MultiTap,
-            charges: (2 ** level.multiLevel) * 200,
+            charges: (1 ** level.multiLevel) * 200,
             level: ` ${level.multiLevel} Level`,
             value: "multiTap",
             description: "Increase the amount of energy",
             power: "+100 energy points for level 1",
-            onBuy: handleBuyMultiTap
+            
         },
         {
             id: 4,
