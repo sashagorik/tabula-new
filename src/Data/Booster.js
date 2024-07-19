@@ -59,7 +59,7 @@ const BoosterData = () => {
         const resp = await getBooster(userInfo.user_id)
         setLevel({ ...level, 
           multiLevel: resp.multiTap, 
-          fireLimit: resp.firelimit, 
+          fireLimit: resp.fireLimit, 
           flashSpeed: resp.flashSpeed,
           Hireant: resp.Hireant })
     }
