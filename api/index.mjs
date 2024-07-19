@@ -221,7 +221,7 @@ app.post('/api/v1/updateMultitapBooster', async (req, res) => {
     const { user_id, multitap } = req.body;
     const booster = await Booster.findOne({ user_id });
 
-    if (!multitapbooster) {
+    if (!booster) {
       return res.status(404).json({ message: 'Бустер не найден' });
     }
 

@@ -71,23 +71,24 @@ const BoosterPop = ({ boost, onClose, setBoost }) => {
 
 
             }
-        } else if (total_coins > charges) {
+        } 
+        else if (total_coins >= multiTapPrice) {
 
-            // console.log(userInfo.user_id,boost.value, boost.charges)
+            console.log(userInfo.user_id,boost.value, boost.charges)
 
-            const resp = await updateBooster(userInfo.user_id, boost.value, boost.charges)
-            // console.log(resp)
-            if (resp.status === 200) {
-                // console.log("Done")
-                let tapCoin = userInfo.tap_coins + 1
-                let updateCoins = total_coins - charges
-                setUserInfo({ ...userInfo, tap_coins: tapCoin })
-                setUserInfo({ ...userInfo, total_coins: updateCoins })
-                setBoost("")
-                navigate("/")
-            }
+          //const resp = await updateBooster(userInfo.user_id, boost.value, boost.charges)
+          //  console.log(resp)
+          // if (resp.status === 200) {
+               // console.log("Done")
+           //    let tapCoin = userInfo.tap_coins + 1
+           //    let updateCoins = total_coins - charges
+           //   setUserInfo({ ...userInfo, tap_coins: tapCoin })
+            //   setUserInfo({ ...userInfo, total_coins: updateCoins })
+            //   setBoost("")
+            //   navigate("/")
+           //}
 
-           else if (total_coins >= multiTapPrice) {
+          // else if (total_coins >= multiTapPrice) {
                 const newTotalCoins = total_coins - multiTapPrice;
                 const newMultiTap = multiTap + 1;
                 const newTapCoins = tap_coins + 1;
@@ -109,10 +110,10 @@ const BoosterPop = ({ boost, onClose, setBoost }) => {
               } else {
                 alert("Недостаточно монет для покупки следующего уровня MultiTap.");
               }
-            } 
-             else {
-            alert("Not sufficient amount!!!")
-        }
+            //} 
+             //else {
+            //alert("Not sufficient amount!!!")
+       // }
 
 
     }
