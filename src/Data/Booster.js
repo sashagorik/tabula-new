@@ -174,14 +174,14 @@ const handleBuyMultiTap = async () => {
             level: ` ${level.multiLevel} Level`,
             value: "multiTap",
             description: "Increase the amount of energy",
-            power: "+100 energy points for level 1",
+            power: "+1 coin for every tap",
             
         },
         {
             id: 4,
             name: "Fire Limit",
             icon: FireLimit,
-            charges: (2 ** level.fireLimit) * 200,
+            charges: (1 ** level.fireLimit) * 200,
             level: ` ${level.fireLimit} Level`,
             value: "fireLimit",
             description: "Increase the amount of energy",

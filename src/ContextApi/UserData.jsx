@@ -29,6 +29,7 @@ const UserData = ({ children }) => {
         tap_coins: 1,
         total_taps: 500,
         allCoins : 1,
+        fireLimit: 1,
 
         no_of_taps: 0,
         ton_coins: 0,

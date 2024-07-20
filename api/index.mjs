@@ -255,6 +255,7 @@ app.post('/api/v1/updateFirelimit', async (req, res) => {
    
     
     await booster.save();
+    await user.save();
 
     res.status(200).json({ message: 'fireLimit успешно обновлены' });
   } catch (err) {

@@ -4,15 +4,17 @@ import closeIcon from "../../assets/Task/closeIcon.svg"
 import coin from "../../assets/Task/coinTask.svg"
 //import { useContext } from "react"
 import { UserInfo } from "../../ContextApi/UserData"
-import { upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase, updateMultitapBooster  } from "../../services/apis"
+import { upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase, updateMultitapBooster, updateFireLimitInDatabase  } from "../../services/apis"
 import dot from "../../assets/Booster/dot.svg"
 import { useNavigate } from "react-router-dom"
+import { BoosterInfo } from "../../ContextApi/BoosterData";
 
 
 const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
 
 
     const { userInfo, setUserInfo } = useContext(UserInfo)
+    const { fireLimit, setfireLimit, multiTap, setMultiTap } = useContext(BoosterInfo);
     const navigate = useNavigate()
     let turboTimeoutId = null;
     if (!boost) return null;
@@ -29,7 +31,7 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
         const used_taps = userResp.used_taps;
 
         const multiTap= boosterResp.multiTap;
-        const fireLimit = boosterResp.firelimit;
+        const fireLimit = boosterResp.fireLimit;
 
         const multiTapPrice = (1 ** multiTap) * 200;
         const fireLimitPrice = (1 ** fireLimit) * 200;
@@ -139,6 +141,8 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
             // Update local storage
             setUserInfo({
               ...userInfo,
+              fireLimit: newFireLimit,
+              total_coins: newTotalCoins,
               total_taps: newTotalTaps,
               used_taps: newUsedTaps,
               
@@ -152,7 +156,7 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
             // Update state
             setLevel ({ fireLimit: newFireLimit });
           } else {
-            alert("Недостаточно монет для покупки следующего уровня MultiTap.");
+            alert("Недостаточно монет для покупки следующего уровня fireLimit.");
           }
         //} 
          //else {
