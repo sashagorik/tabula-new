@@ -16,6 +16,9 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
     const { userInfo, setUserInfo } = useContext(UserInfo)
     const { fireLimit, setfireLimit, multiTap, setMultiTap } = useContext(BoosterInfo);
     const navigate = useNavigate()
+    const [showEffect, setShowEffect] = useState(false); 
+
+
     let turboTimeoutId = null;
     if (!boost) return null;
 
@@ -168,11 +171,15 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
 
     else if (boost.value === "Hireant"){}
 }
-
+setShowEffect(true);
+    setTimeout(() => {
+      setShowEffect(false);
+      onClose();
+    }, 2000);
     }
 
     return (
-        <div className={`boosterPopMainDiv`}>
+        <div className={`boosterPopMainDiv ${showEffect ? 'effect' : ''}`}>
 
 
             <div className="crossBtnDiv" onClick={onClose} >

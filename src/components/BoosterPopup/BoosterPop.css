@@ -88,3 +88,22 @@
   margin-top: 5%;
   font-size: 2.2vh;
 }
+
+.boosterPopMainDiv.effect {
+  animation: purchaseEffect 2s forwards;
+}
+
+@keyframes purchaseEffect {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
