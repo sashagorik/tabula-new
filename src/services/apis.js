@@ -108,6 +108,20 @@ export const updateFireLimitInDatabase = async (user_id, firelimit, total_taps, 
 };
 
 
+export const updateFlashspeedInDatabase = async (user_id, flashSpeed) => {
+  try {
+    const response = await axios.post(`${baseUrl}/api/v1/updateFlashSpeed`, {
+      user_id,
+      flashSpeed 
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Ошибка при обновлении flashspeed в базе данных');
+  }
+};
+
+
+
 export const getBooster = async (user_id) => {
   try {
     const response = await axios.get(`${baseUrl}/api/v1/boosterDetails`, {

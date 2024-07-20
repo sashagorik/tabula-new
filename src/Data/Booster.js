@@ -191,7 +191,7 @@ const handleBuyMultiTap = async () => {
             id: 5,
             name: "Flash Speed",
             icon: FlashSpeed,
-            charges: (2 ** level.flashSpeed) * 200,
+            charges: (level.flashSpeed) * 200,
             level: ` ${level.flashSpeed} Level`,
             value: "Flashspeed",
             description: "Increase the amount of energy",

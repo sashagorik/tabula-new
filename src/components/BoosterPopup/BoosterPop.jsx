@@ -4,7 +4,7 @@ import closeIcon from "../../assets/Task/closeIcon.svg"
 import coin from "../../assets/Task/coinTask.svg"
 //import { useContext } from "react"
 import { UserInfo } from "../../ContextApi/UserData"
-import { upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase, updateMultitapBooster, updateFireLimitInDatabase  } from "../../services/apis"
+import { upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase, updateMultitapBooster, updateFireLimitInDatabase, updateFlashspeedInDatabase  } from "../../services/apis"
 import dot from "../../assets/Booster/dot.svg"
 import { useNavigate } from "react-router-dom"
 import { BoosterInfo } from "../../ContextApi/BoosterData";
@@ -135,10 +135,7 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
               } else {
                 alert("Недостаточно монет для покупки следующего уровня MultiTap.");
               }
-            //} 
-             //else {
-            //alert("Not sufficient amount!!!")
-       // }
+            
     }  
     else if (boost.value === "fireLimit"){if (total_coins >= boost.charges) {
 
@@ -180,13 +177,54 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
           else {
             alert("Недостаточно монет для покупки следующего уровня fireLimit.");
           }
-        //} 
-         //else {
-        //alert("Not sufficient amount!!!")
-   // }
+       
 }
 
-    else if (boost.value === "Flashspeed"){}
+    else if (boost.value === "Flashspeed"){
+
+
+        if (total_coins >= boost.charges) {
+
+            console.log(userInfo.user_id,boost.value, boost.charges)
+    
+        
+                const newTotalCoins = userInfo.total_coins - boost.charges;
+                const newFlashspeed = userInfo.flash_speed + 1;
+                //const newTotalTaps = total_taps + 100;
+                //const newUsedTaps = used_taps + 100;
+          
+                // Update local storage
+                setUserInfo({
+                  ...userInfo,
+                  flash_speed: newFlashspeed,
+                  total_coins: newTotalCoins,
+                  
+                });
+          
+                // Update database
+                await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
+                //await updateTapCoinsInDatabase(userInfo.user_id, newTapCoins);
+                await updateFlashspeedInDatabase(userInfo.user_id, newFlashspeed );
+          
+                // Update state
+                //setLevel ({newFireLimit});
+                setShowEffect(true);
+                setTimeout(() => {
+                setShowEffect(false);
+                onClose();
+                }, 2000);
+                setBoost("")
+                navigate("/")
+              } 
+    
+              
+              else {
+                alert("Недостаточно монет для покупки следующего уровня fireLimit.");
+              }
+
+
+
+    }
 
     else if (boost.value === "Hireant"){}
 }

@@ -30,13 +30,15 @@ const UserData = ({ children }) => {
         total_taps: 500,
         allCoins : 1,
         fireLimit: 1,
+        flash_speed: 1,
+      
 
         no_of_taps: 0,
         ton_coins: 0,
         gold_coins: 0,
         used_taps: 500,
         avatar: newbies,
-        flash_speed: 1,
+        
         Test: 0,
         recharge: 1,
         turbo: 1,

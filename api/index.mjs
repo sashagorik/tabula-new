@@ -264,6 +264,29 @@ app.post('/api/v1/updateFirelimit', async (req, res) => {
 });
 
 
+////////////////////////////обновление flashspeed B Boosters
+app.post('/api/v1/updateFlashSpeed', async (req, res) => {
+  try {
+    const { user_id, flashSpeed } = req.body;
+    const booster = await Booster.findOne({ user_id });
+  
+
+    if (!booster) {
+      return res.status(404).json({ message: 'Бустер не найден' });
+    }
+
+    booster.flashSpeed = flashSpeed;
+    
+    await booster.save();
+   
+
+    res.status(200).json({ message: 'flashspeed успешно обновлены' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
