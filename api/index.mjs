@@ -237,6 +237,33 @@ app.post('/api/v1/updateMultitapBooster', async (req, res) => {
 });
 
 
+
+////////////////////////////обновление fireLimit B Boosters
+app.post('/api/v1/updateFirelimit', async (req, res) => {
+  try {
+    const { user_id, firelimit, total_taps, used_taps } = req.body;
+    const booster = await Booster.findOne({ user_id });
+    const user =  await User.findOne({ user_id });
+
+    if (!booster) {
+      return res.status(404).json({ message: 'Бустер не найден' });
+    }
+
+    booster.fireLimit = firelimit;
+    user.total_taps = total_taps;
+    user.used_taps = used_taps;
+   
+    
+    await booster.save();
+
+    res.status(200).json({ message: 'fireLimit успешно обновлены' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

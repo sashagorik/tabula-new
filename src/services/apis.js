@@ -93,6 +93,20 @@ export const updateTapCoinsInDatabase = async (user_id, tap_coins) => {
 
 
 
+export const updateFireLimitInDatabase = async (user_id, firelimit, total_taps, used_taps) => {
+  try {
+    const response = await axios.post(`${baseUrl}/api/v1/updateFirelimit`, {
+      user_id,
+      firelimit,
+      total_taps,
+      used_taps
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Ошибка при обновлении fireLimit в базе данных');
+  }
+};
+
 
 export const getBooster = async (user_id) => {
   try {

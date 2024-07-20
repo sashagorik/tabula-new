@@ -25,9 +25,14 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
 
         const total_coins = userResp.total_coins;
         const tap_coins = userResp.tap_coins;
+        const total_taps = userResp.total_taps;
+        const used_taps = userResp.used_taps;
+
         const multiTap= boosterResp.multiTap;
+        const fireLimit = boosterResp.firelimit;
 
         const multiTapPrice = (1 ** multiTap) * 200;
+        const fireLimitPrice = (1 ** fireLimit) * 200;
 
         //const totalCoins = userInfo.total_coins
         const charges = boost.charges
@@ -121,7 +126,39 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
             //alert("Not sufficient amount!!!")
        // }
     }  
-    else if (boost.value === "fireLimit"){}
+    else if (boost.value === "fireLimit"){if (total_coins >= fireLimitPrice) {
+
+        console.log(userInfo.user_id,boost.value, boost.charges)
+
+    
+            const newTotalCoins = total_coins - fireLimitPrice;
+            const newFireLimit = fireLimit + 1;
+            const newTotalTaps = total_taps + 100;
+            const newUsedTaps = used_taps + 100;
+      
+            // Update local storage
+            setUserInfo({
+              ...userInfo,
+              total_taps: newTotalTaps,
+              used_taps: newUsedTaps,
+              
+            });
+      
+            // Update database
+            await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
+            //await updateTapCoinsInDatabase(userInfo.user_id, newTapCoins);
+            await updateFireLimitInDatabase(userInfo.user_id, newFireLimit, newTotalTaps, newUsedTaps );
+      
+            // Update state
+            setLevel ({ fireLimit: newFireLimit });
+          } else {
+            alert("Недостаточно монет для покупки следующего уровня MultiTap.");
+          }
+        //} 
+         //else {
+        //alert("Not sufficient amount!!!")
+   // }
+}
 
     else if (boost.value === "Flashspeed"){}
 
