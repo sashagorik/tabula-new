@@ -89,7 +89,7 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
             
             if (boost.value === "multiTap"){
                   
-                   if (total_coins >= multiTapPrice) {
+                   if (total_coins >= boost.charges) {
 
             console.log(userInfo.user_id,boost.value, boost.charges)
 
@@ -106,7 +106,7 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
            //}
 
           // else if (total_coins >= multiTapPrice) {
-                const newTotalCoins = total_coins - multiTapPrice;
+                const newTotalCoins = total_coins - boost.charges;
                 const newMultiTap = multiTap + 1;
                 const newTapCoins = tap_coins + 1;
           
