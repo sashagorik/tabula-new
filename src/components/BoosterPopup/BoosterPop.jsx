@@ -8,15 +8,17 @@ import { upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, upda
 import dot from "../../assets/Booster/dot.svg"
 import { useNavigate } from "react-router-dom"
 import { BoosterInfo } from "../../ContextApi/BoosterData";
+import BoosterData from "../../Data/Booster"
 
 
-const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
+const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
 
 
     const { userInfo, setUserInfo } = useContext(UserInfo)
-    const { fireLimit, setfireLimit, multiTap, setMultiTap } = useContext(BoosterInfo);
     const navigate = useNavigate()
     const [showEffect, setShowEffect] = useState(false); 
+
+
 
 
     let turboTimeoutId = null;
@@ -122,7 +124,14 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
                 await updateMultitapBooster(userInfo.user_id, newMultiTap );
           
                 // Update state
-                setLevel ({ multiLevel: newMultiTap });
+                //setLevel ({ multiLevel: newMultiTap });
+                setShowEffect(true);
+                setBoost("")
+                navigate("/")
+    setTimeout(() => {
+      setShowEffect(false);
+      onClose();
+    }, 2000);
               } else {
                 alert("Недостаточно монет для покупки следующего уровня MultiTap.");
               }
@@ -131,12 +140,12 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
             //alert("Not sufficient amount!!!")
        // }
     }  
-    else if (boost.value === "fireLimit"){if (total_coins >= fireLimitPrice) {
+    else if (boost.value === "fireLimit"){if (total_coins >= boost.charges) {
 
         console.log(userInfo.user_id,boost.value, boost.charges)
 
     
-            const newTotalCoins = total_coins - fireLimitPrice;
+            const newTotalCoins = userInfo.total_coins - boost.charges;
             const newFireLimit = fireLimit + 1;
             const newTotalTaps = total_taps + 100;
             const newUsedTaps = used_taps + 100;
@@ -157,8 +166,18 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
             await updateFireLimitInDatabase(userInfo.user_id, newFireLimit, newTotalTaps, newUsedTaps );
       
             // Update state
-            setLevel ({ fireLimit: newFireLimit });
-          } else {
+            //setLevel ({newFireLimit});
+            setShowEffect(true);
+            setTimeout(() => {
+            setShowEffect(false);
+            onClose();
+            }, 2000);
+            setBoost("")
+            navigate("/")
+          } 
+
+          
+          else {
             alert("Недостаточно монет для покупки следующего уровня fireLimit.");
           }
         //} 
@@ -171,12 +190,12 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setLevel }) => {
 
     else if (boost.value === "Hireant"){}
 }
-setShowEffect(true);
-    setTimeout(() => {
-      setShowEffect(false);
-      onClose();
-    }, 2000);
+
     }
+
+      // Определяем charges и level перед использованием в JSX
+      //const charges = boost.charges;
+     // const level = boost.level ? parseInt(boost.level.replace(/\D/g, '')) : 0;
 
     return (
         <div className={`boosterPopMainDiv ${showEffect ? 'effect' : ''}`}>
@@ -205,7 +224,7 @@ setShowEffect(true);
                 </div>
                 <div className="BoostPopCharge mx-1">{boost.charges === 0 ? "Free" : boost.charges}</div>
                 <div className="BoostPopCharge mx-1 "> <img src={dot} alt="dot" width={10} />
-                    <span className="mx-1">{boost.charges !== 0 ? (parseInt(boost.level.split("")[1]) + 1) + " lvl" : " Free"}</span>
+                    <span className="mx-1">{boost.charges !== 0 ? (parseInt(boost.level) + 1) + " lvl" : " Free"}</span>
                 </div>
             </div>
 

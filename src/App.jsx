@@ -136,21 +136,6 @@ function App() {
  //   }
 // }, []);
 
-const checkAndAddUserToDB = async (userId) => {
-  try {
-    // Проверяем наличие пользователя в базе данных
-    const response = await axios.post(`${baseUrl}/api/v1/checkUser`, { user_id: userId });
-    if (response.data.exists) {
-      console.log('User already exists in the database');
-    } else {
-      // Если пользователя нет, добавляем его
-      await axios.post(`${baseUrl}/api/v1/addUser`, { user_id: userId });
-      console.log('User added to the database');
-    }
-  } catch (error) {
-    console.error('Error checking or adding user:', error);
-  }
-};
 
 useEffect(() => {
   const searchParams = new URLSearchParams(window.location.hash.substring(1));
@@ -183,6 +168,21 @@ useEffect(() => {
   }
 }, []);
    
+const checkAndAddUserToDB = async (userId) => {
+  try {
+    // Проверяем наличие пользователя в базе данных
+    const response = await axios.post(`${baseUrl}/api/v1/checkUser`, { user_id: userId });
+    if (response.data.exists) {
+      console.log('User already exists in the database');
+    } else {
+      // Если пользователя нет, добавляем его
+      await axios.post(`${baseUrl}/api/v1/addUser`, { user_id: userId });
+      console.log('User added to the database');
+    }
+  } catch (error) {
+    console.error('Error checking or adding user:', error);
+  }
+};
 
   // for ocket.connection and sending id 
   //useEffect(() => {
