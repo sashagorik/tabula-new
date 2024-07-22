@@ -245,7 +245,7 @@ const checkAndAddUserToDB = async (userId) => {
           updateCoinsInDatabase(user, parsedCoins);
         }
       }
-    }, 2000); // Проверка и обновление каждые 10 секунд
+    }, 20000); // Проверка и обновление каждые 10 секунд
   
     return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
   }, []);

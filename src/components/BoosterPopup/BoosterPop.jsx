@@ -52,8 +52,8 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
 
 
         if (charges === 0) {
-            const resp = await upgradeFreeBoosterApi(userInfo.user_id, boost.value)
-            if (resp.status === 200) {
+            //const resp = await upgradeFreeBoosterApi(userInfo.user_id, boost.value)
+            //if (resp.status === 200) {
 
 
                 if (boost.value === "Recharge") {
@@ -61,28 +61,25 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
                     setUserInfo({ ...userInfo, used_taps: total_taps })
                     console.log(userInfo)
                     navigate("/")
+
+
                 } else if (boost.value === "Turbo") {
+                    
+                    setUserInfo({ ...userInfo, isTurbo: true });
+                    localStorage.setItem("isTurbo", true);
 
-                    let no_taps = userInfo.no_of_taps;
-
-                    localStorage.setItem("turbo_use", true);
-                    setUserInfo({ ...userInfo, isTurbo: true, no_of_taps: no_taps * 5 });
-
-                    if (turboTimeoutId) {
-                        clearTimeout(turboTimeoutId);
-                    }
-
-                    turboTimeoutId = setTimeout(() => {
-                        localStorage.removeItem("turbo_use");
-                        setUserInfo({ ...userInfo, isTurbo: false });
-                    }, 20000);
+                 // Удаление isTurbo из localStorage через 10 секунд
+                  setTimeout(() => {
+                 localStorage.removeItem("isTurbo");
+                  setUserInfo(prevUserInfo => ({ ...prevUserInfo, isTurbo: false }));
+                  }, 10000);
 
                     setBoost("");
-                    navigate("/")
+                    navigate("/");
                 }
 
 
-            }
+            //}
         } 
         else if (charges > 0) {
             

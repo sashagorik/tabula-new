@@ -25,6 +25,7 @@ const Home = () => {
   const [totalCoins, setTotalCoins] = useState(0);
   const { userInfo, setUserInfo } = useContext(UserInfo);
   const [isDataFetched, setIsDataFetched] = useState(false);
+  const [tapCoins, setTapCoins] = useState(userInfo.tap_coins || 0);
 
 
 
@@ -74,7 +75,7 @@ const Home = () => {
 const getData = async () => {
   try {
     const resp = await getUserData(userInfo.user_id);
-    //const booster = await getBooster(userInfo.user_id);
+    const booster = await getBooster(userInfo.user_id);
     //const getFreeBoost = await getFreeBoosterApi(userInfo.user_id);
 
     console.log("API response:", resp);
@@ -92,8 +93,8 @@ const getData = async () => {
         total_coins: resp.allCoins,
         //tap_coins: booster.data.multiTap,
         total_taps: resp.total_taps,
-        used_taps: resp.used_taps
-       // flash_speed: booster.data.flashSpeed,
+       // used_taps: resp.used_taps
+       flash_speed: booster.flashSpeed,
        // recharge: 3 - getFreeBoost.data.recharge,
        // turbo: 3 - getFreeBoost.data.turbo,
         //allCoins: resp.data.coin,
@@ -105,6 +106,10 @@ const getData = async () => {
   } catch (error) {
     console.error('Ошибка при получении данных пользователя:', error);
   }
+
+  //for turbo
+
+
 
 
     // // for turbo functioanlity
@@ -126,37 +131,37 @@ const getData = async () => {
 
 
   // turbo functioanlities
-  const getTurboData = async () => {
+ //const getTurboData = async () => {
 
 
     // console.log(userInfo.isTurbo)
 
-    try {
-      if (userInfo.isTurbo) {
-        const booster = await getBooster(userInfo.user_id);
-        const getFreeBoost = await getFreeBoosterApi(userInfo.user_id);
+  //  try {
+   //   if (userInfo.isTurbo) {
+   //     const booster = await getBooster(userInfo.user_id);
+   //     const getFreeBoost = await getFreeBoosterApi(userInfo.user_id);
 
-        if (getFreeBoost.data && (3 - getFreeBoost.data.turbo) !== 0) {
-          let totalTap = (3 - getFreeBoost.data.turbo) * 5 * booster.data.multiTap;
-          setUserInfo(prevUserInfo => ({ ...prevUserInfo, tap_coins: totalTap }));
-          // console.log(totalTap);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching booster data:", error);
-    }
-
-
+   //     if (getFreeBoost.data && (3 - getFreeBoost.data.turbo) !== 0) {
+   //       let totalTap = (3 - getFreeBoost.data.turbo) * 5 * booster.data.multiTap;
+   //       setUserInfo(prevUserInfo => ({ ...prevUserInfo, tap_coins: totalTap }));
+   //       // console.log(totalTap);
+   //     }
+   //   }
+  //  } catch (error) {
+  //    console.error("Error fetching booster data:", error);
+  //  }
 
 
-  };
+
+
+ // };
 
   // for turbo funtioanlities
-  useEffect(() => {
-    setTimeout(() => {
-      getTurboData();
-    }, 500)
-  }, [userInfo.user_id, userInfo.isTurbo]);
+ // useEffect(() => {
+ //   setTimeout(() => {
+ //    getTurboData();
+ //   }, 500)
+ // }, [userInfo.user_id, userInfo.isTurbo]);
 
 
   // console.log(userInfo)
@@ -218,6 +223,13 @@ const getData = async () => {
     // console.log("IIIIDDDDD",userInfo.user_id)
     // socket.emit("message", `${userInfo.user_id}, ${userInfo.tap_coins}`);
 
+    if (localStorage.getItem("isTurbo")) {
+      const newTotalCoins = userInfo.total_coins + (userInfo.tap_coins*10);
+      setUserInfo({...userInfo,total_coins:newTotalCoins})
+      handleTap();
+    }
+  
+    else{
 
     const newTotalCoins = userInfo.total_coins + userInfo.tap_coins;
     setUserInfo({...userInfo,total_coins:newTotalCoins})
@@ -227,7 +239,7 @@ const getData = async () => {
     localStorage.setItem("user_coins", newTotalCoins);
 
     // adding taps
-    handleTap();
+    handleTap();}
 
     // getting +2 position whener use clicked to make +2 position
     const coinRect = e.target.getBoundingClientRect();
@@ -436,8 +448,6 @@ const getData = async () => {
 //
  // return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
 //}, []);
-
-
 
 
 

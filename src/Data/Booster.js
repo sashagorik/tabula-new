@@ -78,49 +78,7 @@ const BoosterData = () => {
 
 //////////////////////////////////////////Покупка Multitap
 
-const handleBuyMultiTap = async () => {
-  try {
-    const userResp = await getUserData(userInfo.user_id);
-    const boosterResp = await getBooster(userInfo.user_id);
-    const total_coins = userResp.total_coins;
-    const tap_coins = userResp.tap_coins;
-    const multiTap= boosterResp.multiTap;
 
-    const multiTapPrice = (2 ** multiTap) * 200;
-
-    if (total_coins >= multiTapPrice) {
-      const newTotalCoins = total_coins - multiTapPrice;
-      const newMultiTap = multiTap + 1;
-      const newTapCoins = tap_coins + 1;
-
-      // Update local storage
-      setUserInfo({
-        ...userInfo,
-        total_coins: newTotalCoins,
-        tap_coins: newTapCoins,
-      });
-
-      // Update database
-      await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
-      await updateTapCoinsInDatabase(userInfo.user_id, newTotalCoins);
-      await updateBooster(userInfo.user_id, { multiTap: newMultiTap });
-
-      // Update state
-      setLevel((prev) => ({ ...prev, multiLevel: newMultiTap }));
-    } else {
-      alert("Недостаточно монет для покупки следующего уровня MultiTap.");
-    }
-  } catch (error) {
-    console.error("Ошибка при покупке MultiTap бустера", error);
-  }
-};
-
-
-
-
-
-
-//////////////////////////////////////////////
 
 
 

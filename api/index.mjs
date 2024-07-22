@@ -193,7 +193,7 @@ app.post('/api/v1/updateTapCoins', async (req, res) => {
 ////////////////////////////////////////////////////////
 
 
-//Эндпоинт для обновления монет в базе
+//Эндпоинт для обновления тапов в базе
 app.post('/api/v1/updateTotalTaps', async (req, res) => {
   try {
     const { user_id, total_taps } = req.body;

@@ -36,7 +36,7 @@ const UserData = ({ children }) => {
         no_of_taps: 0,
         ton_coins: 0,
         gold_coins: 0,
-        used_taps: 500,
+        used_taps: 0,
         avatar: newbies,
         
         Test: 0,
