@@ -26,7 +26,7 @@ const Home = () => {
   const { userInfo, setUserInfo } = useContext(UserInfo);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [tapCoins, setTapCoins] = useState(userInfo.tap_coins || 0);
-  const [isProcessing, setIsProcessing] = useState(false); // Add state for processing
+  //const [isProcessing, setIsProcessing] = useState(false); // Add state for processing
 
 
 
@@ -233,6 +233,15 @@ const getData = async () => {
         tap_coins: userInfo.tap_coins*10,
         total_coins: newTotalCoins})
       handleTap();
+// getting +2 position whener use clicked to make +2 position
+const coinRect = e.target.getBoundingClientRect();
+handleInteraction(
+  e.clientX - coinRect.left,
+  e.clientY - coinRect.top,
+  coinRect.width,
+  coinRect.height
+);
+      
     }
   
     else{
@@ -245,25 +254,29 @@ const getData = async () => {
     localStorage.setItem("user_coins", newTotalCoins);
 
     // adding taps
-    handleTap();}
+    handleTap();
+  
+  // getting +2 position whener use clicked to make +2 position
+  const coinRect = e.target.getBoundingClientRect();
+  handleInteraction(
+    e.clientX - coinRect.left,
+    e.clientY - coinRect.top,
+    coinRect.width,
+    coinRect.height
+  );
+};
+  
+  }
 
-    // getting +2 position whener use clicked to make +2 position
-    const coinRect = e.target.getBoundingClientRect();
-    handleInteraction(
-      e.clientX - coinRect.left,
-      e.clientY - coinRect.top,
-      coinRect.width,
-      coinRect.height
-    );
-  };
+    
 
   // facing issue while tapping with 2 fingure that is solution
   const handleTouchStart = (e) => {
     // Проверка, чтобы избежать повторного начисления
-  if (isAnimating) return;
+  //if (isAnimating) return;
 
   // Установка состояния анимации
-  setIsAnimating(true);
+  //setIsAnimating(true);
 
 
     // vibration for android and ios both
