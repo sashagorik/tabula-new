@@ -299,11 +299,13 @@ const getData = async () => {
 
 
     // on touch showing +2
-    const coinRect = e.target.getBoundingClientRect();
     Array.from(e.touches).forEach((touch) => {
-      const touchX = touch.clientX - coinRect.left;
-      const touchY = touch.clientY - coinRect.top;
-      handleInteraction(touchX, touchY, coinRect.width, coinRect.height);
+      handleInteraction(
+        touch.clientX - e.target.getBoundingClientRect().left,
+        touch.clientY - e.target.getBoundingClientRect().top,
+        e.target.getBoundingClientRect().width,
+        e.target.getBoundingClientRect().height
+      );
 
 
 
