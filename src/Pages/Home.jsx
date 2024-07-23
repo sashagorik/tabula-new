@@ -26,6 +26,7 @@ const Home = () => {
   const { userInfo, setUserInfo } = useContext(UserInfo);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [tapCoins, setTapCoins] = useState(userInfo.tap_coins || 0);
+  const [isProcessing, setIsProcessing] = useState(false); // Add state for processing
 
 
 
@@ -223,9 +224,14 @@ const getData = async () => {
     // console.log("IIIIDDDDD",userInfo.user_id)
     // socket.emit("message", `${userInfo.user_id}, ${userInfo.tap_coins}`);
 
+    
+
     if (localStorage.getItem("isTurbo")) {
+      //const turboTap = userInfo.tap_coins*10;
       const newTotalCoins = userInfo.total_coins + (userInfo.tap_coins*10);
-      setUserInfo({...userInfo,total_coins:newTotalCoins})
+      setUserInfo({...userInfo,
+        tap_coins: userInfo.tap_coins*10,
+        total_coins: newTotalCoins})
       handleTap();
     }
   
@@ -253,6 +259,11 @@ const getData = async () => {
 
   // facing issue while tapping with 2 fingure that is solution
   const handleTouchStart = (e) => {
+    // Проверка, чтобы избежать повторного начисления
+  if (isAnimating) return;
+
+  // Установка состояния анимации
+  setIsAnimating(true);
 
 
     // vibration for android and ios both
@@ -267,16 +278,16 @@ const getData = async () => {
       window.Telegram?.WebApp?.HapticFeedback.impactOccurred("medium");
     }
 
-
+  
 
 
     // for char anim
-    if (isAnimating !== true) {
-      setIsAnimating(true);
-    }
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 500);
+   // if (isAnimating !== true) {
+   //   setIsAnimating(true);
+   // }
+  //  setTimeout(() => {
+   //   setIsAnimating(false);
+  //  }, 500);
 
 
     //socket.emit("message", `${userInfo.user_id}, ${userInfo.tap_coins}`);
