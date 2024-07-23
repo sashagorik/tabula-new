@@ -250,10 +250,10 @@ const getData = async () => {
     // getting +2 position whener use clicked to make +2 position
     const coinRect = e.target.getBoundingClientRect();
     handleInteraction(
-      e.clientX - e.target.getBoundingClientRect().left,
-    e.clientY - e.target.getBoundingClientRect().top,
-    e.target.getBoundingClientRect().width,
-    e.target.getBoundingClientRect().height
+      e.clientX - coinRect.left,
+      e.clientY - coinRect.top,
+      coinRect.width,
+      coinRect.height
     );
   };
 
@@ -310,13 +310,11 @@ const getData = async () => {
 
 
     // on touch showing +2
+    const coinRect = e.target.getBoundingClientRect();
     Array.from(e.touches).forEach((touch) => {
-      handleInteraction(
-        touch.clientX - e.target.getBoundingClientRect().left,
-        touch.clientY - e.target.getBoundingClientRect().top,
-        e.target.getBoundingClientRect().width,
-        e.target.getBoundingClientRect().height
-      );
+      const touchX = touch.clientX - coinRect.left;
+      const touchY = touch.clientY - coinRect.top;
+      handleInteraction(touchX, touchY, coinRect.width, coinRect.height);
 
 
 
