@@ -234,13 +234,13 @@ const getData = async () => {
         total_coins: newTotalCoins})
       handleTap();
 // getting +2 position whener use clicked to make +2 position
-const coinRect = e.target.getBoundingClientRect();
-handleInteraction(
-  e.clientX - coinRect.left,
-  e.clientY - coinRect.top,
-  coinRect.width,
-  coinRect.height
-);
+const coinRect = touch.target.getBoundingClientRect();
+    handleInteraction(
+      touch.clientX - coinRect.left,
+      touch.clientY - coinRect.top,
+      coinRect.width,
+      coinRect.height
+    );
       
     }
   
@@ -257,13 +257,13 @@ handleInteraction(
     handleTap();
   
   // getting +2 position whener use clicked to make +2 position
-  const coinRect = e.target.getBoundingClientRect();
-  handleInteraction(
-    e.clientX - coinRect.left,
-    e.clientY - coinRect.top,
-    coinRect.width,
-    coinRect.height
-  );
+  const coinRect = touch.target.getBoundingClientRect();
+    handleInteraction(
+      touch.clientX - coinRect.left,
+      touch.clientY - coinRect.top,
+      coinRect.width,
+      coinRect.height
+    );
 };
   
   }
