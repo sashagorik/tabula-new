@@ -25,6 +25,11 @@
   
 }
 
+.btn {
+  padding-top: 35px; /* Измените значение по мере необходимости */
+  /* Другие стили для кнопки */
+}
+
 .boostMainHead {
   font-size: 3.5vh;
   font-style: normal;
@@ -54,7 +59,13 @@
   background-size: cover;
   margin: 0 5vw;
   border-radius: 20px;
+  font-size: 1.5vh; /* Размер шрифта */
+  color: #ffffff; /* Цвет текста */
+  padding-bottom: 90px; /* Регулируйте по необходимости */
+  text-align: center; /* Центрирует текст по горизонтали */
+  border: none; /* Убирает обводку, если есть */
 }
+
 
 .boostPopCharge {
   display: flex;

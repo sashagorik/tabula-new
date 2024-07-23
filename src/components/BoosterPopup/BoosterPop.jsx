@@ -2,31 +2,115 @@ import React, { useContext, useEffect, useState } from "react";
 import "./BoosterPop.css"
 import closeIcon from "../../assets/Task/closeIcon.svg"
 import coin from "../../assets/Task/coinTask.svg"
-//import { useContext } from "react"
 import { UserInfo } from "../../ContextApi/UserData"
-import { upgradeFreeBoosterApi, getBooster, getFreeBoosterApi, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase, updateMultitapBooster, updateFireLimitInDatabase, updateFlashspeedInDatabase  } from "../../services/apis"
+import { upgradeFreeBoosterApi, getBooster, getUserData, updateCoinsInDatabase, updateTapCoinsInDatabase, updateMultitapBooster, updateFireLimitInDatabase, updateFlashspeedInDatabase } from "../../services/apis"
 import dot from "../../assets/Booster/dot.svg"
 import { useNavigate } from "react-router-dom"
-import { BoosterInfo } from "../../ContextApi/BoosterData";
-import BoosterData from "../../Data/Booster"
-
 
 const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
-
-
+    const [remainingTime, setRemainingTime] = useState(null);
+    const [rechargeRemainingTime, setRechargeRemainingTime] = useState(null);
     const { userInfo, setUserInfo } = useContext(UserInfo)
     const navigate = useNavigate()
     const [showEffect, setShowEffect] = useState(false); 
 
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+          const remainingTime = localStorage.getItem("remainingTurboTime");
+          if (remainingTime) {
+            setRemainingTime(remainingTime);
+          } else {
+            setRemainingTime(null);
+          }
 
+          const rechargeRemainingTime = localStorage.getItem("remainingRechargeTime");
+          if (rechargeRemainingTime) {
+            setRechargeRemainingTime(rechargeRemainingTime);
+          } else {
+            setRechargeRemainingTime(null);
+          }
+        }, 1000); // обновляем каждую секунду
+      
+        return () => clearInterval(intervalId);
+      }, []);
 
+    const canActivateTurbo = () => {
+        const lastActivationTime = localStorage.getItem("lastTurboActivation");
+        if (!lastActivationTime) {
+          return true; // Никогда не активировалось, можно активировать
+        }
+        const currentTime = Date.now();
+        const sixHoursInMilliseconds = 6 * 60 * 60 * 1000;
+        return (currentTime - parseInt(lastActivationTime, 10)) >= sixHoursInMilliseconds;
+    };
+
+    const activateTurbo = () => {
+        setUserInfo({ ...userInfo, isTurbo: true });
+        localStorage.setItem("isTurbo", true);
+        const currentTime = Date.now();
+        localStorage.setItem("lastTurboActivation", currentTime);
+    
+        setTimeout(() => {
+          localStorage.removeItem("isTurbo");
+          setUserInfo(prevUserInfo => ({ ...prevUserInfo, isTurbo: false }));
+        }, 10000);
+    };
+
+    const updateRemainingTime = () => {
+        const lastActivationTime = localStorage.getItem("lastTurboActivation");
+        if (lastActivationTime) {
+          const currentTime = Date.now();
+          const sixHoursInMilliseconds = 6 * 60 * 60 * 1000;
+          const timePassed = currentTime - parseInt(lastActivationTime, 10);
+          const remainingTime = sixHoursInMilliseconds - timePassed;
+          if (remainingTime <= 0) {
+            localStorage.removeItem("remainingTurboTime");
+          } else {
+            localStorage.setItem("remainingTurboTime", remainingTime);
+          }
+        }
+
+        const lastRechargeActivationTime = localStorage.getItem("lastRechargeActivation");
+        if (lastRechargeActivationTime) {
+          const currentTime = Date.now();
+          const sixHoursInMilliseconds = 6 * 60 * 60 * 1000;
+          const timePassed = currentTime - parseInt(lastRechargeActivationTime, 10);
+          const remainingTime = sixHoursInMilliseconds - timePassed;
+          if (remainingTime <= 0) {
+            localStorage.removeItem("remainingRechargeTime");
+          } else {
+            localStorage.setItem("remainingRechargeTime", remainingTime);
+          }
+        }
+    };
+  
+    useEffect(() => {
+        const intervalId = setInterval(updateRemainingTime, 1000); // обновляем каждую секунду
+        return () => clearInterval(intervalId);
+    }, []);
+
+    const canActivateRecharge = () => {
+        const lastActivationTime = localStorage.getItem("lastRechargeActivation");
+        if (!lastActivationTime) {
+          return true;
+        }
+        const currentTime = Date.now();
+        const sixHoursInMilliseconds = 6 * 60 * 60 * 1000;
+        return (currentTime - parseInt(lastActivationTime, 10)) >= sixHoursInMilliseconds;
+    };
+
+    const activateRecharge = () => {
+        let total_taps = userInfo.total_taps;
+        setUserInfo({ ...userInfo, used_taps: total_taps });
+        localStorage.setItem("isRecharge", true);
+        const currentTime = Date.now();
+        localStorage.setItem("lastRechargeActivation", currentTime);
+    };
 
     let turboTimeoutId = null;
     if (!boost) return null;
 
     const handlePurchase = async () => {
-
-         
         const userResp = await getUserData(userInfo.user_id);
         const boosterResp = await getBooster(userInfo.user_id);
 
@@ -35,202 +119,113 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
         const total_taps = userResp.total_taps;
         const used_taps = userResp.used_taps;
 
-        const multiTap= boosterResp.multiTap;
+        const multiTap = boosterResp.multiTap;
         const fireLimit = boosterResp.fireLimit;
 
         const multiTapPrice = (1 ** multiTap) * 200;
         const fireLimitPrice = (1 ** fireLimit) * 200;
 
-        //const totalCoins = userInfo.total_coins
-        const charges = boost.charges
-
-
-
-        // if(boost.value=="Turbo"){
-        //     // localStorage.setItem("turbo_time")
-        // }
-
+        const charges = boost.charges;
 
         if (charges === 0) {
-            //const resp = await upgradeFreeBoosterApi(userInfo.user_id, boost.value)
-            //if (resp.status === 200) {
-
-
-                if (boost.value === "Recharge") {
-                    let total_taps = userInfo.total_taps
-                    setUserInfo({ ...userInfo, used_taps: total_taps })
-                    console.log(userInfo)
-                    navigate("/")
-
-
-                } else if (boost.value === "Turbo") {
-                    
-                    setUserInfo({ ...userInfo, isTurbo: true });
-                    localStorage.setItem("isTurbo", true);
-
-                 // Удаление isTurbo из localStorage через 10 секунд
-                  setTimeout(() => {
-                 localStorage.removeItem("isTurbo");
-                  setUserInfo(prevUserInfo => ({ ...prevUserInfo, isTurbo: false }));
-                  }, 10000);
-
+            if (boost.value === "Recharge") {
+                if (canActivateRecharge()) {
+                    activateRecharge();
                     setBoost("");
                     navigate("/");
+                } else {
+                    alert("Recharge можно активировать только раз в 6 часов");
                 }
+            } else if (boost.value === "Turbo") {
+                if (canActivateTurbo()) {
+                    activateTurbo();
+                    setBoost("");
+                    navigate("/");
+                } else {
+                    alert("Turbo можно активировать только раз в 6 часов");
+                }
+            }
+        } else if (charges > 0) {
+            if (boost.value === "multiTap") {
+                if (total_coins >= boost.charges) {
+                    const newTotalCoins = total_coins - boost.charges;
+                    const newMultiTap = multiTap + 1;
+                    const newTapCoins = tap_coins + 1;
+                    setUserInfo({
+                        ...userInfo,
+                        total_coins: newTotalCoins,
+                        tap_coins: newTapCoins,
+                    });
+                    await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
+                    await updateTapCoinsInDatabase(userInfo.user_id, newTapCoins);
+                    await updateMultitapBooster(userInfo.user_id, newMultiTap);
+                    setShowEffect(true);
+                    setBoost("")
+                    navigate("/")
+                    setTimeout(() => {
+                        setShowEffect(false);
+                        onClose();
+                    }, 2000);
+                } else {
+                    alert("Недостаточно монет для покупки следующего уровня MultiTap.");
+                }
+            } else if (boost.value === "fireLimit") {
+                if (total_coins >= boost.charges) {
+                    const newTotalCoins = userInfo.total_coins - boost.charges;
+                    const newFireLimit = fireLimit + 1;
+                    const newTotalTaps = total_taps + 100;
+                    const newUsedTaps = used_taps + 100;
+                    setUserInfo({
+                        ...userInfo,
+                        fireLimit: newFireLimit,
+                        total_coins: newTotalCoins,
+                        total_taps: newTotalTaps,
+                        used_taps: newUsedTaps,
+                    });
+                    await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
+                    await updateFireLimitInDatabase(userInfo.user_id, newFireLimit, newTotalTaps, newUsedTaps);
+                    setShowEffect(true);
+                    setTimeout(() => {
+                        setShowEffect(false);
+                        onClose();
+                    }, 2000);
+                    setBoost("")
+                    navigate("/")
+                } else {
+                    alert("Недостаточно монет для покупки следующего уровня fireLimit.");
+                }
+            } else if (boost.value === "Flashspeed") {
+                if (total_coins >= boost.charges) {
+                    const newTotalCoins = userInfo.total_coins - boost.charges;
+                    const newFlashspeed = userInfo.flash_speed + 1;
+                    setUserInfo({
+                        ...userInfo,
+                        flash_speed: newFlashspeed,
+                        total_coins: newTotalCoins,
+                    });
+                    await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
+                    await updateFlashspeedInDatabase(userInfo.user_id, newFlashspeed);
+                    setShowEffect(true);
+                    setTimeout(() => {
+                        setShowEffect(false);
+                        onClose();
+                    }, 2000);
+                    setBoost("")
+                    navigate("/")
+                } else {
+                    alert("Недостаточно монет для покупки следующего уровня fireLimit.");
+                }
+            }
+        }
+    };
 
-
-            //}
-        } 
-        else if (charges > 0) {
-            
-            
-            if (boost.value === "multiTap"){
-                  
-                   if (total_coins >= boost.charges) {
-
-            console.log(userInfo.user_id,boost.value, boost.charges)
-
-          //const resp = await updateBooster(userInfo.user_id, boost.value, boost.charges)
-          //  console.log(resp)
-          // if (resp.status === 200) {
-               // console.log("Done")
-           //    let tapCoin = userInfo.tap_coins + 1
-           //    let updateCoins = total_coins - charges
-           //   setUserInfo({ ...userInfo, tap_coins: tapCoin })
-            //   setUserInfo({ ...userInfo, total_coins: updateCoins })
-            //   setBoost("")
-            //   navigate("/")
-           //}
-
-          // else if (total_coins >= multiTapPrice) {
-                const newTotalCoins = total_coins - boost.charges;
-                const newMultiTap = multiTap + 1;
-                const newTapCoins = tap_coins + 1;
-          
-                // Update local storage
-                setUserInfo({
-                  ...userInfo,
-                  total_coins: newTotalCoins,
-                  tap_coins: newTapCoins,
-                  
-                });
-          
-                // Update database
-                await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
-                await updateTapCoinsInDatabase(userInfo.user_id, newTapCoins);
-                await updateMultitapBooster(userInfo.user_id, newMultiTap );
-          
-                // Update state
-                //setLevel ({ multiLevel: newMultiTap });
-                setShowEffect(true);
-                setBoost("")
-                navigate("/")
-    setTimeout(() => {
-      setShowEffect(false);
-      onClose();
-    }, 2000);
-              } else {
-                alert("Недостаточно монет для покупки следующего уровня MultiTap.");
-              }
-            
-    }  
-    else if (boost.value === "fireLimit"){if (total_coins >= boost.charges) {
-
-        console.log(userInfo.user_id,boost.value, boost.charges)
-
-    
-            const newTotalCoins = userInfo.total_coins - boost.charges;
-            const newFireLimit = fireLimit + 1;
-            const newTotalTaps = total_taps + 100;
-            const newUsedTaps = used_taps + 100;
-      
-            // Update local storage
-            setUserInfo({
-              ...userInfo,
-              fireLimit: newFireLimit,
-              total_coins: newTotalCoins,
-              total_taps: newTotalTaps,
-              used_taps: newUsedTaps,
-              
-            });
-      
-            // Update database
-            await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
-            //await updateTapCoinsInDatabase(userInfo.user_id, newTapCoins);
-            await updateFireLimitInDatabase(userInfo.user_id, newFireLimit, newTotalTaps, newUsedTaps );
-      
-            // Update state
-            //setLevel ({newFireLimit});
-            setShowEffect(true);
-            setTimeout(() => {
-            setShowEffect(false);
-            onClose();
-            }, 2000);
-            setBoost("")
-            navigate("/")
-          } 
-
-          
-          else {
-            alert("Недостаточно монет для покупки следующего уровня fireLimit.");
-          }
-       
-}
-
-    else if (boost.value === "Flashspeed"){
-
-
-        if (total_coins >= boost.charges) {
-
-            console.log(userInfo.user_id,boost.value, boost.charges)
-    
-        
-                const newTotalCoins = userInfo.total_coins - boost.charges;
-                const newFlashspeed = userInfo.flash_speed + 1;
-                //const newTotalTaps = total_taps + 100;
-                //const newUsedTaps = used_taps + 100;
-          
-                // Update local storage
-                setUserInfo({
-                  ...userInfo,
-                  flash_speed: newFlashspeed,
-                  total_coins: newTotalCoins,
-                  
-                });
-          
-                // Update database
-                await updateCoinsInDatabase(userInfo.user_id, newTotalCoins);
-                //await updateTapCoinsInDatabase(userInfo.user_id, newTapCoins);
-                await updateFlashspeedInDatabase(userInfo.user_id, newFlashspeed );
-          
-                // Update state
-                //setLevel ({newFireLimit});
-                setShowEffect(true);
-                setTimeout(() => {
-                setShowEffect(false);
-                onClose();
-                }, 2000);
-                setBoost("")
-                navigate("/")
-              } 
-    
-              
-              else {
-                alert("Недостаточно монет для покупки следующего уровня fireLimit.");
-              }
-
-
-
-    }
-
-    else if (boost.value === "Hireant"){}
-}
-
-    }
-
-      // Определяем charges и level перед использованием в JSX
-      //const charges = boost.charges;
-     // const level = boost.level ? parseInt(boost.level.replace(/\D/g, '')) : 0;
+    const formatTime = (milliseconds) => {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return `${hours}h ${minutes}m ${seconds}s`;
+    };
 
     return (
         <div className={`boosterPopMainDiv ${showEffect ? 'effect' : ''}`}>
@@ -265,8 +260,14 @@ const BoosterPop = ({ boost, onClose, setBoost, level, setlevel }) => {
 
 
             <div className="boostPurchaseBtn">
-                <button className="btn" onClick={handlePurchase} >
-                </button>
+            <button className="btn" onClick={handlePurchase} 
+  disabled={(boost.value === "Turbo" && remainingTime !== null) || (boost.value === "Recharge" && rechargeRemainingTime !== null)}>
+  {boost.value === "Turbo" && remainingTime !== null 
+    ? `Доступно через ${formatTime(remainingTime)}`
+    : boost.value === "Recharge" && rechargeRemainingTime !== null
+    ? `Доступно через ${formatTime(rechargeRemainingTime)}`
+    : "Активировать"}
+</button>
             </div>
 
 
