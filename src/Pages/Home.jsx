@@ -230,7 +230,6 @@ const getData = async () => {
       //const turboTap = userInfo.tap_coins*10;
       const newTotalCoins = userInfo.total_coins + (userInfo.tap_coins*10);
       setUserInfo({...userInfo,
-        tap_coins: userInfo.tap_coins*10,
         total_coins: newTotalCoins})
       handleTap();
 // getting +2 position whener use clicked to make +2 position
