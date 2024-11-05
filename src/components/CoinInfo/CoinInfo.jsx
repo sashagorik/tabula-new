@@ -32,14 +32,14 @@ const CoinInfo = () => {
             {/* gold Coins Info */}
             <div className="goldCoins">
                 <div className="goldHeading">
-                    Gold Coins
+                    Profit per Hour 
                 </div>
                 <div className="noOfGoldCoins">
 
                         <div className="goldImg">
                             <img src={TonCoins} width={20} />
                         </div>
-                        <div className="goldAmount">${userInfo.total_coins}</div>
+                        <div className="goldAmount">${userInfo.profitPerHour}</div>
 
                 </div>
             </div>
