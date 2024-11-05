@@ -75,7 +75,10 @@ app.get('/api/v1/userDetails', async (req, res) => {
       user_id: user.user_id,
       name: user.name,
       total_coins: user.total_coins,
-      total_taps: user.total_taps
+      total_taps: user.total_taps,
+      profitPerHour: user.profitPerHour
+      
+      
       // ton_coins: user.ton_coins,
       // Добавьте другие свойства пользователя по необходимости
     };
@@ -100,7 +103,8 @@ app.post('/api/v1/userDetails', async (req, res) => {
         user_id: userData.user_id,
         name: userData.name,
         total_coins: userData.total_coins,
-        total_taps: userData.total_taps
+        total_taps: userData.total_taps,
+        profitPerHour: userData.profitPerHour
       });
       await user.save();
 
