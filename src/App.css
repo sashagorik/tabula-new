@@ -62,7 +62,7 @@ p{
 
 @media only screen and (max-width: 600px) {
   .coin {
-    width: 80%;
+    width: 70%;
   }
   .rs {
     font-size: 30px;
@@ -100,6 +100,8 @@ p{
   width: 0;
   cursor: pointer;
 }
+
+
 
 /* .coin:active{
   transform: translateY(4px);
@@ -228,8 +230,8 @@ p{
 .coinTest {
   /* width: 15rem;
   height: 15rem; */
-  /* width: 40vw; */
-  height: 35vh;
+  width: 70vw; 
+  height: 25vh;
   border-radius: 50%;
   /* margin-top: 15%; */
   margin-top: 5%;
@@ -239,7 +241,7 @@ p{
 
 
 .charAnim{
-  height: 50vh;
+  height: 40vh;
   position: relative;
   z-index: 2;
   width: 100vw;
@@ -325,4 +327,43 @@ transform: rotateX(11deg) rotateY(16.5deg); */
 
 .Progressicon{
   display: flex;
+}
+
+/* Контейнер для строки статуса */
+.mineStatus {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-align: center;
+  position: relative;
+  top: -5%; /* Поднимает строку выше на странице */
+}
+
+/* Цвет для online/offline */
+.statusOnline {
+  color: #00c853; /* Зеленый цвет для статуса online */
+}
+
+.statusOffline {
+  color: #ff1744; /* Красный цвет для статуса offline */
+}
+
+.startMiningButton {
+  background-color: #2afc0a; /* Зеленый цвет для кнопки */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  position: relative;
+  top: 0px; /* Поднимаем кнопку на 50 пикселей */
+}
+
+.startMiningButton:hover {
+  background-color: #40eb07;
 }
