@@ -48,7 +48,14 @@ const userSchema = new mongoose.Schema({
   allCoins: {
     type: Number,
     default: 1 // значение по умолчанию
+  },
+
+  // прибыль в час
+  profitPerHour: {
+    type: Number,
+    default: 0.00 // значение по умолчанию
   }
+
 });
 
 const User = mongoose.model('User', userSchema);

@@ -20,8 +20,9 @@ html {
 body {
   margin: 0;
   padding: 0;
-  height: 100% !important;
-  min-height: 100vh !important;
+  height: 100%;
+  min-height: 100vh;
+  overflow-y: auto; /* Позволяет прокручивать вертикально */
   background: url("./assets/normalBg.svg");
   background-size: cover;
   background-repeat: no-repeat;

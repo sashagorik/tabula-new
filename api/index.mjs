@@ -79,6 +79,7 @@ app.post('/api/v1/addUser', async (req, res) => {
 
     const newUser = new User({
       user_id,
+      profitPerHour:0.01
     });
 
     const newBooster = new Booster({
@@ -88,7 +89,8 @@ app.post('/api/v1/addUser', async (req, res) => {
       flashSpeed: 1,
       hireAnt: false,
       recharge: 1,
-      turbo: 3
+      turbo: 3,
+      profitPerHour:0.01
     });
 
     const savedUser = await newUser.save();

@@ -19,6 +19,7 @@ const Home = () => {
   const miners = [
     { name: "Майнер 1", status: "Активен" },
     { name: "Майнер 2", status: "Оффлайн" },
+    
     // Добавьте других майнеров по мере необходимости...
   ];
 
@@ -100,7 +101,7 @@ const Home = () => {
           {mineStatus === "offline" ? "Start Mining" : countdown ? `Stop (${countdown}s)` : "Stop Mining"}
         </button>
 
-        <MinersList miners={miners} />
+        
       </div>
     </>
   );

@@ -1,19 +1,53 @@
 .minersList {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-  }
-  
-  .minersList h2 {
-    margin-bottom: 10px;
-  }
-  
-  .minersList ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .minersList li {
-    margin: 5px 0;
-  }
+    background: linear-gradient(180deg, #151B21 0%, #060606 100%);
+    box-shadow: 0px -3px 4px #E86F0C;
+    border-radius: 18px;
+    padding: 2%;
+    width: 90vw; /* Ширина блока */
+    display: flex;
+    flex-direction: column; /* Установка вертикального направления для заголовка и списка */
+    align-items: center; /* Центрируем элементы по горизонтали */
+    margin-top: 5%;
+    color: white; /* Цвет текста */
+    overflow-y: auto; /* Позволяет прокручивать содержимое блока, если оно превышает высоту */
+    
+}
+
+.minersList h2 {
+    margin-bottom: 10px; /* Отступ между заголовком и списком */
+    font-size: 24px; /* Размер шрифта заголовка */
+    text-align: center; /* Центрирование заголовка */
+}
+
+.minersList ul {
+    list-style-type: none; /* Убираем стандартные маркеры списка */
+    padding: 0; /* Убираем отступы */
+    width: 100%; /* Ширина списка для адаптации */
+}
+
+.minersList li {
+    margin: 5px 0; /* Отступы между элементами списка */
+    padding: 10px; /* Отступы внутри элемента списка для лучшего восприятия */
+    border-radius: 10px; /* Закругление углов */
+    display: flex; /* Используем flex для выравнивания текста */
+    justify-content: space-between; /* Равномерное распределение элементов */
+    width: 100%; /* Полная ширина для элементов списка */
+    transition: background-color 0.3s; /* Плавный переход для фона */
+}
+
+.minersList li:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Подсветка при наведении */
+}
+
+.activeEarnOption {
+    background: url("../../assets/Earn/activeOption.svg");
+    background-size: cover;
+    background-position: center;
+}
+
+.inActiveEarnOption {
+    background: url("../../assets/Earn/inactiveOption.svg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './MinerList.css';
 
 const MinersList = ({ miners }) => {
   return (
@@ -6,8 +7,8 @@ const MinersList = ({ miners }) => {
       <h2>Список Майнеров</h2>
       <ul>
         {miners.map((miner, index) => (
-          <li key={index}>
-            <span>{miner.name}</span> - <span>{miner.status}</span>
+          <li key={index} className={`earnOptionDiv ${miner.status === "Активен" ? "activeEarnOption" : "inActiveEarnOption"}`}>
+            <span className="minerName">{miner.name}</span> - <span>{miner.status}</span>
           </li>
         ))}
       </ul>
