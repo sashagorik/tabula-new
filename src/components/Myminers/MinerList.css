@@ -1,0 +1,19 @@
+.minersList {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+  }
+  
+  .minersList h2 {
+    margin-bottom: 10px;
+  }
+  
+  .minersList ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .minersList li {
+    margin: 5px 0;
+  }

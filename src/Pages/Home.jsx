@@ -6,12 +6,23 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import progressIcon from "../assets/progressIcon.svg";
 import CoinInfo from "../components/CoinInfo/CoinInfo";
 import { UserInfo } from "../ContextApi/UserData";
+import MinersList from "../components/Myminers/MinerList";
 
 const Home = () => {
   const { userInfo, setUserInfo } = useContext(UserInfo);
   const [mineStatus, setMineStatus] = useState("offline");
   const [countdown, setCountdown] = useState(null);
   const [buttonImage, setButtonImage] = useState(minebuttongreen);
+
+  ////
+
+  const miners = [
+    { name: "Майнер 1", status: "Активен" },
+    { name: "Майнер 2", status: "Оффлайн" },
+    // Добавьте других майнеров по мере необходимости...
+  ];
+
+  //////
 
   const toggleMining = () => {
     if (mineStatus === "offline") {
@@ -89,7 +100,7 @@ const Home = () => {
           {mineStatus === "offline" ? "Start Mining" : countdown ? `Stop (${countdown}s)` : "Stop Mining"}
         </button>
 
-        
+        <MinersList miners={miners} />
       </div>
     </>
   );

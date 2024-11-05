@@ -1,9 +1,9 @@
 import React from 'react'
 import { useContext } from "react"
-import TonCoins from "../../assets/tonCoins.svg"
+import TonCoins from "../../assets/coin3.svg"
 import "./CoinInfo.css"
 import { UserInfo } from "../../ContextApi/UserData"
-import greyCoin from "../../assets/greyCoin.png"
+import greyCoin from "../../assets/coin3.svg"
 
 
 const CoinInfo = () => {
