@@ -31,7 +31,7 @@ const UserData = ({ children }) => {
         allCoins : 1,
         fireLimit: 1,
         flash_speed: 1,
-        profitPerHour: 0.00,
+        profitPerHour: 0.01,
       
 
         no_of_taps: 0,

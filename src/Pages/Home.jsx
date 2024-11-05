@@ -14,26 +14,21 @@ const Home = () => {
   const [countdown, setCountdown] = useState(null);
   const [buttonImage, setButtonImage] = useState(minebuttongreen);
 
-  ////
+  
 
-  const miners = [
-    { name: "Майнер 1", status: "Активен" },
-    { name: "Майнер 2", status: "Оффлайн" },
-    
-    // Добавьте других майнеров по мере необходимости...
-  ];
-
-  //////
-
-  const toggleMining = () => {
+  const toggleMining = async () => {
     if (mineStatus === "offline") {
       setMineStatus("online");
       setButtonImage(minebuttongreen);
       setCountdown(100); // Устанавливаем 10-секундный обратный отсчёт
+      
+      
+      
+
     } else {
-      setMineStatus("offline");
-      setButtonImage(minebuttongreen);
-      setCountdown(null);
+      //setMineStatus("offline");
+      //setButtonImage(minebuttongreen);
+      //setCountdown(null);
     }
   };
 
@@ -51,30 +46,7 @@ const Home = () => {
     return () => clearInterval(timer);
   }, [countdown]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const resp = await getUserData(userInfo.user_id);
-      const booster = await getBooster(userInfo.user_id);
-
-      if (resp) {
-        setUserInfo({
-          ...userInfo,
-          name: resp.name || "default name",
-          rank: resp.rank || "default rank",
-          tap_coins: resp.tap_coins,
-          total_coins: resp.allCoins,
-          total_taps: resp.total_taps,
-          flash_speed: booster.flashSpeed,
-        });
-      } else {
-        console.error("Некорректные данные от API", resp.data);
-      }
-    };
-
-    if (userInfo.user_id) {
-      fetchData();
-    }
-  }, [userInfo.user_id]);
+  
 
   return (
     <>

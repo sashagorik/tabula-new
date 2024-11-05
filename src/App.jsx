@@ -59,82 +59,7 @@ function App() {
   const [isSocket, setSocket] = useState(null)
   const [user_id, setUser_id] = useState("")
   const [antHire, setAntHire] = useState(false)
-  // useEffect(() => {
-
-  //   const searchParams = new URLSearchParams(window.location.hash.substring(1));
-  //   const tgWebAppData = searchParams.get("tgWebAppData");
-  //   if (tgWebAppData) {
-  //     const userParam = new URLSearchParams(tgWebAppData).get("user");
-  //     if (userParam) {
-  //       // Decode the user parameter
-  //       const decodedUserParam = decodeURIComponent(userParam);
-  //       // Parse the JSON to extract the user ID
-  //       const userObject = JSON.parse(decodedUserParam);
-  //       const userId = userObject.id;
-  //       setUser_id(userId)
-  //     }
-  //   } else {
-  //     // when user came from another page so we need to maintaina and save the id
-  //     if (localStorage.getItem("user_id")) {
-  //       setUser_id(localStorage.getItem("user_id"))
-  //     }
-  //   }
-  //   console.log("join", user_id)
-
-
-
-  //   setTimeout(() => {
-  //     if (user_id) {
-  //       // const socket = io.connect(`${baseUrl}`, { transports: ["websocket"] });
-  //       const socket = io.connect("ws://192.168.29.43:5006", { transports: ["websocket"] });
-  //       console.log(user_id)
-  //       // making connection for hire ant
-  //       socket.on('connect', () => {
-  //         console.log(`Connected with socket ID: ${socket.id}`);
-  //         socket.emit('join', { user_id: user_id });
-  //       });
-  //       setSocket(socket)
-  //     }
-  //   }, 1000)
-  //   // console.log("socket", socket)
-  // }, [])
-
-
-
-
-
-  // to get the user id and setting the user_id
-
-
-
-
- //useEffect(() => {
- //   const searchParams = new URLSearchParams(window.location.hash.substring(1));
- //   const tgWebAppData = searchParams.get("tgWebAppData");
- //   if (tgWebAppData) {
-  //    const userParam = new URLSearchParams(tgWebAppData).get("user");
-  //    if (userParam) {
-        // Decode the user parameter
-  //      const decodedUserParam = decodeURIComponent(userParam);
-        // Parse the JSON to extract the user ID
-    //    const userObject = JSON.parse(decodedUserParam);
-   //     const userId = userObject.id;
-   //     setUser_id(userId);
-    //    localStorage.setItem("user_id", userId);
-   //   }
-  //  } else {
-      // when user came from another page so we need to maintain and save the id
-  //    const savedUserId = localStorage.getItem("user_id");
-  //    if (savedUserId) {
-   //     setUser_id(savedUserId);
-        
-   //   }
-   //   else 
-        
-   //     {setUser_id(7777);
- //       localStorage.setItem("user_id", 7777);}
- //   }
-// }, []);
+  
 
 
 useEffect(() => {
@@ -184,71 +109,34 @@ const checkAndAddUserToDB = async (userId) => {
   }
 };
 
-  // for ocket.connection and sending id 
-  //useEffect(() => {
-   // if (user_id) {
-      // const socket = io.connect("ws://192.168.29.43:5006", { transports: ["websocket"] });
-     // const socket = io.connect('https://tabula-new-1y88.vercel.app/api', { transports: ['websocket'] });
-     //socket.on('connect', () => {
-     //  console.log(`Connected with socket ID: ${socket.id}`);
-      //  socket.emit('join', { user_id });
-     // });
-      //setSocket(socket);
-
-     // // getting details about ant hire
-     // socket.on("response", (data) => {
-     //   setAntHire(data.antHire)
-     // })
-
-
-
-
-
-      // Clean up on component unmount
-    //  return () => {
-     //   socket.disconnect();
-     // };
-   // }
- // }, [user_id]);
-
-
-
-  // const updateHireAntCoin = () => {
-  //   console.log("anthire",antHire)
-  //   if (antHire) {
-  //     isSocket.emit("hireAnt", `${user_id}, ${1}` );
-
-  //     let updated_coins = userInfo.hireAntCoins + 1 
-  //     // setUserInfo((prevUserInfo) => ({...prevUserInfo, total_coins: updated_coins }));
-  //     setUserInfo((prevUserInfo) => ({...prevUserInfo, hireAntCoins: updated_coins }));
-  //     // console.log(userInfo)
-  //     setTimeout(() => {
-  //       updateHireAntCoin()
-  //     }, 3000)
-  //     console.log("hitted")
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   updateHireAntCoin()
-  // }, [antHire]);
-
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const storedUserInfo = localStorage.getItem('userInfo');
-      if (storedUserInfo) {
-        const userInfo = JSON.parse(storedUserInfo);
-        const parsedCoins = userInfo.total_coins;
-        const user = localStorage.getItem('user_id');
-        if (!isNaN(parsedCoins)) {
-          updateCoinsInDatabase(user, parsedCoins);
-        }
-      }
-    }, 20000); // Проверка и обновление каждые 10 секунд
   
-    return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
-  }, []);
+useEffect(() => {
+  const fetchData = async () => {
+    const resp = await getUserData(userInfo.user_id);
+    const booster = await getBooster(userInfo.user_id);
+
+    if (resp) {
+      setUserInfo({
+        ...userInfo,
+        user_id: resp.user_id || "5555",
+        name: resp.name || "default name",
+        rank: resp.rank || "default rank",
+        tap_coins: resp.tap_coins,
+        //total_coins: resp.allCoins,
+        total_taps: resp.total_taps,
+        flash_speed: booster.flashSpeed,
+        profit_per_hour: resp.profitPerHour
+      });
+    } else {
+      console.error("Некорректные данные от API", resp.data);
+    }
+  };
+
+  if (userInfo.user_id) {
+    fetchData();
+  }
+}, [userInfo.user_id]);
+  
 
 
   return (
