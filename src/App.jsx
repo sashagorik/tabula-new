@@ -63,11 +63,17 @@ const checkAndAddUserToDB = async (userData) => {
         lastName: userData.lastName,
         username: userData.username,
         isPremium: userData.isPremium,
+        totalCoins: 0,  // Значение по умолчанию
+        profitPerHour: 0.00  // Значение по умолчанию
         
         
 
       });
-      console.log(`User with ID ${userData.userId} successfully added to the database.`);
+      if (addUserResponse.status === 201) {
+        console.log(`User with ID ${userData.userId} successfully added to the database.`);
+      } else {
+        console.error(`Failed to add user with ID ${userData.userId}:`, addUserResponse.data);
+      }
     }
   } catch (error) {
     console.error(`Error checking or adding user with ID ${userData.userId}:`, error);
