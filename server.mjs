@@ -98,13 +98,15 @@ app.post('/api/v1/userDetails', async (req, res) => {
     let user = await User.findOne({ user_id: userData.user_id });
 
     if (!user) {
-      // Если пользователь не найден, создаем нового
+      // Если пользователь не найден, создаем нового с датой регистрации
       user = new User({
         user_id: userData.user_id,
         name: userData.name,
         total_coins: userData.total_coins,
         total_taps: userData.total_taps,
-        profitPerHour: userData.profitPerHour
+        profitPerHour: userData.profitPerHour,
+        registrationDate: new Date(), // Устанавливаем дату регистрации
+        lastLoginDate: new Date()     // Устанавливаем дату последнего входа
       });
       await user.save();
 
@@ -122,6 +124,7 @@ app.post('/api/v1/userDetails', async (req, res) => {
     } else {
       // Обновляем данные пользователя, если он уже существует
       user = Object.assign(user, userData);
+      user.lastLoginDate = new Date(); // Обновляем дату последнего входа
       await user.save();
     }
 
