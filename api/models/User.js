@@ -39,23 +39,23 @@ const userSchema = new mongoose.Schema({
   registrationDate: {
     type: Date,
     default: Date.now,  // Устанавливаем текущую дату при регистрации
-    required: true
+    
   },
   lastLoginDate: {
     type: Date,
     default: Date.now,  // Инициализация последнего входа при создании
-    required: true
+    
   },
 
 
   totalCoins: {
     type: Number,
-    required: true
+    
   },
 
   profitPerHour: {
     type: Number,
-    required: true
+    
   },
 
 });
