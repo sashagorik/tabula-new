@@ -84,12 +84,6 @@ app.post('/api/v1/addUser', async (req, res) => {
 
     const newBooster = new Booster({
       user_id,
-      multiTap: 1,
-      firelimit: 1,
-      flashSpeed: 1,
-      hireAnt: false,
-      recharge: 1,
-      turbo: 3,
       profitPerHour:0.01
     });
 
