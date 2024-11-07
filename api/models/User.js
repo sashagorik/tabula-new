@@ -7,12 +7,6 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
 
-  username: {
-    type: String,
-    required: true,
-    
-  },
-
   first_name: {
     type: String,
     required: true,
@@ -25,16 +19,21 @@ const userSchema = new mongoose.Schema({
     
   },
 
+  username: {
+    type: String,
+    required: true,
+    
+  },
+
+  
+
   is_premium: {
     type: Boolean,
     required: true,
     
   },
  
-  profitPerHour: {
-    type: Number,
-    
-  },
+ 
 
   // Новые поля для даты и времени
   registrationDate: {
@@ -46,7 +45,19 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,  // Инициализация последнего входа при создании
     required: true
-  }
+  },
+
+
+  total_coins: {
+    type: Number,
+    required: true
+  },
+
+  profitPerHour: {
+    type: Number,
+    required: true
+  },
+
 });
 
 // Обновляем `lastLoginDate` каждый раз, когда пользователь входит в систему

@@ -61,8 +61,11 @@ const checkAndAddUserToDB = async (userData) => {
         user_id: userData.userId,
         firstName: userData.firstName,
         lastName: userData.lastName,
-        isPremium: userData.isPremium,
         username: userData.username,
+        isPremium: userData.isPremium,
+        
+        
+
       });
       console.log(`User with ID ${userData.userId} successfully added to the database.`);
     }
