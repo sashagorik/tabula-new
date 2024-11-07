@@ -1,62 +1,74 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-  // id пользователя
   user_id: {
     type: String,
     required: true,
     unique: true
   },
-
-  // имя пользователя
   name: {
     type: String,
-    default: 'name' // значение по умолчанию
+    required: true
   },
-
-  // ранг пользователя
   rank: {
     type: String,
-    default: 'newbie' // значение по умолчанию
+    required: true
   },
- 
-  // общее количество накликанных монет
+  no_of_taps: {
+    type: Number,
+    required: true
+  },
   total_coins: {
     type: Number,
-    default: 1 // значение по умолчанию
+    required: true
   },
-
-  // количество монет за 1 клик
   tap_coins: {
     type: Number,
-    default: 1 // значение по умолчанию
+    required: true
   },
-
-  // количество доступных кликов в прогресс баре
   total_taps: {
     type: Number,
-    default: 500 // значение по умолчанию
+    required: true
   },
-
-  // количество использованных кликов в прогресс баре
-  used_taps: {
+  flash_speed: {
     type: Number,
-    default: 500 // значение по умолчанию
+    required: true
   },
-
-  // общее количество монет у пользователя
+  recharge: {
+    type: Number,
+    required: true
+  },
+  turbo: {
+    type: Number,
+    required: true
+  },
   allCoins: {
     type: Number,
-    default: 1 // значение по умолчанию
+    required: true
   },
-
-  // прибыль в час
   profitPerHour: {
     type: Number,
-    default: 0.00 // значение по умолчанию
-  }
+    required: true
+  },
 
+  // Новые поля для даты и времени
+  registrationDate: {
+    type: Date,
+    default: Date.now,  // Устанавливаем текущую дату при регистрации
+    required: true
+  },
+  lastLoginDate: {
+    type: Date,
+    default: Date.now,  // Инициализация последнего входа при создании
+    required: true
+  }
 });
+
+// Обновляем `lastLoginDate` каждый раз, когда пользователь входит в систему
+userSchema.methods.updateLastLogin = function() {
+  this.lastLoginDate = new Date();
+  return this.save();
+};
 
 const User = mongoose.model('User', userSchema);
 
