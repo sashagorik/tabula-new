@@ -79,14 +79,14 @@ app.post('/api/v1/addUser', async (req, res) => {
     }
 
     const newUser = new User({
-      user_id: user_id,
+      user_id,
       firstName: firstName,
       lastName: lastName,
       username: username,
       isPremium, 
       registrationDate: new Date(),
       lastLoginDate: new Date(),
-      total_coins: 0,  // Значение по умолчанию
+      totalCoins: 0,  // Значение по умолчанию
       profitPerHour: 0.00,
       
     });

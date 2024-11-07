@@ -7,13 +7,13 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
 
-  first_name: {
+  firstName: {
     type: String,
     required: true,
     
   },
 
-  last_name: {
+  lastName: {
     type: String,
     required: true,
     
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
 
   
 
-  is_premium: {
+  isPremium: {
     type: Boolean,
     required: true,
     
@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
   },
 
 
-  total_coins: {
+  totalCoins: {
     type: Number,
     required: true
   },
