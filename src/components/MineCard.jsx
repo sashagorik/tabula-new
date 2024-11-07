@@ -7,12 +7,12 @@ import "./MineCard.css"; // Импорт файла стилей
 import cards from "../Data/cardsData"; // импортируем данные карт
 
 const MineCard = (props) => {
-  const { title, description, image, profitPerHour, level, price } = props.cardDeatails;
+  const { title, description, image, profitPerHour, level, price } = props.cardDetails;
 
   return (
     <div
       className="hamster-card"
-      onClick={() => props.onClick(props.cardDeatails)}
+      onClick={() => props.onClick(props.cardDetails)}
     >
       <div className="hamster-card-container">
         <img

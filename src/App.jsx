@@ -47,34 +47,60 @@ function App() {
 
 useEffect(() => {
   const searchParams = new URLSearchParams(window.location.hash.substring(1));
-  const tgWebAppData = searchParams.get("tgWebAppData");
-  let userId;
+const tgWebAppData = searchParams.get("tgWebAppData");
+let userId, firstName, lastName, isPremium, username;
 
-  if (tgWebAppData) {
-    const userParam = new URLSearchParams(tgWebAppData).get("user");
-    if (userParam) {
-      const decodedUserParam = decodeURIComponent(userParam);
-      const userObject = JSON.parse(decodedUserParam);
-      userId = userObject.id;
-      setUser_id(userId);
-      localStorage.setItem("user_id", userId);
-    }
+if (tgWebAppData) {
+  const userParam = new URLSearchParams(tgWebAppData).get("user");
+  if (userParam) {
+    const decodedUserParam = decodeURIComponent(userParam);
+    const userObject = JSON.parse(decodedUserParam);
+
+    // Извлекаем данные пользователя
+    userId = userObject.id;
+    firstName = userObject.first_name;
+    lastName = userObject.last_name;
+    isPremium = userObject.is_premium;
+    username = userObject.username;
+
+    setUser_id(userId);
+    localStorage.setItem("user_id", userId);
+
+    // Сохраняем в localStorage другие данные
+    localStorage.setItem("first_name", firstName);
+    localStorage.setItem("last_name", lastName);
+    localStorage.setItem("is_premium", isPremium);
+    localStorage.setItem("username", username);
+  }
+} else {
+  const savedUserId = localStorage.getItem("user_id");
+  if (savedUserId) {
+    userId = savedUserId;
+    firstName = localStorage.getItem("first_name");
+    lastName = localStorage.getItem("last_name");
+    isPremium = localStorage.getItem("is_premium") === 'true';
+    username = localStorage.getItem("username");
+
+    setUser_id(userId);
   } else {
-    const savedUserId = localStorage.getItem("user_id");
-    if (savedUserId) {
-      userId = savedUserId;
-      setUser_id(userId);
-    } else {
-      userId = 7777;
-      setUser_id(userId);
-      localStorage.setItem("user_id", userId);
-      
-    }
-  }
+    userId = 7777;
+    firstName = "Гость";
+    lastName = "";
+    isPremium = false;
+    username = "";
 
-  if (userId) {
-    checkAndAddUserToDB(userId);
+    setUser_id(userId);
+    localStorage.setItem("user_id", userId);
+    localStorage.setItem("first_name", firstName);
+    localStorage.setItem("last_name", lastName);
+    localStorage.setItem("is_premium", isPremium);
+    localStorage.setItem("username", username);
   }
+}
+
+if (userId) {
+  checkAndAddUserToDB(userId);
+}
 }, []);
    
 const checkAndAddUserToDB = async (userId) => {

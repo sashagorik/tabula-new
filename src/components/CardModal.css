@@ -1,105 +1,81 @@
 .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 40;
-    background: linear-gradient(to bottom, #4b5563, #f97316);
-    backdrop-filter: blur(4px);
-    transition: opacity 0.1s ease-in-out;
-  }
-  
-  .modal-content {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 50;
-    width: 100%;
-    max-height: 50vh; /* Альтернатива для ограничения высоты */
-    background-color: black;
-    color: white;
-    padding: 1.5rem;
-    border-top-left-radius: 46px;
-    border-top-right-radius: 46px;
-    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.5s ease-in-out;
-  }
-  
-  .modal-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.25rem;
-  }
-  
-  .modal-image {
-    width: 50%;
-    height: 6rem;
-    border-radius: 0.5rem;
-    object-fit: contain;
-    margin-bottom: 0.5rem;
-  }
-  
-  .modal-title {
-    font-size: 1.125rem;
-    font-weight: bold;
-    text-transform: capitalize;
-  }
-  
-  .modal-description {
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    width: 66%;
-    text-align: center;
-  }
-  
-  .modal-profit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-  }
-  
-  .profit-value {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-  
-  .coin-icon {
-    width: 18px;
-    height: 18px;
-  }
-  
-  .modal-price {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem;
-  }
-  
-  .coin-large-icon {
-    width: 2rem;
-    height: 2rem;
-  }
-  
-  .price-value {
-    font-size: 1.875rem;
-    color: white;
-  }
-  
-  .modal-button {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    width: 100%;
-    background-color: #3b82f6;
-    border-radius: 0.75rem;
-    transition: background-color 0.3s;
-  }
-  
-  .modal-button:hover {
-    background-color: #2563eb;
-  }
-  
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.6); /* Прозрачный темный фон */
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Центрирование по вертикали и горизонтали */
+}
+
+.modal-content {
+  position: relative;
+  width: 50%; /* Ограничение ширины для меньших экранов */
+  max-width: 400px; /* Максимальная ширина для модального окна */
+  background-color: black;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px; /* Сглаженные края */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 50;
+  overflow-y: auto; /* Скроллинг, если контент превышает высоту */
+  max-height: 80%; /* Ограничение высоты */
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-image {
+  width: 80%; /* Уменьшение размера изображения */
+  height: auto;
+  border-radius: 0.5rem;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.modal-description {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  width: 100%;
+  text-align: center;
+  color: #d1d5db;
+}
+
+.modal-price, .modal-profit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  font-size: 1.125rem;
+  color: #f97316; /* Акцент на цене */
+}
+
+.modal-button {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  width: 100%;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  border-radius: 0.75rem;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  text-align: center;
+}
+
+.modal-button:hover {
+  background-color: #2563eb;
+}
