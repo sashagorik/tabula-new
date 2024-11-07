@@ -91,13 +91,13 @@ app.post('/api/v1/addUser', async (req, res) => {
       
     });
 
-    const newBooster = new Booster({
-      user_id,
-      profitPerHour: 0.00
-    });
+    //const newBooster = new Booster({
+     // user_id,
+     // profitPerHour: 0.00
+   // });
 
     const savedUser = await newUser.save();
-    const savedBooster = await newBooster.save();
+   // const savedBooster = await newBooster.save();
     
     res.status(201).json({ savedUser, savedBooster });
   } catch (err) {
