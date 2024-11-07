@@ -10,8 +10,6 @@ import Booster from './Pages/Booster/Booster';
 import Task from './Pages/Task/Task';
 
 import { baseUrl } from './services/helper';
-import { io } from 'socket.io-client'
-//import { useContext, useEffect, useState } from 'react';
 import { UserInfo } from './ContextApi/UserData';
 import BoosterData from './ContextApi/BoosterData';
 import Loader from './components/Loader/Loader';
@@ -37,28 +35,13 @@ function App() {
   }, [])
 
 
-  // to update the progress bar if user is at home page or not
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (userInfo.used_taps < userInfo.total_taps) {
-        setUserInfo((prevTapsInfo) => ({
-          ...prevTapsInfo,
-          used_taps: Math.min(
-            prevTapsInfo.used_taps + userInfo.flash_speed,
-            prevTapsInfo.total_taps
-          ),
-        }));
-      }
-    }, 2000); 
 
-    return () => clearInterval(intervalId);
-  }, [userInfo]);
 
 
   // connecting with socket.io
-  const [isSocket, setSocket] = useState(null)
-  const [user_id, setUser_id] = useState("")
-  const [antHire, setAntHire] = useState(false)
+ const [isSocket, setSocket] = useState(null)
+ const [user_id, setUser_id] = useState("")
+ const [antHire, setAntHire] = useState(false)
   
 
 
@@ -85,6 +68,7 @@ useEffect(() => {
       userId = 7777;
       setUser_id(userId);
       localStorage.setItem("user_id", userId);
+      
     }
   }
 
@@ -124,7 +108,6 @@ useEffect(() => {
         tap_coins: resp.tap_coins,
         //total_coins: resp.allCoins,
         total_taps: resp.total_taps,
-        flash_speed: booster.flashSpeed,
         profit_per_hour: resp.profitPerHour
       });
     } else {

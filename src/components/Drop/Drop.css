@@ -1,3 +1,21 @@
 .goldMainDiv img{
     width: 70%;
 }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Устанавливаем 3 колонки */
+    gap: 16px; /* Расстояние между картами */
+  }
+  
+  @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr); /* Для устройств с экраном меньше 1024px — 2 колонки */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr; /* Для устройств с экраном меньше 768px — 1 колонка */
+    }
+  }

@@ -6,6 +6,7 @@ import Collection from "../../components/Collection/Collection";
 import Ton from "../../components/Market/Market";
 import Drop from "../../components/Drop/Drop";
 import Market from "../../components/Market/Market";
+import cards from "../../Data/cardsData"; // импортируем данные карт
 
 const Earn = () => {
   const [isTon, setIsTon] = useState(1);

@@ -1,0 +1,105 @@
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: linear-gradient(to bottom, #4b5563, #f97316);
+    backdrop-filter: blur(4px);
+    transition: opacity 0.1s ease-in-out;
+  }
+  
+  .modal-content {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    width: 100%;
+    max-height: 50vh; /* Альтернатива для ограничения высоты */
+    background-color: black;
+    color: white;
+    padding: 1.5rem;
+    border-top-left-radius: 46px;
+    border-top-right-radius: 46px;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .modal-image {
+    width: 50%;
+    height: 6rem;
+    border-radius: 0.5rem;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+  }
+  
+  .modal-title {
+    font-size: 1.125rem;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  
+  .modal-description {
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    width: 66%;
+    text-align: center;
+  }
+  
+  .modal-profit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .profit-value {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .coin-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .modal-price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .coin-large-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .price-value {
+    font-size: 1.875rem;
+    color: white;
+  }
+  
+  .modal-button {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    width: 100%;
+    background-color: #3b82f6;
+    border-radius: 0.75rem;
+    transition: background-color 0.3s;
+  }
+  
+  .modal-button:hover {
+    background-color: #2563eb;
+  }
+  
