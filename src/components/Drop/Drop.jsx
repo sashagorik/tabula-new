@@ -5,12 +5,14 @@ import cards from "../../Data/cardsData"; // импортируем данные
 
 const Drop = (props) => {
   return (
-    <div className="grid grid-cols-3 gap-4 w-[95%] mx-auto">
-      {cards && cards.map((card, index) => (
-        <div key={index}>
-          <MineCard onClick={props.onClick} cardDeatails={card} />
-        </div>
-      ))}
+    <div className="drop-container">
+      <div className="grid">
+        {cards && cards.map((card, index) => (
+          <div key={index} className="flex justify-center">
+            <MineCard onClick={props.onClick} cardDeatails={card} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

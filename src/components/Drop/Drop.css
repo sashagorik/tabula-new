@@ -1,21 +1,37 @@
-.goldMainDiv img{
-    width: 70%;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Устанавливаем 3 колонки */
-    gap: 16px; /* Расстояние между картами */
+.drop-container {
+    width: 100%; /* Контейнер должен занимать всю ширину */
+    max-width: 1200px; /* Устанавливаем максимальную ширину для контейнера */
+    margin: 0 auto; /* Центрируем контейнер */
   }
   
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Разбиваем на 3 колонки */
+    gap: 16px; /* Расстояние между картами */
+    width: 100%; /* Сетка занимает всю ширину контейнера */
+  }
+  
+  .grid > div {
+    display: flex;
+    justify-content: center; /* Центрируем каждую карту в колонке */
+  }
+  
+  /* Адаптивные стили для разных экранов */
   @media (max-width: 1024px) {
     .grid {
-      grid-template-columns: repeat(2, 1fr); /* Для устройств с экраном меньше 1024px — 2 колонки */
+      grid-template-columns: repeat(3, 1fr); /* 3 колонки для экранов до 1024px */
     }
   }
   
   @media (max-width: 768px) {
     .grid {
-      grid-template-columns: 1fr; /* Для устройств с экраном меньше 768px — 1 колонка */
+      grid-template-columns: repeat(3, 1fr); /* 3 колонки для экранов до 768px */
     }
   }
+  
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr); /* 3 колонки для экранов до 480px */
+    }
+  }
+  
