@@ -56,278 +56,55 @@ mongoose.connection.on('error', (err) => {
   console.log('Error connecting to MongoDB:', err);
 });
 
-// Эндпоинт для получения данных пользователя
-app.get('/api/v1/userDetails', async (req, res) => {
-  const { user_id } = req.query;
-  if (!user_id) {
-    return res.status(400).json({ error: 'Missing user_id parameter' });
-  }
-
+// Эндпоинт для проверки наличия пользователя
+app.post('/api/v1/checkUser', async (req, res) => {
   try {
-    const user = await User.findOne({ user_id });
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+    const { user_id } = req.body;
+    const existingUser = await User.findOne({ user_id });
+    if (existingUser) {
+      return res.status(200).json({ exists: true });
     }
-
-    // Предположим, что ваша модель пользователя (User) имеет свойства user_id, name, total_coins и ton_coins
-    const userData = {
-      user_id: user.user_id,
-      name: user.name,
-      total_coins: user.total_coins,
-      total_taps: user.total_taps,
-      profitPerHour: user.profitPerHour
-      
-      
-      // ton_coins: user.ton_coins,
-      // Добавьте другие свойства пользователя по необходимости
-    };
-
-    res.json({ success: true, data: userData });
+    res.status(200).json({ exists: false });
   } catch (err) {
-    console.error('Error fetching user data:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ message: err.message });
   }
 });
 
-// Эндпоинт для сохранения данных пользователя
-app.post('/api/v1/userDetails', async (req, res) => {
-  const userData = req.body;
-
+// Эндпоинт для создания пользователя, если его нет в базе
+app.post('/api/v1/addUser', async (req, res) => {
   try {
-    let user = await User.findOne({ user_id: userData.user_id });
-
-    if (!user) {
-      // Если пользователь не найден, создаем нового с датой регистрации
-      user = new User({
-        user_id: userData.user_id,
-        name: userData.name,
-        total_coins: userData.total_coins,
-        total_taps: userData.total_taps,
-        profitPerHour: userData.profitPerHour,
-        registrationDate: new Date(), // Устанавливаем дату регистрации
-        lastLoginDate: new Date()     // Устанавливаем дату последнего входа
-      });
-      await user.save();
-
-      // После создания пользователя также создаем запись о бустерах
-      const booster = new Booster({
-        user_id: userData.user_id,
-        multiTap: 0,
-        fireLimit: 0,
-        flashSpeed: 0,
-        hireAnt: false,
-        recharge: 3, // Пример начального значения для recharge
-        turbo: 3 // Пример начального значения для turbo
-      });
-      await booster.save();
-    } else {
-      // Обновляем данные пользователя, если он уже существует
-      user = Object.assign(user, userData);
-      user.lastLoginDate = new Date(); // Обновляем дату последнего входа
-      await user.save();
+    const { user_id } = req.body;
+    const existingUser = await User.findOne({ user_id });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Пользователь с таким user_id уже существует' });
     }
 
-    res.json({ success: true, data: user });
+    const newUser = new User({
+      user_id,
+      profitPerHour:0.01
+    });
+
+    const newBooster = new Booster({
+      user_id,
+      multiTap: 1,
+      firelimit: 1,
+      flashSpeed: 1,
+      hireAnt: false,
+      recharge: 1,
+      turbo: 3,
+      profitPerHour:0.01
+    });
+
+    const savedUser = await newUser.save();
+    const savedBooster = await newBooster.save();
+    
+    res.status(201).json({ savedUser, savedBooster });
   } catch (err) {
-    console.error('Error saving user data:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ message: err.message });
   }
 });
 
 
-// Эндпоинт для обновления количества монет totalcoins
-app.post('/api/v1/updateCoins', async (req, res) => {
-  const { user_id, coins } = req.body;
-
-  try {
-    let user = await User.findOne({ user_id });
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Обновляем количество монет
-    user.total_coins += coins;
-
-    await user.save();
-    res.json({ success: true, data: user });
-  } catch (err) {
-    console.error('Error updating coins:', err); // Выводим ошибку в консоль
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Эндпоинт для получения данных о бустерах
-app.get('/api/v1/boosterDetails', async (req, res) => {
-  const { user_id } = req.query;
-  if (!user_id) {
-    return res.status(400).json({ error: 'Missing user_id parameter' });
-  }
-
-  try {
-    const booster = await Booster.findOne({ user_id });
-    if (!booster) {
-      return res.status(404).json({ error: 'Booster data not found' });
-    }
-    res.json({ success: true, data: booster });
-  } catch (err) {
-    console.error('Error fetching booster data:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Эндпоинт для обновления данных о бустерах
-app.post('/api/v1/updateBooster', async (req, res) => {
-  const { user_id, boosterData } = req.body;
-
-  try {
-    let booster = await Booster.findOne({ user_id });
-    if (!booster) {
-      return res.status(404).json({ error: 'Booster data not found' });
-    }
-
-    // Обновляем данные о бустерах
-    booster = Object.assign(booster, boosterData);
-
-    await booster.save();
-    res.json({ success: true, data: booster });
-  } catch (err) {
-    console.error('Error updating booster data:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-
-// Эндпоинт для апгрейда бустера
-app.post('/api/v1/upgradeBooster', async (req, res) => {
-  const { user_id, boosterType } = req.body;
-
-  try {
-    let user = await User.findOne({ user_id });
-    let booster = await Booster.findOne({ user_id });
-
-    if (!user || !booster) {
-      return res.status(404).json({ error: 'User or Booster data not found' });
-    }
-
-    const boosterLevels = {
-      multiTap: booster.multiTap,
-      fireLimit: booster.fireLimit,
-      flashSpeed: booster.flashSpeed,
-      hireAnt: booster.hireAnt
-    };
-
-    const boosterPrices = {
-      multiTap: (boosterLevels.multiTap + 1) * 200,
-      fireLimit: (boosterLevels.fireLimit + 1) * 200,
-      flashSpeed: (boosterLevels.flashSpeed + 1) * 200,
-      hireAnt: 200000
-    };
-
-    const price = boosterPrices[boosterType];
-
-    if (user.total_coins < price) {
-      return res.status(400).json({ error: 'Not enough coins' });
-    }
-
-    user.total_coins -= price;
-    booster[boosterType] += 1;
-
-    // Если апгрейдируем fireLimit, увеличиваем total_taps
-    if (boosterType === 'fireLimit') {
-      user.total_taps += 100; // Добавляем 100 очков за каждый уровень fireLimit
-    }
-
-    await user.save();
-    await booster.save();
-
-    res.json({ success: true, data: { user, booster } });
-  } catch (err) {
-    console.error('Error upgrading booster:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-
-// Эндпоинт для получения уровня бустера пользователя
-app.get('/api/v1/boosterLevel', async (req, res) => {
-  const { user_id, booster } = req.query;
-  if (!user_id || !booster) {
-    return res.status(400).json({ error: 'Missing user_id or booster parameter' });
-  }
-
-  try {
-    const boosterData = await Booster.findOne({ user_id });
-    if (!boosterData) {
-      return res.status(404).json({ error: 'Booster data not found' });
-    }
-    const boosterLevel = boosterData[booster];
-    if (boosterLevel === undefined) {
-      return res.status(400).json({ error: 'Invalid booster type' });
-    }
-    res.json({ success: true, level: boosterLevel });
-  } catch (err) {
-    console.error('Error fetching booster level:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-
-// Эндпоинт Обновление total_taps пользователя
-app.post('/api/v1/updateTotalTaps', async (req, res) => {
-  const { user_id, total_taps } = req.body;
-  try {
-    const updatedUser = await User.findOneAndUpdate({ user_id }, { total_taps }, { new: true });
-    res.json({ success: true, user: updatedUser });
-  } catch (error) {
-    console.error('Error updating total taps:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Получение данных о ежедневных вознаграждениях
-app.get('/api/dailyRewardDetails/:userId', async (req, res) => {
-  try {
-      const user = await User.findOne({ user_id: req.params.userId });
-      if (!user) {
-          return res.status(404).send('User not found');
-      }
-      res.json(user.dailyRewards);
-  } catch (error) {
-      res.status(500).send(error);
-  }
-});
-
-// Обновление данных о ежедневных вознаграждениях
-app.post('/api/updateDailyReward/:userId', async (req, res) => {
-  try {
-      const user = await User.findOne({ user_id: req.params.userId });
-      if (!user) {
-          return res.status(404).send('User not found');
-      }
-
-      const today = new Date();
-      const lastClaimDate = new Date(user.dailyRewards.lastClaimDate);
-      const isSameDay = today.getDate() === lastClaimDate.getDate() &&
-                        today.getMonth() === lastClaimDate.getMonth() &&
-                        today.getFullYear() === lastClaimDate.getFullYear();
-
-      if (!isSameDay) {
-          user.dailyRewards.claimDays += 1;
-          user.dailyRewards.isClaimed = false;
-      }
-
-      user.dailyRewards.lastClaimDate = today;
-      user.total_coins += req.body.coins;
-      user.dailyRewards.isClaimed = req.body.isClaimed;
-
-      await user.save();
-      res.json(user.dailyRewards);
-  } catch (error) {
-      res.status(500).send(error);
-  }
-});
 
 
 app.listen(PORT, () => {
