@@ -4,7 +4,7 @@ const boosterSchema = new mongoose.Schema({
   user_id: { type: String, required: true, unique: true },
   profitPerHour: {
     type: Number,
-    required: true
+    
   },
 });
 
