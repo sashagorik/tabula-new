@@ -49,18 +49,25 @@ const extractUserData = () => {
 };
 
 // Эндпоинт для проверки и добавления пользователя в базу данных
-const checkAndAddUserToDB = async (userId) => {
+const checkAndAddUserToDB = async (userData) => {
   try {
-    const response = await axios.post(`${baseUrl}/api/v1/checkUser`, { user_id: userId });
+    const response = await axios.post(`${baseUrl}/api/v1/checkUser`, { user_id: userData.userId });
 
     if (response.data.exists) {
-      console.log(`User with ID ${userId} already exists in the database.`);
+      console.log(`User with ID ${userData.userId} already exists in the database.`);
     } else {
-      await axios.post(`${baseUrl}/api/v1/addUser`, { user_id: userId });
-      console.log(`User with ID ${userId} successfully added to the database.`);
+      // Отправляем все данные пользователя при добавлении
+      await axios.post(`${baseUrl}/api/v1/addUser`, {
+        user_id: userData.userId,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        isPremium: userData.isPremium,
+        username: userData.username,
+      });
+      console.log(`User with ID ${userData.userId} successfully added to the database.`);
     }
   } catch (error) {
-    console.error(`Error checking or adding user with ID ${userId}:`, error);
+    console.error(`Error checking or adding user with ID ${userData.userId}:`, error);
   }
 };
 
@@ -83,17 +90,16 @@ function App() {
 
   // Извлечение данных пользователя
   useEffect(() => {
-    const { userId, firstName, lastName, isPremium, username } = extractUserData();
-
-    setUser_id(userId);
-    localStorage.setItem("user_id", userId);
-    localStorage.setItem("first_name", firstName);
-    localStorage.setItem("last_name", lastName);
-    localStorage.setItem("is_premium", isPremium);
-    localStorage.setItem("username", username);
-
-    if (userId) {
-      checkAndAddUserToDB(userId);
+    const userData = extractUserData();
+    setUser_id(userData.userId);
+    localStorage.setItem("user_id", userData.userId);
+    localStorage.setItem("first_name", userData.firstName);
+    localStorage.setItem("last_name", userData.lastName);
+    localStorage.setItem("is_premium", userData.isPremium);
+    localStorage.setItem("username", userData.username);
+  
+    if (userData.userId) {
+      checkAndAddUserToDB(userData);
     }
   }, []);
 
@@ -109,11 +115,12 @@ function App() {
         setUserInfo({
           ...userInfo,
           user_id: userResponse.user_id || "5555",
-          name: userResponse.name || "default name",
-          rank: userResponse.rank || "default rank",
-          tap_coins: userResponse.tap_coins,
-          total_taps: userResponse.total_taps,
-          profit_per_hour: userResponse.profitPerHour
+          username: userResponse.name || "default name",
+          first_name: userResponse.first_name || "default rank",
+          last_name: userResponse.last_name,
+          is_premium: userResponse.isPremium,
+          profit_per_hour: userResponse.profitPerHour,
+          lastLoginDate: userResponse.lastLoginDate
         });
       } else {
         console.error("Некорректные данные от API", userResponse.data);

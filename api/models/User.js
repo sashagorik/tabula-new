@@ -6,23 +6,47 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+
+  username: {
+    type: String,
+    required: true,
+    
+  },
+
+  first_name: {
+    type: String,
+    required: true,
+    
+  },
+
+  last_name: {
+    type: String,
+    required: true,
+    
+  },
+
+  is_premium: {
+    type: Boolean,
+    required: true,
+    
+  },
  
   profitPerHour: {
     type: Number,
-    required: true
+    
   },
 
   // Новые поля для даты и времени
- // registrationDate: {
-  //  type: Date,
-  //  default: Date.now,  // Устанавливаем текущую дату при регистрации
-  //  required: true
- // },
-  //lastLoginDate: {
-  //  type: Date,
-  //  default: Date.now,  // Инициализация последнего входа при создании
-  //  required: true
- // }
+  registrationDate: {
+    type: Date,
+    default: Date.now,  // Устанавливаем текущую дату при регистрации
+    required: true
+  },
+  lastLoginDate: {
+    type: Date,
+    default: Date.now,  // Инициализация последнего входа при создании
+    required: true
+  }
 });
 
 // Обновляем `lastLoginDate` каждый раз, когда пользователь входит в систему

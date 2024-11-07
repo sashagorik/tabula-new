@@ -71,7 +71,8 @@ app.post('/api/v1/checkUser', async (req, res) => {
 // Эндпоинт для создания пользователя, если его нет в базе
 app.post('/api/v1/addUser', async (req, res) => {
   try {
-    const { user_id } = req.body;
+    const { user_id, firstName, lastName, isPremium, username } = req.body;
+
     const existingUser = await User.findOne({ user_id });
     if (existingUser) {
       return res.status(400).json({ message: 'Пользователь с таким user_id уже существует' });
@@ -79,12 +80,18 @@ app.post('/api/v1/addUser', async (req, res) => {
 
     const newUser = new User({
       user_id,
-      profitPerHour:0.01
+      name: `${firstName} ${lastName}`,
+      total_coins: 0,  // Значение по умолчанию
+      profitPerHour: 0.01,
+      registrationDate: new Date(),
+      lastLoginDate: new Date(),
+      username,
+      isPremium
     });
 
     const newBooster = new Booster({
       user_id,
-      profitPerHour:0.01
+      profitPerHour: 0.01
     });
 
     const savedUser = await newUser.save();
