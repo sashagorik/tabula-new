@@ -80,20 +80,20 @@ app.post('/api/v1/addUser', async (req, res) => {
 
     const newUser = new User({
       user_id,
-      firstName: firstName,
-      lastName: lastName,
-      username: username,
+      firstName,
+      lastName,
+      username,
       isPremium, 
       registrationDate: new Date(),
       lastLoginDate: new Date(),
       totalCoins: 0,  // Значение по умолчанию
-      profitPerHour: 0.00,
+      profitPerHour: 0.00
       
     });
 
     const newBooster = new Booster({
       user_id,
-      profitPerHour: 0.01
+      profitPerHour: 0.00
     });
 
     const savedUser = await newUser.save();
