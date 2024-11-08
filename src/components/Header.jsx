@@ -25,7 +25,7 @@ const Header = () => {
                         <img src={avatar} alt="profile" width={40} />
                        
                     </div>
-                    <div className="userName mx-2">{userInfo.user_id}</div>
+                    <div className="userName mx-2">{userInfo.username}</div>
                 </div>
 
 
@@ -35,7 +35,7 @@ const Header = () => {
                         
                     </div>
                     <div className="walletName mx-2">
-                        {userInfo.rank}
+                        {userInfo.firstName}
                     </div>
                 </div>
 

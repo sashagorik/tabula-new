@@ -21,6 +21,8 @@ const Home = () => {
       setMineStatus("online");
       setButtonImage(minebuttongreen);
       setCountdown(100); // Устанавливаем 10-секундный обратный отсчёт
+
+    
       
       
       
@@ -53,7 +55,7 @@ const Home = () => {
       <div className="coinDiv">
         <CoinInfo />
         
-        <div className="totalCoins">${userInfo.total_coins}</div>
+        <div className="totalCoins">${userInfo.totalCoins}</div>
 
         <div className="charAnim">
           <img
