@@ -69,11 +69,7 @@ const checkAndAddUserToDB = async (userData) => {
         
 
       });
-      if (addUserResponse.status === 201) {
-        console.log(`User with ID ${userData.userId} successfully added to the database.`);
-      } else {
-        console.error(`Failed to add user with ID ${userData.userId}:`, addUserResponse.data);
-      }
+      
     }
   } catch (error) {
     console.error(`Error checking or adding user with ID ${userData.userId}:`, error);
@@ -115,14 +111,11 @@ function App() {
   // Получение данных с API
   const fetchData = async () => {
     try {
-      const [userResponse, boosterResponse] = await Promise.all([
-        getUserData(userInfo.user_id),
-        getBooster(userInfo.user_id)
-      ]);
-
+      // Получаем данные пользователя
+      const userResponse = await getUserData(localStorage.user_id);
       if (userResponse) {
-        setUserInfo({
-          ...userInfo,
+        setUserInfo(prevState => ({
+          ...prevState,
           user_id: userResponse.user_id || "5555",
           firstName: userResponse.first_name || "default rank",
           lastName: userResponse.last_name,
@@ -132,12 +125,31 @@ function App() {
           lastLoginDate: userResponse.lastLoginDate,
           totalCoins: userResponse.totalCoins,
           profitPerHour: userResponse.profitPerHour,
-        });
+        }));
+  
+        // Сохраняем данные в localStorage
+        localStorage.setItem("user_id", userResponse.user_id);
+        localStorage.setItem("first_name", userResponse.first_name);
+        localStorage.setItem("last_name", userResponse.last_name);
+        localStorage.setItem("username", userResponse.name);
+        localStorage.setItem("is_premium", userResponse.isPremium);
+        localStorage.setItem("totalCoins", userResponse.totalCoins);
+        localStorage.setItem("profitPerHour", userResponse.profitPerHour);
       } else {
-        console.error("Некорректные данные от API", userResponse.data);
+        console.error("Некорректные данные от API", userResponse);
       }
+  
+      // Получаем данные бустера
+     // const boosterResponse = await getBooster(userInfo.user_id);
+     //if (boosterResponse) {
+       // console.log("Booster data:", boosterResponse);
+        // Логика работы с boosterResponse, если необходимо
+     //} else {
+      //  console.error("Некорректные данные от API для бустера", boosterResponse);
+    //  }
+  
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching data:", error.response || error);
     }
   };
 

@@ -21,7 +21,7 @@ const Earn = () => {
       {/* balance Info */}
       <div className="balanceInfo my-3">
         <p>Your Balance</p>
-        <p className="boosterCoin">${userInfo.total_coins}</p>
+        <p className="boosterCoin">${userInfo.totalCoins}</p>
       </div>
 
       {/* option */}
