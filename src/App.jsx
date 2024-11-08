@@ -124,12 +124,14 @@ function App() {
         setUserInfo({
           ...userInfo,
           user_id: userResponse.user_id || "5555",
+          firstName: userResponse.first_name || "default rank",
+          lastName: userResponse.last_name,
           username: userResponse.name || "default name",
-          first_name: userResponse.first_name || "default rank",
-          last_name: userResponse.last_name,
-          is_premium: userResponse.isPremium,
-          profit_per_hour: userResponse.profitPerHour,
-          lastLoginDate: userResponse.lastLoginDate
+          isPremium: userResponse.isPremium,
+          registrationDate: userResponse.registrationDate,
+          lastLoginDate: userResponse.lastLoginDate,
+          totalCoins: userResponse.totalCoins,
+          profitPerHour: userResponse.profitPerHour,
         });
       } else {
         console.error("Некорректные данные от API", userResponse.data);

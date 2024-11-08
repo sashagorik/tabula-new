@@ -22,8 +22,15 @@ const UserData = ({ children }) => {
     return savedUserInfo
       ? JSON.parse(savedUserInfo)
       : {
-        user_id: "",
-        profitPerHour: 0.01,
+      user_id:"",
+      firstName:"",
+      lastName:"",
+      username:"",
+      isPremium:"", 
+      registrationDate: new Date(),
+      lastLoginDate: new Date(),
+      totalCoins: 0,  // Значение по умолчанию
+      profitPerHour: 0.00,
       };
   });
 

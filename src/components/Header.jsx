@@ -1,6 +1,6 @@
 import React from 'react'
 import profile from "../assets/userProfile.svg"
-import BianceLogo from "../assets/bianceLogo.svg"
+import BianceLogo from "../assets/coin3.svg"
 import OfficerLogo from "../assets/officeIcon.svg"
 import "./Header.css"
 import { useContext } from "react"
